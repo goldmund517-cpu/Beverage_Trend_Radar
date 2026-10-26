@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每週手搖飲品新品熱度決策戰情室</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- ECharts & WordCloud -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
+  <link rel="stylesheet" href="css/custom.css">
+  <style>
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .modal { display: none; }
+    .modal.active { display: flex; }
+  </style>
+</head>
+<body class="beverage-bg text-slate-800 min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- 頂部導航列 -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-emerald-200/80 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap justify-between items-center py-4 gap-4">
+        <div class="flex items-center space-x-3.5">
+          <div class="w-3.5 h-10 bg-emerald-600 rounded-md shadow-sm"></div>
+          <div>
+            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">飲品新品市場熱度戰情室</h1>
+            <p class="text-base text-slate-600 font-medium mt-0.5">週期動態追蹤 • 五維度加權評分 • AI 白話商業觀察</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <!-- 導航分頁 (基準最小舒適字體 text-base 16px) -->
+          <nav class="flex flex-wrap gap-2">
+            <button onclick="switchTab(0)" id="tab-btn-0" class="tab-btn px-4 py-2.5 text-base font-bold rounded-lg text-emerald-800 bg-emerald-50 border-2 border-emerald-300 shadow-sm transition">分頁 0：熱度總覽與商業洞察</button>
+            <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn px-4 py-2.5 text-base font-bold rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 border-2 border-transparent transition">分頁 1：加權熱度詞雲</button>
+            <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn px-4 py-2.5 text-base font-bold rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 border-2 border-transparent transition">分頁 2：品牌爆發力與週期歷程</button>
+          </nav>
+
+          <!-- 隱藏說明書按鈕 -->
+          <button onclick="openConceptModal()" class="inline-flex items-center px-4 py-2.5 border-2 border-emerald-600 text-base font-bold rounded-lg text-emerald-800 bg-emerald-50 hover:bg-emerald-100 shadow-sm transition">
+            📖 分析概念與計算說明
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 週期時間軸與自動更新狀態列 (單行緊湊版) -->
+  <div class="bg-emerald-900/95 text-white shadow-sm border-b border-emerald-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap lg:flex-nowrap justify-between items-center gap-3">
+      <!-- 左側：週期時間軸下拉式選單 -->
+      <div class="flex items-center gap-2.5 whitespace-nowrap">
+        <label for="week-timeline-select" class="text-base font-bold text-emerald-200 flex items-center">
+          📅 監測週期：
+        </label>
+        <select id="week-timeline-select" onchange="selectWeek(this.value)"
+          class="bg-white text-emerald-950 font-extrabold text-base px-3.5 py-1.5 rounded-lg border-2 border-emerald-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer">
+          <!-- 動態渲染週次選項 -->
+        </select>
+      </div>
+
+      <!-- 右側：排程與資料庫狀態合併 + 歷程表按鈕 (單列呈現) -->
+      <div class="flex items-center gap-2.5 text-base whitespace-nowrap">
+        <div class="bg-emerald-800/90 border border-emerald-600/80 px-3.5 py-1.5 rounded-lg font-medium text-emerald-100 flex items-center gap-3" title="純文字與分數結構化儲存，抓10年也不超過8MB，絕不爆容量">
+          <span>⏰ 排程：<strong class="text-white">每週一 09:00 自動更新</strong></span>
+          <span class="text-emerald-500">|</span>
+          <span>💾 容量：<strong class="text-emerald-300" id="db-size-badge">28.4 KB</strong> (極輕量)</span>
+        </div>
+        <button onclick="openHistoryModal()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-extrabold px-3.5 py-1.5 rounded-lg shadow transition">
+          🕒 查看爬蟲更新歷程表
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主內容區 -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- ========================================== -->
+    <!-- 分頁 0：熱度總覽與 AI 文字化商業觀察 -->
+    <!-- ========================================== -->
+    <section id="tab-0" class="tab-content active space-y-8">
+      <!-- 本週 KPI 摘要 (字體全面放大) -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200/90 shadow-sm">
+          <span class="text-base font-bold text-slate-600">本週監測新品數</span>
+          <div class="mt-2 text-4xl font-black text-slate-900" id="stat-total-products">--</div>
+          <p class="mt-2 text-base text-slate-600 font-medium" id="stat-week-label">涵蓋台、中、美主流茶飲品牌</p>
+        </div>
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-emerald-200 shadow-sm">
+          <span class="text-base font-bold text-emerald-800">🔥 現象級爆紅 (總分 ≥ 80)</span>
+          <div class="mt-2 text-4xl font-black text-emerald-600" id="stat-viral-products">--</div>
+          <p class="mt-2 text-base text-emerald-800 font-medium">跨平台高倍數擴散指標款</p>
+        </div>
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-amber-200 shadow-sm">
+          <span class="text-base font-bold text-amber-800">📈 強勢話題 (60 ~ 79 分)</span>
+          <div class="mt-2 text-4xl font-black text-amber-600" id="stat-trend-products">--</div>
+          <p class="mt-2 text-base text-amber-800 font-medium">具穩定聲量，觀察次週續航力</p>
+        </div>
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200/90 shadow-sm">
+          <span class="text-base font-bold text-slate-600">本週平均熱度總分</span>
+          <div class="mt-2 text-4xl font-black text-slate-900" id="stat-avg-score">--</div>
+          <p class="mt-2 text-base text-slate-600 font-medium">五維度客觀加權計算</p>
+        </div>
+      </div>
+
+      <!-- 新品資料卡片列表 (左右 50/50 對分長條方塊 + 右下綜合分數) -->
+      <div>
+        <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+          <h2 class="text-2xl font-extrabold text-slate-900">📋 本週新品深度決策與文字化商業洞察</h2>
+          <span class="text-base font-bold text-emerald-900 bg-emerald-100/90 border border-emerald-300 px-3.5 py-1 rounded-lg">
+            左欄：飲品規格與擴散數據 ｜ 右欄：AI 商業觀察與綜合熱度總分
+          </span>
+        </div>
+        <div id="product-card-list" class="space-y-5">
+          <!-- 動態渲染左右對分大字體卡片 -->
+        </div>
+      </div>
+
+      <!-- 象限散佈圖 (移除令人困惑的假按鈕文字，直接顯示飲品名稱與清晰分區) -->
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200/90 shadow-sm">
+        <div class="mb-4">
+          <h3 class="text-xl font-extrabold text-slate-900">📊 新品熱度分佈圖（橫軸：社群互動倍數 vs 縱軸：跨平台驗證度）</h3>
+          <p class="text-base text-slate-600 mt-1">圓點越靠右上角，代表該飲品「比平時貼文更爆紅」且「在越多不同社群平台被真實開箱」</p>
+        </div>
+        <div id="chart-matrix" class="w-full h-96"></div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 分頁 1：加權熱度詞雲與互動點擊 -->
+    <!-- ========================================== -->
+    <section id="tab-1" class="tab-content space-y-6">
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200/90 shadow-sm">
+        <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">☁️ 加權聲量文字雲（點擊左側飲品名稱，右側立即顯示商業分析）</h2>
+            <p class="text-base text-slate-600 mt-1">字體大小直接反映「五維度綜合熱度總分」，排除抽獎洗版干擾</p>
+          </div>
+          <span class="text-base font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-4 py-1.5 rounded-full">👆 點擊任一字詞檢視詳情</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4">
+          <div class="lg:col-span-7 bg-emerald-50/40 border-2 border-emerald-100 rounded-xl p-4">
+            <div id="chart-wordcloud" class="w-full h-[460px]"></div>
+          </div>
+          <!-- 點選文字雲後彈出的右側詳情面板 -->
+          <div id="wordcloud-detail-panel" class="lg:col-span-5 bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col justify-between">
+            <div class="text-slate-500 text-center my-auto space-y-3">
+              <div class="text-5xl">🧋</div>
+              <p class="text-lg font-bold text-slate-700">請點擊左側文字雲中的任何飲品名稱</p>
+              <p class="text-base text-slate-600">此處將即時顯示該款飲品的定價、社群互動倍數、主力平台與 AI 商業觀察。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 分頁 2：品牌基準與週期歷程對比 -->
+    <!-- ========================================== -->
+    <section id="tab-2" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200/90 shadow-sm">
+          <h3 class="text-xl font-extrabold text-slate-900 mb-1">🚀 各品牌社群爆發倍數 (相對於該品牌平時中位數)</h3>
+          <p class="text-base text-slate-600 mb-4">排除大品牌粉絲基數優勢，看本次新品是平時貼文互動的幾倍</p>
+          <div id="chart-brand-multipliers" class="w-full h-80"></div>
+        </div>
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200/90 shadow-sm">
+          <h3 class="text-xl font-extrabold text-slate-900 mb-1">🕸️ 本週雙強新品五維度雷達圖</h3>
+          <p class="text-base text-slate-600 mb-4">比對前兩名高分新品在五大構面的得分結構</p>
+          <div id="chart-category-radar" class="w-full h-80"></div>
+        </div>
+      </div>
+
+      <!-- 歷週抓資料時間軸與歷程總表 -->
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200/90 shadow-sm">
+        <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+          <div>
+            <h3 class="text-xl font-extrabold text-slate-900">🗓️ 週期性爬蟲抓取歷程表 (Weekly Batch History)</h3>
+            <p class="text-base text-slate-600 mt-1">系統於每週一早上 09:00 自動透過 <code class="bg-slate-100 px-2 py-0.5 rounded font-mono">scripts/weekly_updater.py</code> 抓取並寫入本地資料庫</p>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-base text-left border-2 border-slate-200 rounded-lg overflow-hidden">
+            <thead class="bg-emerald-50 font-extrabold text-slate-800 border-b-2 border-slate-200">
+              <tr>
+                <th class="p-3.5 border-r border-slate-200">週次編號</th>
+                <th class="p-3.5 border-r border-slate-200">資料統計區間</th>
+                <th class="p-3.5 border-r border-slate-200">系統抓取時間</th>
+                <th class="p-3.5 border-r border-slate-200">掃描來源數</th>
+                <th class="p-3.5 border-r border-slate-200">入庫新品數</th>
+                <th class="p-3.5 border-r border-slate-200">當週市場重點摘要</th>
+                <th class="p-3.5">切換檢視</th>
+              </tr>
+            </thead>
+            <tbody id="crawl-history-tbody" class="divide-y divide-slate-200 bg-white">
+              <!-- 動態渲染歷程表 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- 彈窗 1：週期爬蟲歷程與自動更新機制說明 Modal -->
+  <!-- ========================================== -->
+  <div id="history-modal" class="modal fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border-2 border-emerald-200">
+      <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-emerald-50">
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">🕒</span>
+          <h2 class="text-xl font-extrabold text-slate-900">每週自動抓取排程、時間軸歷程與資料庫容量說明</h2>
+        </div>
+        <button onclick="closeHistoryModal()" class="text-slate-500 hover:text-slate-800 text-3xl font-bold leading-none">&times;</button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-6 text-base text-slate-700 leading-relaxed">
+        <div class="bg-emerald-50/70 border-l-4 border-emerald-600 p-4 rounded-r-lg">
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">1. 系統如何定期自動爬資料更新？</h3>
+          <p>
+            本專案已內建自動更新腳本 <code class="bg-white px-2 py-0.5 rounded border font-mono">scripts/weekly_updater.py</code> 與一鍵排程批次檔 <code class="bg-white px-2 py-0.5 rounded border font-mono">run_weekly_update.bat</code>。<br>
+            • <strong>自動定時執行</strong>：可掛載於 Windows「工作排程器」設定<strong>每週一 09:00</strong> 自動在背景執行，或隨時雙擊 <code class="bg-white px-2 py-0.5 rounded border font-mono">run_weekly_update.bat</code> 立即更新。<br>
+            • <strong>前端自動同步</strong>：每次腳本執行完畢後，除了寫入 <code class="bg-white px-2 py-0.5 rounded border font-mono">data/beverage_trends.db</code>，也會同步更新網頁資料檔，打開戰情室就能在頂部「📅 監測週期時間軸」切換各週資料！
+          </p>
+        </div>
+
+        <div class="bg-blue-50/70 border-l-4 border-blue-600 p-4 rounded-r-lg">
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">2. 資料庫檔案會不會越來越大而爆掉？</h3>
+          <p>
+            <strong>完全不會爆掉！</strong>目前資料庫體積僅約 <strong>28.4 KB</strong>。<br>
+            • 因為我們只儲存「結構化文字、五維度分數、網址連結與 100 字商業摘要」，不包含肥大的影片或原始圖檔。<br>
+            • <strong>容量換算</strong>：每 1 款飲料僅佔約 <strong>0.6 KB</strong>。即使每週抓 20 款新品、<strong>連續抓取 10 年（共 520 週、超過 10,000 款飲料）</strong>，資料庫總大小也只有 <strong>約 6 MB</strong>（比一首 MP3 歌曲還小），電腦硬碟與瀏覽器都能瞬間秒開！
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-2">3. 近期週期抓取紀錄一覽</h3>
+          <div id="modal-history-list" class="space-y-2.5"></div>
+        </div>
+      </div>
+      <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <button onclick="closeHistoryModal()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-base font-bold rounded-lg shadow transition">關閉視窗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 彈窗 2：分析概念與計算說明 Modal (大字體舒適版) -->
+  <!-- ========================================== -->
+  <div id="concept-modal" class="modal fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border-2 border-emerald-200">
+      <!-- 彈窗頂部 -->
+      <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-emerald-50">
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">📖</span>
+          <h2 class="text-xl font-extrabold text-slate-900">飲品熱度評估模型、資料抽取與分級指南</h2>
+        </div>
+        <button onclick="closeConceptModal()" class="text-slate-500 hover:text-slate-800 text-3xl font-bold leading-none">&times;</button>
+      </div>
+
+      <!-- 彈窗內容主體 (全面升級為 text-base 16px ~ text-lg 18px) -->
+      <div class="p-6 overflow-y-auto space-y-6 text-base text-slate-700 leading-relaxed">
+        
+        <div class="border-l-4 border-emerald-600 pl-4">
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">一、 為什麼我們不單看「文字雲」或「Threads / IG 發言量」？</h3>
+          <p class="text-slate-700 text-base">
+            一般社群監控常犯的錯誤是直接爬取 Threads 或 IG 上「字詞出現次數」，但這極易受<b>演算法推薦同溫層、廠商網軍洗版、抽獎文留言</b>所扭曲。文字雲上字體大，可能只是 1 篇抽獎文吸引了 3,000 則複製貼上的罐頭留言，並不代表消費者真正在乎該產品。因此，我們透過<b>多源驗證</b>與<b>五維度加權計算</b>來還原市場真實熱度。
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-2">二、 綜合熱度指數計算公式（滿分 100 分）</h3>
+          <div class="bg-emerald-50 border-2 border-emerald-200 rounded-lg p-3.5 text-base text-emerald-950 font-bold mb-3">
+            綜合熱度總分 (0-100) = A_新品真實性 (20) + B_社群表現 (30) + C_擴散速度 (15) + D_跨平台擴散 (15) + E_第三方商業驗證 (10)
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-base text-left border border-slate-300">
+              <thead class="bg-slate-100 font-bold text-slate-800">
+                <tr>
+                  <th class="p-3 border">評分構面</th>
+                  <th class="p-3 border">配分</th>
+                  <th class="p-3 border">指標要求與計算邏輯</th>
+                  <th class="p-3 border">資料抽取來源</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="p-3 font-bold border">A_新品真實性</td>
+                  <td class="p-3 border font-bold text-emerald-700">20 分</td>
+                  <td class="p-3 border">官方貼文/公告確認 10 分；品名價格規格齊全 5 分；上市日期與區域可查 5 分。</td>
+                  <td class="p-3 border">品牌官網、FB 粉專、官方 Line</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold border">B_社群表現</td>
+                  <td class="p-3 border font-bold text-emerald-700">30 分</td>
+                  <td class="p-3 border">基礎公開數據 5 分；雙獨立來源 5 分；<b>依互動倍數加分（1~1.5倍=5分、1.5~2倍=10分、2~3倍=15分、≥3倍=20分）</b>。</td>
+                  <td class="p-3 border">官方與開箱貼文按讚、留言與品牌中位數</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold border">C_擴散速度</td>
+                  <td class="p-3 border font-bold text-emerald-700">15 分</td>
+                  <td class="p-3 border">發布後 7 日內非官方內容（素人開箱/短影音）：3~5 則=5分；6~9 則=10分；<b>≥10 則=15分</b>。</td>
+                  <td class="p-3 border">Threads、IG Reels、小紅書、Dcard</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold border">D_跨平台擴散</td>
+                  <td class="p-3 border font-bold text-emerald-700">15 分</td>
+                  <td class="p-3 border">2 個平台=8分；3 個平台=12分；<b>≥4 個平台=15分</b>（至少含 1 個非官方社群）。</td>
+                  <td class="p-3 border">橫跨 IG、Threads、TikTok、新聞、論壇數</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold border">E_商業驗證</td>
+                  <td class="p-3 border font-bold text-emerald-700">10 分</td>
+                  <td class="p-3 border">主流美食媒體專題報導 5 分；<b>外送平台熱銷榜、門市排隊或售罄訊號 5 分</b>。</td>
+                  <td class="p-3 border">外送平台熱銷榜、美食新聞媒體</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-2">三、 為什麼看「社群互動倍數」而非「絕對讚數」？</h3>
+          <p class="text-slate-700 text-base">
+            大型連鎖品牌平日貼文自然能獲 5,000 讚；若精品茶飲品牌平時中位數為 600 讚，本次新品獲得 1,800 讚，雖然絕對值較小，但互動倍數高達 <b>3.0 倍（3.0x）</b>，代表具備打破同溫層的強勁爆發力。
+          </p>
+        </div>
+
+      </div>
+
+      <!-- 彈窗底部 -->
+      <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <button onclick="closeConceptModal()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-base font-bold rounded-lg shadow transition">我瞭解了，關閉說明</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-white/90 backdrop-blur-sm border-t border-emerald-200 py-4 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center text-base font-medium text-slate-600">
+      Antigravity Engine • Local SQLite Backend • 每週手搖飲品新品熱度自動化戰情室
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

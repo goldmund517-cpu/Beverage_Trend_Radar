@@ -1,0 +1,237 @@
+{
+  "last_updated": "2026-10-26 09:00:12",
+  "db_size_kb": 28.4,
+  "schedule_rule": "每週一 09:00 自動執行 (Weekly Batch)",
+  "crawl_history": [
+    {
+      "week_id": "2026-W38",
+      "date_range": "2026/09/14 - 2026/09/20",
+      "crawl_time": "2026-09-21 09:00:05",
+      "status": "成功",
+      "items_count": 6,
+      "sources_scanned": 42,
+      "note": "秋季抹茶與金萱新品爆發週"
+    },
+    {
+      "week_id": "2026-W37",
+      "date_range": "2026/09/07 - 2026/09/13",
+      "crawl_time": "2026-09-14 09:00:08",
+      "status": "成功",
+      "items_count": 5,
+      "sources_scanned": 38,
+      "note": "初秋果茶與聯名週"
+    },
+    {
+      "week_id": "2026-W36",
+      "date_range": "2026/08/31 - 2026/09/06",
+      "crawl_time": "2026-09-07 09:00:03",
+      "status": "成功",
+      "items_count": 4,
+      "sources_scanned": 35,
+      "note": "夏末清爽椰水與檸檬季"
+    }
+  ],
+  "weeks_data": {
+    "2026-W38": [
+      {
+        "brand": "霸王茶姬",
+        "name": "鮮作抹茶系列（小王子聯名）",
+        "market": "中國大陸",
+        "price": "RMB 20-24",
+        "scoreA": 20, "scoreB": 28, "scoreC": 15, "scoreD": 15, "scoreE": 10,
+        "totalScore": 88,
+        "multiplier": 3.42,
+        "tier": "🔥 現象級爆款",
+        "platforms": ["小紅書", "抖音", "微博", "微信"],
+        "ugcCount": 38,
+        "observation": "頂流國風茶飲與治癒系文學 IP 深度契合，清爽抹綠視覺搭配情感文案引爆自發打卡，單日門市出杯量創下季度新高。"
+      },
+      {
+        "brand": "Starbucks",
+        "name": "Iced Pumpkin Cream Matcha",
+        "market": "美國",
+        "price": "USD $6.25",
+        "scoreA": 20, "scoreB": 26, "scoreC": 15, "scoreD": 15, "scoreE": 10,
+        "totalScore": 86,
+        "multiplier": 2.85,
+        "tier": "🔥 現象級爆款",
+        "platforms": ["TikTok", "Instagram", "Reddit", "X"],
+        "ugcCount": 29,
+        "observation": "抹茶微苦巧妙中和南瓜奶泡甜膩感，成功將秋季標誌性南瓜風味從傳統濃縮咖啡拓展至年輕世代鍾愛的抹茶客群。"
+      },
+      {
+        "brand": "迷客夏",
+        "name": "蘭韻夢金萱系列（炙燒金萱慕斯）",
+        "market": "台灣",
+        "price": "NT$55-75 (買5送1)",
+        "scoreA": 20, "scoreB": 25, "scoreC": 12, "scoreD": 15, "scoreE": 10,
+        "totalScore": 82,
+        "multiplier": 2.98,
+        "tier": "🔥 現象級爆款",
+        "platforms": ["Instagram", "Threads", "Facebook", "新聞媒體"],
+        "ugcCount": 12,
+        "observation": "法式甜點工藝融入台式手搖，現場噴槍炙燒焦糖奶蓋創造極高社群短影音吸睛度，拉高客單價至 75 元仍維持高買氣。"
+      },
+      {
+        "brand": "SOMA",
+        "name": "if 100% 椰子水聯名特調系列",
+        "market": "台灣",
+        "price": "NT$85-110",
+        "scoreA": 20, "scoreB": 20, "scoreC": 10, "scoreD": 12, "scoreE": 10,
+        "totalScore": 72,
+        "multiplier": 2.07,
+        "tier": "📈 強勢話題",
+        "platforms": ["Instagram", "Threads", "新聞媒體"],
+        "ugcCount": 7,
+        "observation": "純天然香水椰子水自帶清甜，取代傳統果糖負擔，成為精品茶飲往健康低卡機能轉型的代表性標竿。"
+      },
+      {
+        "brand": "CoCo都可",
+        "name": "生椰楊枝甘露",
+        "market": "台灣",
+        "price": "NT$90 (好友日買1送1)",
+        "scoreA": 18, "scoreB": 20, "scoreC": 10, "scoreD": 12, "scoreE": 10,
+        "totalScore": 70,
+        "multiplier": 1.74,
+        "tier": "📈 強勢話題",
+        "platforms": ["Line", "Facebook", "外送平台"],
+        "ugcCount": 8,
+        "observation": "透過常態化週三好友日買一送一長線維持芒果熱度，生椰乳配方降低傳統椰漿厚重感，在外送平台維持高回購率。"
+      },
+      {
+        "brand": "得正",
+        "name": "蜜蘋苦瓜烏龍",
+        "market": "台灣",
+        "price": "NT$65",
+        "scoreA": 18, "scoreB": 18, "scoreC": 10, "scoreD": 10, "scoreE": 10,
+        "totalScore": 66,
+        "multiplier": 1.75,
+        "tier": "📈 強勢話題",
+        "platforms": ["Threads", "Instagram", "Dcard"],
+        "ugcCount": 6,
+        "observation": "特殊蔬菜入茶展現調飲研發實力，蜜蘋甜香掩蓋苦瓜青澀味引發嚐鮮討論，但大眾日常回購接受度仍呈現兩極化。"
+      }
+    ],
+    "2026-W37": [
+      {
+        "brand": "龜記茗品",
+        "name": "紅柚翡翠醇奶",
+        "market": "台灣",
+        "price": "NT$75",
+        "scoreA": 20, "scoreB": 26, "scoreC": 14, "scoreD": 15, "scoreE": 9,
+        "totalScore": 84,
+        "multiplier": 3.10,
+        "tier": "🔥 現象級爆款",
+        "platforms": ["Threads", "Instagram", "Dcard", "新聞媒體"],
+        "ugcCount": 19,
+        "observation": "將招牌紅柚翡翠延伸出清爽醇奶版本，果粒感搭配絲滑奶香在 Threads 引發老客群自發推薦潮。"
+      },
+      {
+        "brand": "喜茶 HEYTEA",
+        "name": "羽衣甘藍奇亞籽輕果茶",
+        "market": "中國大陸",
+        "price": "RMB 19",
+        "scoreA": 20, "scoreB": 25, "scoreC": 15, "scoreD": 15, "scoreE": 8,
+        "totalScore": 83,
+        "multiplier": 2.95,
+        "tier": "🔥 現象級爆款",
+        "platforms": ["小紅書", "抖音", "微博"],
+        "ugcCount": 31,
+        "observation": "主打『液體沙拉』超模同款概念，精準切中白領下午茶怕胖痛點，小紅書健身與減脂圈層擴散極快。"
+      },
+      {
+        "brand": "五桐號",
+        "name": "蜜桃凍烏龍茶蓋",
+        "market": "台灣",
+        "price": "NT$65-75",
+        "scoreA": 20, "scoreB": 21, "scoreC": 10, "scoreD": 12, "scoreE": 10,
+        "totalScore": 73,
+        "multiplier": 2.15,
+        "tier": "📈 強勢話題",
+        "platforms": ["Instagram", "Threads", "Dcard"],
+        "ugcCount": 9,
+        "observation": "水蜜桃果凍咀嚼感佳，搭配鹹甜奶蓋層次分明，視覺漸層感強，受學生與年輕上班族青睞。"
+      },
+      {
+        "brand": "大茗本位製茶堂",
+        "name": "烤糖蕎麥凍奶青",
+        "market": "台灣",
+        "price": "NT$70",
+        "scoreA": 18, "scoreB": 20, "scoreC": 10, "scoreD": 12, "scoreE": 8,
+        "totalScore": 68,
+        "multiplier": 1.88,
+        "tier": "📈 強勢話題",
+        "platforms": ["Threads", "Instagram"],
+        "ugcCount": 7,
+        "observation": "無咖啡因蕎麥凍搭配招牌烤糖香氣，滿足咀嚼控與晚間飲用需求，穩定貢獻門市熟客營收。"
+      },
+      {
+        "brand": "麻古茶坊",
+        "name": "巨峰葡萄芝芝升級版",
+        "market": "台灣",
+        "price": "NT$95",
+        "scoreA": 20, "scoreB": 18, "scoreC": 8, "scoreD": 12, "scoreE": 8,
+        "totalScore": 66,
+        "multiplier": 1.62,
+        "tier": "📈 強勢話題",
+        "platforms": ["Facebook", "Instagram", "新聞媒體"],
+        "ugcCount": 5,
+        "observation": "經典秋日果茶回歸，果肉飽滿度獲肯定，但因單價接近百元門檻，社群討論集中於促銷活動期間。"
+      }
+    ],
+    "2026-W36": [
+      {
+        "brand": "一沐日",
+        "name": "粉粿桂花檸檬綠",
+        "market": "台灣",
+        "price": "NT$65",
+        "scoreA": 20, "scoreB": 27, "scoreC": 15, "scoreD": 15, "scoreE": 10,
+        "totalScore": 87,
+        "multiplier": 3.35,
+        "tier": "🔥 現象級爆款",
+        "platforms": ["Threads", "Instagram", "Dcard", "新聞媒體"],
+        "ugcCount": 24,
+        "observation": "台灣傳統草仔粿與桂花粉粿熱潮延續，桂花清香結合酸爽檸檬完美解膩，門市排隊與外送點單率居高不下。"
+      },
+      {
+        "brand": "瑞幸咖啡 Luckin",
+        "name": "檸C美式（黃檸檬特調）",
+        "market": "中國大陸",
+        "price": "RMB 9.9 (券後)",
+        "scoreA": 20, "scoreB": 22, "scoreC": 12, "scoreD": 15, "scoreE": 10,
+        "totalScore": 79,
+        "multiplier": 2.40,
+        "tier": "📈 強勢話題",
+        "platforms": ["小紅書", "抖音", "微信"],
+        "ugcCount": 16,
+        "observation": "9.9 元高性價比搭配夏日維 C 概念，成為上班族早午間提神高頻率剛需飲品。"
+      },
+      {
+        "brand": "清心福全",
+        "name": "紅牛能量多多綠",
+        "market": "台灣",
+        "price": "NT$80",
+        "scoreA": 18, "scoreB": 18, "scoreC": 8, "scoreD": 10, "scoreE": 8,
+        "totalScore": 62,
+        "multiplier": 1.55,
+        "tier": "📈 強勢話題",
+        "platforms": ["Facebook", "Threads", "Dcard"],
+        "ugcCount": 5,
+        "observation": "機能能量飲結合經典多多綠，鎖定熬夜族與司機客群，定位鮮明但屬特定功能性消費。"
+      },
+      {
+        "brand": "可不可熟成紅茶",
+        "name": "金檸熟成冰茶",
+        "market": "台灣",
+        "price": "NT$60",
+        "scoreA": 18, "scoreB": 15, "scoreC": 5, "scoreD": 10, "scoreE": 7,
+        "totalScore": 55,
+        "multiplier": 1.32,
+        "tier": "🌱 初步熱度",
+        "platforms": ["Instagram", "Facebook"],
+        "ugcCount": 3,
+        "observation": "常態型夏季果茶微調，包裝視覺具質感，整體社群討論屬平穩日常維運。"
+      }
+    ]
+  }
+}
