@@ -4,13 +4,17 @@ on:
   schedule:
     # 每週一台灣時間早上 09:00 (UTC 01:00) 自動執行
     - cron: '0 1 * * 1'
-  workflow_dispatch: # 允許在 GitHub Actions 網頁上手動點擊 Run workflow 立即更新
+  workflow_dispatch: # 允許手動觸發
+  push:
+    branches: [ main ]
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
-  update-and-push:
+  update-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: 1. 檢出專案原始碼
@@ -27,9 +31,19 @@ jobs:
         run: |
           python scripts/weekly_updater.py
 
-      - name: 4. 自動提交最新週期資料庫與前端數據至 main 分支 (自動觸發 GitHub Pages 更新)
+      - name: 4. 自動提交最新週期資料庫與前端數據至 main 分支
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/ dashboard/
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: 每週自動更新飲品熱度戰情室數據" && git push origin main)
+
+      - name: 5. 打包網站目錄供 GitHub Pages 部署
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: 6. 發布至 GitHub Pages 公開網址
+        id: deployment
+        uses: actions/deploy-pages@v4
+        continue-on-error: true

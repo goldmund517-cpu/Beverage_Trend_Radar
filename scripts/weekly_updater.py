@@ -773,6 +773,17 @@ def sync_weekly_database():
         )
         APP_JS_PATH.write_text(js_text_updated, encoding="utf-8")
 
+    # 4. 同步更新 dashboard/index.html 的防快取版本號 (?v=2026-Wxx)
+    index_html_path = BASE_DIR / "dashboard" / "index.html"
+    if index_html_path.exists():
+        html_text = index_html_path.read_text(encoding="utf-8")
+        html_updated = re.sub(
+            r'src="js/app\.js(\?v=[^"]+)?"',
+            f'src="js/app.js?v={latest_week_id}"',
+            html_text,
+        )
+        index_html_path.write_text(html_updated, encoding="utf-8")
+
     print(f"[{payload['last_updated']}] 週期同步完成！最新週次：{latest_week_id}，共寫入 {len(payload['weeks_data'])} 週、{total_inserted} 筆飲品數據。")
     print(f"資料庫與前端 app.js 已同步更新 (目前資料庫大小：{size_kb} KB)")
 
