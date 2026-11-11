@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-11-11 05:12:39",
-  "db_size_kb": 36.0,
+  "last_updated": "2026-11-11 13:23:12",
+  "db_size_kb": 48.0,
   "schedule_rule": "每週一 09:00 自動執行 (Weekly Batch)",
   "crawl_history": [
     {
@@ -31,7 +31,7 @@
       "sources_scanned": 45,
       "itemsCount": 5,
       "items_count": 5,
-      "note": "萬聖節黑巧可可、芋泥回歸與太妃核果拿鐵登場"
+      "note": "萬聖節黑巧可可、靜岡焙茶芋泥與太妃核果登場"
     },
     {
       "weekId": "2026-W44",
@@ -46,16 +46,91 @@
       "sources_scanned": 44,
       "itemsCount": 5,
       "items_count": 5,
-      "note": "深秋桂花烏龍、黑芝麻米乳與大甲芋頭季啟動"
+      "note": "深秋桂花蕎麥奶蓋、五黑芝麻米乳與大甲芋頭季啟動"
+    },
+    {
+      "weekId": "2026-W43",
+      "week_id": "2026-W43",
+      "label": "2026-W43 (10/12~10/18)",
+      "dateRange": "2026/10/12 - 2026/10/18",
+      "date_range": "2026/10/12 - 2026/10/18",
+      "crawlTime": "2026-10-19 09:00:05",
+      "crawl_time": "2026-10-19 09:00:05",
+      "status": "成功",
+      "sourcesScanned": 43,
+      "sources_scanned": 43,
+      "itemsCount": 5,
+      "items_count": 5,
+      "note": "霜降焦糖烤布蕾奶蓋、紅烏龍醇奶與芭樂檸綠熱銷"
+    },
+    {
+      "weekId": "2026-W42",
+      "week_id": "2026-W42",
+      "label": "2026-W42 (10/05~10/11)",
+      "dateRange": "2026/10/05 - 2026/10/11",
+      "date_range": "2026/10/05 - 2026/10/11",
+      "crawlTime": "2026-10-12 09:00:07",
+      "crawl_time": "2026-10-12 09:00:07",
+      "status": "成功",
+      "sourcesScanned": 46,
+      "sources_scanned": 46,
+      "itemsCount": 5,
+      "items_count": 5,
+      "note": "雙十連假聯名週：人氣動漫IP聯名杯與熟成歐蕾買一送一"
+    },
+    {
+      "weekId": "2026-W41",
+      "week_id": "2026-W41",
+      "label": "2026-W41 (09/28~10/04)",
+      "dateRange": "2026/09/28 - 2026/10/04",
+      "date_range": "2026/09/28 - 2026/10/04",
+      "crawlTime": "2026-10-05 09:00:04",
+      "crawl_time": "2026-10-05 09:00:04",
+      "status": "成功",
+      "sourcesScanned": 41,
+      "sources_scanned": 41,
+      "itemsCount": 5,
+      "items_count": 5,
+      "note": "十月初秋換季：鐵觀音厚奶蓋、黃金糖炒栗子與柿子果茶"
+    },
+    {
+      "weekId": "2026-W40",
+      "week_id": "2026-W40",
+      "label": "2026-W40 (09/21~09/27)",
+      "dateRange": "2026/09/21 - 2026/09/27",
+      "date_range": "2026/09/21 - 2026/09/27",
+      "crawlTime": "2026-09-28 09:00:09",
+      "crawl_time": "2026-09-28 09:00:09",
+      "status": "成功",
+      "sourcesScanned": 44,
+      "sources_scanned": 44,
+      "itemsCount": 5,
+      "items_count": 5,
+      "note": "中秋烤肉解膩特輯：文旦柚香翡翠、山楂烏龍與輕檸氣泡茶"
+    },
+    {
+      "weekId": "2026-W39",
+      "week_id": "2026-W39",
+      "label": "2026-W39 (09/14~09/20 中秋前夕)",
+      "dateRange": "2026/09/14 - 2026/09/20",
+      "date_range": "2026/09/14 - 2026/09/20",
+      "crawlTime": "2026-09-21 18:00:02",
+      "crawl_time": "2026-09-21 18:00:02",
+      "status": "成功",
+      "sourcesScanned": 40,
+      "sources_scanned": 40,
+      "itemsCount": 5,
+      "items_count": 5,
+      "note": "秋分蜜香紅烏龍、鹽之花奶蓋與生椰拿鐵跨界聯名"
     },
     {
       "weekId": "2026-W38",
       "week_id": "2026-W38",
-      "label": "2026-W38 (09/14~09/20)",
-      "dateRange": "2026/09/14 - 2026/09/20",
-      "date_range": "2026/09/14 - 2026/09/20",
-      "crawlTime": "2026-09-21 09:00:05",
-      "crawl_time": "2026-09-21 09:00:05",
+      "label": "2026-W38 (09/07~09/13)",
+      "dateRange": "2026/09/07 - 2026/09/13",
+      "date_range": "2026/09/07 - 2026/09/13",
+      "crawlTime": "2026-09-14 09:00:05",
+      "crawl_time": "2026-09-14 09:00:05",
       "status": "成功",
       "sourcesScanned": 42,
       "sources_scanned": 42,
@@ -66,11 +141,11 @@
     {
       "weekId": "2026-W37",
       "week_id": "2026-W37",
-      "label": "2026-W37 (09/07~09/13)",
-      "dateRange": "2026/09/07 - 2026/09/13",
-      "date_range": "2026/09/07 - 2026/09/13",
-      "crawlTime": "2026-09-14 09:00:08",
-      "crawl_time": "2026-09-14 09:00:08",
+      "label": "2026-W37 (08/31~09/06)",
+      "dateRange": "2026/08/31 - 2026/09/06",
+      "date_range": "2026/08/31 - 2026/09/06",
+      "crawlTime": "2026-09-07 09:00:08",
+      "crawl_time": "2026-09-07 09:00:08",
       "status": "成功",
       "sourcesScanned": 38,
       "sources_scanned": 38,
@@ -81,11 +156,11 @@
     {
       "weekId": "2026-W36",
       "week_id": "2026-W36",
-      "label": "2026-W36 (08/31~09/06)",
-      "dateRange": "2026/08/31 - 2026/09/06",
-      "date_range": "2026/08/31 - 2026/09/06",
-      "crawlTime": "2026-09-07 09:00:03",
-      "crawl_time": "2026-09-07 09:00:03",
+      "label": "2026-W36 (08/24~08/30)",
+      "dateRange": "2026/08/24 - 2026/08/30",
+      "date_range": "2026/08/24 - 2026/08/30",
+      "crawlTime": "2026-08-31 09:00:03",
+      "crawl_time": "2026-08-31 09:00:03",
       "status": "成功",
       "sourcesScanned": 35,
       "sources_scanned": 35,
@@ -439,6 +514,543 @@
         ],
         "ugcCount": 5,
         "observation": "糖炒栗子風味糖漿搭配熟成歐蕾，包裝設計極具秋日復古文青感，屬季節限定話題款。"
+      }
+    ],
+    "2026-W43": [
+      {
+        "brand": "迷客夏",
+        "name": "焦糖烤布蕾紅烏龍拿鐵",
+        "market": "台灣",
+        "price": "NT$75-85",
+        "scoreA": 20,
+        "scoreB": 26,
+        "scoreC": 14,
+        "scoreD": 15,
+        "scoreE": 10,
+        "totalScore": 85,
+        "multiplier": 3.12,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "Instagram",
+          "Threads",
+          "Dcard",
+          "新聞媒體"
+        ],
+        "ugcCount": 21,
+        "observation": "霜降節氣主打法式烤布蕾綿密奶蓋結合台東鹿野紅烏龍，濃郁蛋奶香與熟果茶韻在 Threads 獲封『喝的甜點』。"
+      },
+      {
+        "brand": "一沐日",
+        "name": "紅心芭樂檸檬粉粿綠",
+        "market": "台灣",
+        "price": "NT$70",
+        "scoreA": 20,
+        "scoreB": 24,
+        "scoreC": 13,
+        "scoreD": 15,
+        "scoreE": 10,
+        "totalScore": 82,
+        "multiplier": 2.75,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "Threads",
+          "Instagram",
+          "Dcard",
+          "外送平台"
+        ],
+        "ugcCount": 16,
+        "observation": "彰化社頭紅心芭樂泥搭配招牌粉粿，粉紅漸層視覺與酸甜清爽口感在南部與中部市場創造極高外送點單率。"
+      },
+      {
+        "brand": "喜茶 HEYTEA",
+        "name": "潮州單叢鴨屎香輕乳茶",
+        "market": "中國大陸",
+        "price": "RMB 18",
+        "scoreA": 20,
+        "scoreB": 22,
+        "scoreC": 12,
+        "scoreD": 15,
+        "scoreE": 9,
+        "totalScore": 78,
+        "multiplier": 2.35,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "小紅書",
+          "抖音",
+          "微博"
+        ],
+        "ugcCount": 19,
+        "observation": "高香型鳳凰單叢茶底搭配零反式脂肪輕牛乳，茶香高揚不膩口，成為秋季輕乳茶賽道熱銷單品。"
+      },
+      {
+        "brand": "五桐號",
+        "name": "黑糖粉圓鐵觀音歐蕾",
+        "market": "台灣",
+        "price": "NT$65-75",
+        "scoreA": 18,
+        "scoreB": 20,
+        "scoreC": 10,
+        "scoreD": 12,
+        "scoreE": 9,
+        "totalScore": 69,
+        "multiplier": 1.85,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Instagram",
+          "Threads",
+          "Facebook"
+        ],
+        "ugcCount": 8,
+        "observation": "慢火蜜漬黑糖粉圓結合重焙鐵觀音厚奶，微涼天氣帶動熱飲與去冰咀嚼系需求回溫。"
+      },
+      {
+        "brand": "珍煮丹",
+        "name": "泰式斑蘭椰奶黑糖珍奶",
+        "market": "台灣",
+        "price": "NT$75",
+        "scoreA": 18,
+        "scoreB": 18,
+        "scoreC": 8,
+        "scoreD": 12,
+        "scoreE": 8,
+        "totalScore": 64,
+        "multiplier": 1.62,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Instagram",
+          "Facebook"
+        ],
+        "ugcCount": 5,
+        "observation": "東南亞斑蘭葉清香融入生椰乳與黑糖珍珠，異國風味鮮明，吸引喜愛泰式甜品的年輕客群嚐鮮。"
+      }
+    ],
+    "2026-W42": [
+      {
+        "brand": "五桐號",
+        "name": "吉伊卡哇聯名：太妃焦糖奶霜烏龍",
+        "market": "台灣",
+        "price": "NT$75 (滿額贈聯名杯塞)",
+        "scoreA": 20,
+        "scoreB": 29,
+        "scoreC": 15,
+        "scoreD": 15,
+        "scoreE": 10,
+        "totalScore": 89,
+        "multiplier": 3.68,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "Threads",
+          "Instagram",
+          "Dcard",
+          "新聞媒體"
+        ],
+        "ugcCount": 42,
+        "observation": "雙十連假最強現象級聯名！超人氣 IP 杯身與限量周邊引爆清晨排隊潮，太妃焦糖鹹奶霜烏龍單週銷量突破百萬杯。"
+      },
+      {
+        "brand": "可不可熟成紅茶",
+        "name": "雙十連假熟成歐蕾＆冷露歐蕾買1送1",
+        "market": "台灣",
+        "price": "NT$65-75 (買1送1)",
+        "scoreA": 20,
+        "scoreB": 25,
+        "scoreC": 13,
+        "scoreD": 15,
+        "scoreE": 10,
+        "totalScore": 83,
+        "multiplier": 2.9,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "Threads",
+          "Instagram",
+          "Line",
+          "外送平台"
+        ],
+        "ugcCount": 18,
+        "observation": "結合雙十連假出遊與外送平台買一送一檔期，經典熟成歐蕾與冬瓜冷露歐蕾單店出杯量較平日翻倍。"
+      },
+      {
+        "brand": "霸王茶姬",
+        "name": "金絲皇菊桂花烏龍（秋日限定）",
+        "market": "中國大陸",
+        "price": "RMB 19",
+        "scoreA": 20,
+        "scoreB": 22,
+        "scoreC": 12,
+        "scoreD": 15,
+        "scoreE": 9,
+        "totalScore": 78,
+        "multiplier": 2.42,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "小紅書",
+          "抖音",
+          "微博"
+        ],
+        "ugcCount": 20,
+        "observation": "主打秋季潤燥草本概念，皇菊花香與桂花烏龍清爽甘潤，受養生白領與女性客群青睞。"
+      },
+      {
+        "brand": "龜記茗品",
+        "name": "甘蔗四季春加蘆薈",
+        "market": "台灣",
+        "price": "NT$65",
+        "scoreA": 18,
+        "scoreB": 20,
+        "scoreC": 10,
+        "scoreD": 12,
+        "scoreE": 9,
+        "totalScore": 69,
+        "multiplier": 1.88,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Threads",
+          "Instagram"
+        ],
+        "ugcCount": 7,
+        "observation": "連假出遊解渴首選，白甘蔗原汁清甜搭配四季春與爽脆蘆薈，維持穩定高回購。"
+      },
+      {
+        "brand": "CoCo都可",
+        "name": "雙十連假星空葡萄凍飲",
+        "market": "台灣",
+        "price": "NT$75 (第二杯半價)",
+        "scoreA": 18,
+        "scoreB": 18,
+        "scoreC": 9,
+        "scoreD": 12,
+        "scoreE": 8,
+        "totalScore": 65,
+        "multiplier": 1.65,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Line",
+          "Facebook",
+          "外送平台"
+        ],
+        "ugcCount": 6,
+        "observation": "巨峰葡萄冰沙結合茶凍，連假家庭出遊與學生族群促銷轉換率穩定。"
+      }
+    ],
+    "2026-W41": [
+      {
+        "brand": "得正",
+        "name": "重焙鐵觀音芝士奶蓋",
+        "market": "台灣",
+        "price": "NT$70",
+        "scoreA": 20,
+        "scoreB": 26,
+        "scoreC": 14,
+        "scoreD": 15,
+        "scoreE": 9,
+        "totalScore": 84,
+        "multiplier": 3.04,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "Threads",
+          "Instagram",
+          "Dcard",
+          "新聞媒體"
+        ],
+        "ugcCount": 20,
+        "observation": "入秋首波厚奶蓋主打！濃郁炭焙鐵觀音壓住鹹甜起司奶蓋膩感，在 Threads 掀起『去冰微糖最頂喝法』討論串。"
+      },
+      {
+        "brand": "喜茶 HEYTEA",
+        "name": "富平流心柿子喜拉朵冰茶",
+        "market": "中國大陸",
+        "price": "RMB 19",
+        "scoreA": 20,
+        "scoreB": 25,
+        "scoreC": 14,
+        "scoreD": 15,
+        "scoreE": 9,
+        "totalScore": 83,
+        "multiplier": 2.86,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "小紅書",
+          "抖音",
+          "微博"
+        ],
+        "ugcCount": 26,
+        "observation": "秋季時令紅柿果肉打製，橙紅喜慶視覺與『事事如意』諧音梗在小紅書累積破萬篇打卡筆記。"
+      },
+      {
+        "brand": "麻古茶坊",
+        "name": "翡翠柳橙果粒茶（秋季新裝）",
+        "market": "台灣",
+        "price": "NT$70-75",
+        "scoreA": 20,
+        "scoreB": 20,
+        "scoreC": 10,
+        "scoreD": 12,
+        "scoreE": 10,
+        "totalScore": 72,
+        "multiplier": 2.05,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Facebook",
+          "Instagram",
+          "外送平台"
+        ],
+        "ugcCount": 8,
+        "observation": "台灣秋日柳丁產季銜接，新鮮果瓣帶皮壓汁香氣濃郁，餐後解膩剛需強勁。"
+      },
+      {
+        "brand": "大茗本位製茶堂",
+        "name": "仙草嫩凍冬瓜露",
+        "market": "台灣",
+        "price": "NT$60",
+        "scoreA": 18,
+        "scoreB": 19,
+        "scoreC": 9,
+        "scoreD": 12,
+        "scoreE": 9,
+        "totalScore": 67,
+        "multiplier": 1.76,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Threads",
+          "Instagram"
+        ],
+        "ugcCount": 6,
+        "observation": "手工滑嫩仙草凍搭配古早味冬瓜茶，中南部秋老虎高溫天氣下銷量亮眼。"
+      },
+      {
+        "brand": "SOMA",
+        "name": "有機大吉嶺莊園鮮奶茶",
+        "market": "台灣",
+        "price": "NT$90",
+        "scoreA": 18,
+        "scoreB": 17,
+        "scoreC": 8,
+        "scoreD": 10,
+        "scoreE": 8,
+        "totalScore": 61,
+        "multiplier": 1.52,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Instagram",
+          "Threads"
+        ],
+        "ugcCount": 5,
+        "observation": "主打莊園級秋摘大吉嶺麝香葡萄尾韻，吸引精品茶飲忠實老客嚐鮮。"
+      }
+    ],
+    "2026-W40": [
+      {
+        "brand": "麻古茶坊",
+        "name": "中秋限定：老欉文旦柚香翡翠",
+        "market": "台灣",
+        "price": "NT$75-85",
+        "scoreA": 20,
+        "scoreB": 27,
+        "scoreC": 15,
+        "scoreD": 15,
+        "scoreE": 10,
+        "totalScore": 87,
+        "multiplier": 3.3,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "Threads",
+          "Instagram",
+          "Facebook",
+          "新聞媒體"
+        ],
+        "ugcCount": 28,
+        "observation": "中秋烤肉週解膩霸主！麻豆老欉文旦果肉飽滿多汁，搭配茉莉翡翠綠茶，中秋連假門市排隊人潮不斷。"
+      },
+      {
+        "brand": "一沐日",
+        "name": "酸梅山楂烏龍配草仔粿",
+        "market": "台灣",
+        "price": "NT$70",
+        "scoreA": 20,
+        "scoreB": 25,
+        "scoreC": 13,
+        "scoreD": 15,
+        "scoreE": 10,
+        "totalScore": 83,
+        "multiplier": 2.94,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "Threads",
+          "Instagram",
+          "Dcard",
+          "新聞媒體"
+        ],
+        "ugcCount": 19,
+        "observation": "精準切中中秋烤肉去油解膩痛點，古早味山楂烏龍微酸回甘，搭配艾草草仔粿創造極高話題反差。"
+      },
+      {
+        "brand": "Starbucks",
+        "name": "Iced Apple Crisp Nondairy Cream Chai",
+        "market": "美國",
+        "price": "USD $6.25",
+        "scoreA": 20,
+        "scoreB": 22,
+        "scoreC": 12,
+        "scoreD": 15,
+        "scoreE": 9,
+        "totalScore": 78,
+        "multiplier": 2.45,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "TikTok",
+          "Instagram",
+          "Reddit"
+        ],
+        "ugcCount": 22,
+        "observation": "烤蘋果肉桂糖漿搭配植物奶印度香料茶（Chai），成為北美秋季除了南瓜拿鐵外的第二大熱門爆款。"
+      },
+      {
+        "brand": "CoCo都可",
+        "name": "中秋檸檬奇遇桔（金桔檸檬氣泡）",
+        "market": "台灣",
+        "price": "NT$65 (買1送1)",
+        "scoreA": 18,
+        "scoreB": 20,
+        "scoreC": 10,
+        "scoreD": 12,
+        "scoreE": 10,
+        "totalScore": 70,
+        "multiplier": 1.95,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Line",
+          "Facebook",
+          "外送平台"
+        ],
+        "ugcCount": 9,
+        "observation": "中秋團聚烤肉箱購與外送買一送一推升銷量，酸爽金桔檸檬成為家庭聚餐百搭飲品。"
+      },
+      {
+        "brand": "清心福全",
+        "name": "優多綠茶中秋加大胖胖杯",
+        "market": "台灣",
+        "price": "NT$60",
+        "scoreA": 18,
+        "scoreB": 17,
+        "scoreC": 8,
+        "scoreD": 10,
+        "scoreE": 9,
+        "totalScore": 62,
+        "multiplier": 1.58,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Facebook",
+          "Threads"
+        ],
+        "ugcCount": 5,
+        "observation": "經典優多綠茶搭配中秋烤肉檔期宣傳，大容量高 CP 值穩居夜市與街邊店熱銷榜。"
+      }
+    ],
+    "2026-W39": [
+      {
+        "brand": "龜記茗品",
+        "name": "台東鹿野蜜香紅烏龍鮮奶",
+        "market": "台灣",
+        "price": "NT$75",
+        "scoreA": 20,
+        "scoreB": 26,
+        "scoreC": 14,
+        "scoreD": 15,
+        "scoreE": 9,
+        "totalScore": 84,
+        "multiplier": 3.08,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "Threads",
+          "Instagram",
+          "Dcard",
+          "新聞媒體"
+        ],
+        "ugcCount": 18,
+        "observation": "秋分微涼帶動醇厚茶奶需求，小綠葉蟬著涎蜜香紅烏龍結合小農鮮乳，自然蜜甜感在 Dcard 獲零負評盛讚。"
+      },
+      {
+        "brand": "瑞幸咖啡 Luckin",
+        "name": "黃油開心果生椰拿鐵",
+        "market": "中國大陸",
+        "price": "RMB 9.9-11.9",
+        "scoreA": 20,
+        "scoreB": 25,
+        "scoreC": 14,
+        "scoreD": 15,
+        "scoreE": 9,
+        "totalScore": 83,
+        "multiplier": 2.82,
+        "tier": "🔥 現象級爆紅",
+        "platforms": [
+          "小紅書",
+          "抖音",
+          "微信"
+        ],
+        "ugcCount": 24,
+        "observation": "將烘焙界爆紅的焦化黃油（Brown Butter）與開心果結合生椰拿鐵，堅果奶香濃郁，單週銷量破千萬杯。"
+      },
+      {
+        "brand": "迷客夏",
+        "name": "法國鹽之花奶蓋金萱",
+        "market": "台灣",
+        "price": "NT$70",
+        "scoreA": 20,
+        "scoreB": 21,
+        "scoreC": 10,
+        "scoreD": 12,
+        "scoreE": 10,
+        "totalScore": 73,
+        "multiplier": 2.1,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Instagram",
+          "Threads",
+          "Facebook"
+        ],
+        "ugcCount": 9,
+        "observation": "延續金萱茶底熱度，改以法國布列塔尼鹽之花微鹹奶蓋襯托茶香，受不愛重甜的上班族喜愛。"
+      },
+      {
+        "brand": "得正",
+        "name": "甘蔗春烏龍",
+        "market": "台灣",
+        "price": "NT$65",
+        "scoreA": 18,
+        "scoreB": 19,
+        "scoreC": 9,
+        "scoreD": 12,
+        "scoreE": 9,
+        "totalScore": 67,
+        "multiplier": 1.79,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Threads",
+          "Instagram"
+        ],
+        "ugcCount": 7,
+        "observation": "清甜白甘蔗汁融合春烏龍，清爽回甘無負擔，成為午間外送常態熱銷品。"
+      },
+      {
+        "brand": "萬波島嶼紅茶",
+        "name": "白柚翡翠愛玉",
+        "market": "台灣",
+        "price": "NT$70",
+        "scoreA": 18,
+        "scoreB": 18,
+        "scoreC": 8,
+        "scoreD": 12,
+        "scoreE": 8,
+        "totalScore": 64,
+        "multiplier": 1.64,
+        "tier": "📈 強勢話題",
+        "platforms": [
+          "Instagram",
+          "Facebook",
+          "新聞媒體"
+        ],
+        "ugcCount": 6,
+        "observation": "中秋前夕白柚果粒搭配手洗愛玉凍，酸甜滑溜口感具節慶話題性。"
       }
     ],
     "2026-W38": [
