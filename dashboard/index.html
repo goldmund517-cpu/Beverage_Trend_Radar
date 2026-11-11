@@ -48,28 +48,28 @@
     </div>
   </header>
 
-  <!-- 週期時間軸與自動更新狀態列 (單行緊湊版) -->
+  <!-- 週期時間軸與自動更新狀態列 (單行固定比例防撐破版) -->
   <div class="bg-emerald-900/95 text-white shadow-sm border-b border-emerald-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap lg:flex-nowrap justify-between items-center gap-3">
-      <!-- 左側：週期時間軸下拉式選單 -->
-      <div class="flex items-center gap-2.5 whitespace-nowrap">
-        <label for="week-timeline-select" class="text-base font-bold text-emerald-200 flex items-center">
+      <!-- 左側：週期時間軸下拉式選單 (限制最大寬度避免撐破右側版型) -->
+      <div class="flex items-center gap-2 min-w-0 flex-1 max-w-full lg:max-w-[480px]">
+        <label for="week-timeline-select" class="text-base font-bold text-emerald-200 whitespace-nowrap shrink-0">
           📅 監測週期：
         </label>
         <select id="week-timeline-select" onchange="selectWeek(this.value)"
-          class="bg-white text-emerald-950 font-extrabold text-base px-3.5 py-1.5 rounded-lg border-2 border-emerald-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer">
+          class="w-full max-w-[340px] sm:max-w-[380px] truncate bg-white text-emerald-950 font-extrabold text-base px-3 py-1.5 rounded-lg border-2 border-emerald-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer">
           <!-- 動態渲染週次選項 -->
         </select>
       </div>
 
-      <!-- 右側：排程與資料庫狀態合併 + 歷程表按鈕 (單列呈現) -->
-      <div class="flex items-center gap-2.5 text-base whitespace-nowrap">
-        <div class="bg-emerald-800/90 border border-emerald-600/80 px-3.5 py-1.5 rounded-lg font-medium text-emerald-100 flex items-center gap-3" title="純文字與分數結構化儲存，抓10年也不超過8MB，絕不爆容量">
+      <!-- 右側：排程與資料庫狀態合併 + 歷程表按鈕 (單列對齊右緣) -->
+      <div class="flex items-center gap-2.5 text-sm sm:text-base whitespace-nowrap shrink-0">
+        <div class="bg-emerald-800/90 border border-emerald-600/80 px-3 py-1.5 rounded-lg font-medium text-emerald-100 flex items-center gap-2.5" title="純文字與分數結構化儲存，抓10年也不超過8MB，絕不爆容量">
           <span>⏰ 排程：<strong class="text-white">每週一 09:00 自動更新</strong></span>
           <span class="text-emerald-500">|</span>
-          <span>💾 容量：<strong class="text-emerald-300" id="db-size-badge">28.4 KB</strong> (極輕量)</span>
+          <span>💾 容量：<strong class="text-emerald-300" id="db-size-badge">42.8 KB</strong> (極輕量)</span>
         </div>
-        <button onclick="openHistoryModal()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-extrabold px-3.5 py-1.5 rounded-lg shadow transition">
+        <button onclick="openHistoryModal()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-extrabold px-3.5 py-1.5 rounded-lg shadow transition shrink-0">
           🕒 查看爬蟲更新歷程表
         </button>
       </div>
