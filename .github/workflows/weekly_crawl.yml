@@ -4,17 +4,13 @@ on:
   schedule:
     # 每週一台灣時間早上 09:00 (UTC 01:00) 自動執行
     - cron: '0 1 * * 1'
-  workflow_dispatch: # 允許在 GitHub 網頁上手動一鍵觸發更新
-  push:
-    branches: [ main ]
+  workflow_dispatch: # 允許在 GitHub Actions 網頁上手動點擊 Run workflow 立即更新
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
-  update-and-deploy:
+  update-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: 1. 檢出專案原始碼
@@ -25,24 +21,15 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: 3. 執行每週飲品新品爬蟲與五維度算分更新
+      - name: 3. 執行每週飲品新品爬蟲、五維度算分與前端 app.js 同步
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python scripts/weekly_updater.py
 
-      - name: 4. 自動提交最新週期資料庫與前端數據
+      - name: 4. 自動提交最新週期資料庫與前端數據至 main 分支 (自動觸發 GitHub Pages 更新)
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/ dashboard/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: 每週一自動更新飲品熱度戰情室數據" && git push)
-
-      - name: 5. 部署 dashboard 至 GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'dashboard'
-
-      - name: 6. 發布公開戰情室網址
-        id: deployment
-        uses: actions/deploy-pages@v4
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: 每週自動更新飲品熱度戰情室數據" && git push origin main)

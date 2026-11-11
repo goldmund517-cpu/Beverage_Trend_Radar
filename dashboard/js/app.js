@@ -4,12 +4,39 @@
 // ============================================================================
 
 const radarStore = {
-  lastUpdated: "2026-10-26 09:00:12",
-  dbSizeKb: 28.4,
+  lastUpdated: "2026-11-09 09:00:04",
+  dbSizeKb: 42.8,
   crawlHistory: [
     {
+      weekId: "2026-W46",
+      label: "2026-W46 (11/02~11/08 最新週)",
+      dateRange: "2026/11/02 - 2026/11/08",
+      crawlTime: "2026-11-09 09:00:04",
+      sourcesScanned: 48,
+      itemsCount: 6,
+      note: "立冬溫熱焙茶、開心果奶蓋與雙11買一送一檔期爆發"
+    },
+    {
+      weekId: "2026-W45",
+      label: "2026-W45 (10/26~11/01)",
+      dateRange: "2026/10/26 - 2026/11/01",
+      crawlTime: "2026-11-02 09:00:06",
+      sourcesScanned: 45,
+      itemsCount: 5,
+      note: "萬聖節黑巧可可、芋泥回歸與太妃核果拿鐵登場"
+    },
+    {
+      weekId: "2026-W44",
+      label: "2026-W44 (10/19~10/25)",
+      dateRange: "2026/10/19 - 2026/10/25",
+      crawlTime: "2026-10-26 09:00:12",
+      sourcesScanned: 44,
+      itemsCount: 5,
+      note: "深秋桂花烏龍、黑芝麻米乳與大甲芋頭季啟動"
+    },
+    {
       weekId: "2026-W38",
-      label: "2026-W38 (09/14~09/20 最新週)",
+      label: "2026-W38 (09/14~09/20)",
       dateRange: "2026/09/14 - 2026/09/20",
       crawlTime: "2026-09-21 09:00:05",
       sourcesScanned: 42,
@@ -36,6 +63,220 @@ const radarStore = {
     }
   ],
   weeksData: {
+    "2026-W46": [
+      {
+        brand: "五桐號",
+        name: "極濃開心果奶蓋焙茶",
+        market: "台灣",
+        price: "NT$75-85",
+        scoreA: 20, scoreB: 28, scoreC: 15, scoreD: 15, scoreE: 10,
+        totalScore: 88,
+        multiplier: 3.45,
+        tier: "🔥 現象級爆紅",
+        platforms: ["Threads", "Instagram", "Dcard", "新聞媒體"],
+        ugcCount: 34,
+        observation: "立冬與雙11檔期最強黑馬！義大利開心果鹹甜堅果奶蓋結合鹿兒島深焙茶底，Threads 每日破千則自發開箱，門市頻傳開心果醬提早售罄。"
+      },
+      {
+        brand: "Starbucks",
+        name: "Cran-Merry Orange Refresher & 太妃核果醇奶",
+        market: "美國",
+        price: "USD $5.95-6.45",
+        scoreA: 20, scoreB: 27, scoreC: 15, scoreD: 15, scoreE: 10,
+        totalScore: 87,
+        multiplier: 3.20,
+        tier: "🔥 現象級爆紅",
+        platforms: ["TikTok", "Instagram", "Reddit", "X"],
+        ugcCount: 41,
+        observation: "冬季紅杯檔期（Red Cup Season）正式引爆，蔓越莓甜橙清爽果飲打破冬季只有重奶咖啡的慣例，在 TikTok 創下百萬級開箱觀看。"
+      },
+      {
+        brand: "一沐日",
+        name: "熱黑糖粉粿烤奶（立冬溫熱限定）",
+        market: "台灣",
+        price: "NT$70",
+        scoreA: 20, scoreB: 25, scoreC: 13, scoreD: 15, scoreE: 10,
+        totalScore: 83,
+        multiplier: 2.92,
+        tier: "🔥 現象級爆紅",
+        platforms: ["Threads", "Instagram", "Facebook", "外送平台"],
+        ugcCount: 18,
+        observation: "精準卡位 11 月立冬降溫體感，主打溫熱喝依然 Q 彈不軟爛的黑糖粉粿搭配炭焙烤奶，外送平台夜間熱飲訂單暴增 2.9 倍。"
+      },
+      {
+        brand: "喜茶 HEYTEA",
+        name: "雙11黑松露可可濃巧牛乳",
+        market: "中國大陸",
+        price: "RMB 19 (雙11買1送1券)",
+        scoreA: 20, scoreB: 22, scoreC: 12, scoreD: 15, scoreE: 9,
+        totalScore: 78,
+        multiplier: 2.38,
+        tier: "📈 強勢話題",
+        platforms: ["小紅書", "抖音", "微博"],
+        ugcCount: 21,
+        observation: "把西餐高級黑松露鹹香融入法芙娜可可，獵奇奢華感成功在雙11期間吸引嚐鮮打卡，帶動高單價烘焙茶飲連帶銷售。"
+      },
+      {
+        brand: "CoCo都可",
+        name: "雙11百香雙響炮＆大甲芋頭鮮奶買1送1",
+        market: "台灣",
+        price: "NT$70-85 (雙11限定買1送1)",
+        scoreA: 18, scoreB: 21, scoreC: 10, scoreD: 13, scoreE: 10,
+        totalScore: 72,
+        multiplier: 2.15,
+        tier: "📈 強勢話題",
+        platforms: ["Line", "Facebook", "Threads", "外送平台"],
+        ugcCount: 11,
+        observation: "雙11狂歡週透過 Line 領券與外送平台同步買一送一，手搗大甲芋頭結合經典百香雙響炮，成為辦公室團購湊單首選。"
+      },
+      {
+        brand: "珍煮丹",
+        name: "黑糖薑母桂圓暖茶系列",
+        market: "台灣",
+        price: "NT$65-75",
+        scoreA: 18, scoreB: 18, scoreC: 9, scoreD: 12, scoreE: 8,
+        totalScore: 65,
+        multiplier: 1.68,
+        tier: "📈 強勢話題",
+        platforms: ["Instagram", "Facebook", "新聞媒體"],
+        ugcCount: 6,
+        observation: "針對立冬女性養生與暖身需求推出祖傳黑糖薑茶與桂圓組合，受上班族女性穩定回購，屬季節性剛需常銷品。"
+      }
+    ],
+    "2026-W45": [
+      {
+        brand: "迷客夏",
+        name: "靜岡焙茶大甲芋泥拿鐵",
+        market: "台灣",
+        price: "NT$75-85",
+        scoreA: 20, scoreB: 26, scoreC: 14, scoreD: 15, scoreE: 10,
+        totalScore: 85,
+        multiplier: 3.05,
+        tier: "🔥 現象級爆紅",
+        platforms: ["Instagram", "Threads", "Dcard", "新聞媒體"],
+        ugcCount: 22,
+        observation: "將招牌綿密大甲芋泥與日本靜岡重焙茶結合，木質調茶香完美平衡芋泥甜感，被網友封為今年秋冬必喝芋頭神作。"
+      },
+      {
+        brand: "霸王茶姬",
+        name: "萬聖暗夜可可烏龍聯名杯",
+        market: "中國大陸",
+        price: "RMB 20",
+        scoreA: 20, scoreB: 25, scoreC: 14, scoreD: 15, scoreE: 9,
+        totalScore: 83,
+        multiplier: 2.88,
+        tier: "🔥 現象級爆紅",
+        platforms: ["小紅書", "抖音", "微博"],
+        ugcCount: 27,
+        observation: "萬聖節限定黑金視覺紙杯與發光徽章周邊引發收集潮，苦甜黑巧搭配武夷烏龍茶底，年輕客群夜間打卡率極高。"
+      },
+      {
+        brand: "得正",
+        name: "焙烏龍鮮奶加黃金蕎麥凍",
+        market: "台灣",
+        price: "NT$65-75",
+        scoreA: 20, scoreB: 21, scoreC: 11, scoreD: 12, scoreE: 10,
+        totalScore: 74,
+        multiplier: 2.12,
+        tier: "📈 強勢話題",
+        platforms: ["Threads", "Instagram", "Dcard"],
+        ugcCount: 9,
+        observation: "三分火重焙烏龍搭配溫熱鮮奶與無咖啡因蕎麥凍，咀嚼感與焙火尾韻兼具，成為得正入秋後點單率最高組合。"
+      },
+      {
+        brand: "麻古茶坊",
+        name: "濃厚芋泥波波鮮奶 2.0",
+        market: "台灣",
+        price: "NT$85-90",
+        scoreA: 20, scoreB: 20, scoreC: 10, scoreD: 12, scoreE: 9,
+        totalScore: 71,
+        multiplier: 1.92,
+        tier: "📈 強勢話題",
+        platforms: ["Facebook", "Instagram", "外送平台"],
+        ugcCount: 8,
+        observation: "秋冬經典芋頭飲品重磅回歸，加入芋圓、小珍珠與飽滿芋泥三重咀嚼料，飽足感極強，午間代餐型消費明顯。"
+      },
+      {
+        brand: "SOMA",
+        name: "法式黑松露起司奶蓋茶歐蕾",
+        market: "台灣",
+        price: "NT$95",
+        scoreA: 18, scoreB: 19, scoreC: 9, scoreD: 12, scoreE: 8,
+        totalScore: 66,
+        multiplier: 1.78,
+        tier: "📈 強勢話題",
+        platforms: ["Instagram", "Threads"],
+        ugcCount: 6,
+        observation: "精品手搖挑戰鹹甜料理級奶蓋，松露香氣濃郁具記憶點，高單價定位鎖定東區與中山商圈質感客群。"
+      }
+    ],
+    "2026-W44": [
+      {
+        brand: "大茗本位製茶堂",
+        name: "桂花蕎麥烤糖奶蓋青",
+        market: "台灣",
+        price: "NT$75",
+        scoreA: 20, scoreB: 26, scoreC: 14, scoreD: 15, scoreE: 9,
+        totalScore: 84,
+        multiplier: 3.02,
+        tier: "🔥 現象級爆紅",
+        platforms: ["Threads", "Instagram", "Dcard", "新聞媒體"],
+        ugcCount: 19,
+        observation: "十月桂花季話題王！清幽桂花釀融入現打鹹奶蓋並灑上脆口烤糖，豐富口感在 Dcard 手搖板引發高讚蓋樓。"
+      },
+      {
+        brand: "瑞幸咖啡 Luckin",
+        name: "五黑芝麻米乳拿鐵",
+        market: "中國大陸",
+        price: "RMB 9.9-12.9",
+        scoreA: 20, scoreB: 24, scoreC: 14, scoreD: 15, scoreE: 9,
+        totalScore: 82,
+        multiplier: 2.76,
+        tier: "🔥 現象級爆紅",
+        platforms: ["小紅書", "抖音", "微信"],
+        ugcCount: 25,
+        observation: "中式養生『五黑穀物（黑芝麻、黑米、黑豆）』結合濃縮咖啡，濃郁穀物米漿感深受怕苦與養生年輕族群喜愛。"
+      },
+      {
+        brand: "龜記茗品",
+        name: "紫薯芋泥金萱雙Q",
+        market: "台灣",
+        price: "NT$75",
+        scoreA: 20, scoreB: 21, scoreC: 10, scoreD: 12, scoreE: 10,
+        totalScore: 73,
+        multiplier: 2.08,
+        tier: "📈 強勢話題",
+        platforms: ["Threads", "Instagram", "新聞媒體"],
+        ugcCount: 8,
+        observation: "台灣紫心地瓜與芋泥雙色漸層，視覺吸睛且用料實在，搭配清爽金萱茶底不甜膩。"
+      },
+      {
+        brand: "萬波島嶼紅茶",
+        name: "桂圓糯米紫米露",
+        market: "台灣",
+        price: "NT$70",
+        scoreA: 18, scoreB: 19, scoreC: 9, scoreD: 12, scoreE: 9,
+        totalScore: 67,
+        multiplier: 1.80,
+        tier: "📈 強勢話題",
+        platforms: ["Facebook", "Instagram", "新聞媒體"],
+        ugcCount: 7,
+        observation: "台式傳統甜湯古早味手搖化，煙燻桂圓香氣搭軟糯紫米，受家庭客與長輩客群青睞。"
+      },
+      {
+        brand: "可不可熟成紅茶",
+        name: "秋栗焙茶歐蕾",
+        market: "台灣",
+        price: "NT$75",
+        scoreA: 18, scoreB: 17, scoreC: 8, scoreD: 12, scoreE: 8,
+        totalScore: 63,
+        multiplier: 1.60,
+        tier: "📈 強勢話題",
+        platforms: ["Instagram", "Threads"],
+        ugcCount: 5,
+        observation: "糖炒栗子風味糖漿搭配熟成歐蕾，包裝設計極具秋日復古文青感，屬季節限定話題款。"
+      }
+    ],
     "2026-W38": [
       {
         brand: "霸王茶姬",
@@ -240,7 +481,7 @@ const radarStore = {
   }
 };
 
-let currentWeekId = "2026-W38";
+let currentWeekId = "2026-W46";
 let chartMatrix, chartWordcloud, chartBrand, chartRadar;
 
 // 切換監測週次 (時間軸連動)
