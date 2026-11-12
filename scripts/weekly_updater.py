@@ -60,7 +60,7 @@ def sync_verified_to_frontend():
     cap_json_str = json.dumps(capability_report, ensure_ascii=False, indent=2)
     demo_json_str = json.dumps(demo_weeks.get("2026-W46", []), ensure_ascii=False, indent=2)
 
-    js_template = """// ============================================================================
+    js_template = r"""// ============================================================================
 // 飲品新品市場熱度戰情室 — 商品趨勢總覽 × 新聞與 PTT 證據溯源版
 // 分頁 0：商品趨勢總覽（週次觀察、品牌/品類/性質篩選、可解釋排序、50/50商品卡、證據彈窗、ECharts散佈圖）
 // 分頁 1：詞雲與品牌比較（ECharts 證據加權詞雲、品牌曝光vs討論長條圖、商品性質結構圖）
@@ -106,12 +106,19 @@ function switchTab(index) {
   }
 
   if (index === 0) {
-    setTimeout(() => { renderMatrixChart(); }, 60);
+    setTimeout(() => { try { renderMatrixChart(); } catch (e) { console.error(e); } }, 60);
   } else if (index === 1) {
     setTimeout(() => {
-      renderWordCloudChart();
-      renderBrandComparisonCharts();
+      try { renderWordCloudChart(true); } catch (e) { console.error(e); }
+      try { renderBrandComparisonCharts(true); } catch (e) { console.error(e); }
     }, 60);
+  } else if (index === 2) {
+    setTimeout(() => {
+      try { renderNewsEventsList(); } catch (e) { console.error(e); }
+      try { renderCrosscheckCases(); } catch (e) { console.error(e); }
+      try { renderPttSection(); } catch (e) { console.error(e); }
+      try { updateTab2ScopeBanner(); } catch (e) { console.error(e); }
+    }, 30);
   }
 }
 
@@ -193,17 +200,46 @@ function matchDateToPeriod(dateStr, periodId) {
 
 function getPeriodFilteredProducts() {
   const allProducts = verifiedProductsPayload.products || [];
-  if (currentPeriodId === "ALL") return allProducts;
-  return allProducts.filter(p => (p.observation_weeks || []).includes(currentPeriodId));
+  if (currentPeriodId === "ALL") {
+    return allProducts.map(p => Object.assign({}, p, {
+      period_metrics: p.metrics
+    }));
+  }
+  return allProducts
+    .filter(p => (p.observation_weeks || []).includes(currentPeriodId))
+    .map(p => {
+      const pFocused = (p.resolved_focused_news || []).filter(r => matchDateToPeriod(r.published_at, currentPeriodId));
+      const pRoundup = (p.resolved_roundup_news || []).filter(r => matchDateToPeriod(r.published_at, currentPeriodId));
+      const pCurPtt = (p.resolved_current_ptt || []).filter(a => matchDateToPeriod((a.raw_original || {}).published_at, currentPeriodId));
+      const pRecPtt = currentPeriodId === "2026-W46" ? (p.resolved_recent_push_ptt || []) : [];
+      const pTotalNews = pFocused.length + pRoundup.length;
+      const pTotalPtt = pCurPtt.length + pRecPtt.length;
+      const pPushes = [...pCurPtt, ...pRecPtt].reduce((acc, a) => acc + ((a.raw_original || {}).total_push_entries || 0), 0);
+      return Object.assign({}, p, {
+        period_focused_news: pFocused,
+        period_roundup_news: pRoundup,
+        period_metrics: {
+          focused_news_count: pFocused.length,
+          roundup_news_count: pRoundup.length,
+          total_news_count: pTotalNews,
+          current_period_ptt_count: pCurPtt.length,
+          recent_push_old_post_count: pRecPtt.length,
+          total_ptt_count: pTotalPtt,
+          total_ptt_pushes: pPushes
+        }
+      });
+    });
 }
 
 function selectObservationPeriod(periodId) {
   currentPeriodId = periodId;
   applyProductFilters();
-  try { renderWordCloudChart(); } catch (err) { console.error(err); }
-  try { renderBrandComparisonCharts(); } catch (err) { console.error(err); }
+  try { renderWordCloudChart(true); } catch (err) { console.error(err); }
+  try { renderBrandComparisonCharts(true); } catch (err) { console.error(err); }
   try { renderNewsEventsList(); } catch (err) { console.error(err); }
+  try { renderCrosscheckCases(); } catch (err) { console.error(err); }
   try { renderPttSection(); } catch (err) { console.error(err); }
+  try { updateTab2ScopeBanner(); } catch (err) { console.error(err); }
   try { renderVerifiedNewsList(); } catch (err) { console.error(err); }
 }
 
@@ -619,13 +655,45 @@ function renderMatrixChart(filteredProducts) {
 // ============================================================================
 // 分頁 1：詞雲與品牌比較（隨上方「觀察期間」動態連動）
 // ============================================================================
-function renderWordCloudChart() {
+function renderWordCloudChart(forceReinit) {
   const products = getPeriodFilteredProducts();
+  const allProductsCount = (verifiedProductsPayload.products || []).length;
+  const periodNewsTotal = (verifiedNewsData.records || []).filter(r => matchDateToPeriod(r.published_at, currentPeriodId)).length;
+
+  const bannerEl = document.getElementById('tab1-scope-banner');
+  if (bannerEl) {
+    bannerEl.innerHTML = `
+      <div class="flex flex-wrap items-center gap-2 text-base font-extrabold">
+        <span class="px-2.5 py-0.5 bg-amber-400 text-slate-950 rounded font-black">📅 目前統計區間：${currentPeriodId === "ALL" ? "全部已採集期間 (10/13~11/12)" : currentPeriodId}</span>
+        <span>➔ 當期涵蓋商品：<strong>${products.length} / ${allProductsCount} 款</strong></span>
+        <span>｜</span>
+        <span>當期發布新聞：<strong>${periodNewsTotal} / 95 筆</strong></span>
+      </div>
+      <span class="text-xs font-bold text-emerald-200">切換頂部「觀察期間」下拉選單即可即時重繪下方詞雲與品牌圖表</span>
+    `;
+  }
+
+  const titleEl = document.getElementById('tab1-wordcloud-title');
+  if (titleEl) {
+    titleEl.innerText = `☁️ 候選商品證據聲量詞雲（[${currentPeriodId}] 共 ${products.length} 款商品關鍵字）`;
+  }
+
   if (products.length > 0) {
     renderWordCloudDetailPanel(products[0].product_id);
   }
   const chartDom = document.getElementById('chart-wordcloud');
   if (!chartDom || typeof echarts === 'undefined') return;
+
+  // Only init ECharts when tab-1 is visible so canvas is never 0x0
+  const tab1El = document.getElementById('tab-1');
+  if (tab1El && !tab1El.classList.contains('active')) {
+    return;
+  }
+
+  if (wordCloudChartInstance && forceReinit) {
+    wordCloudChartInstance.dispose();
+    wordCloudChartInstance = null;
+  }
   if (!wordCloudChartInstance) {
     wordCloudChartInstance = echarts.init(chartDom);
     wordCloudChartInstance.on('click', function(params) {
@@ -633,29 +701,42 @@ function renderWordCloudChart() {
         renderWordCloudDetailPanel(params.data.productId);
       }
     });
+  } else {
+    wordCloudChartInstance.resize();
   }
 
   const palette = ['#047857', '#0f766e', '#1d4ed8', '#4338ca', '#7e22ce', '#b45309', '#be123c'];
-  const wcData = products.map((p, idx) => ({
-    name: p.short_word,
-    value: Math.max(10, p.metrics.total_news_count * 3 + p.metrics.total_ptt_count * 8 + p.metrics.total_ptt_pushes),
-    productId: p.product_id,
-    textStyle: { color: palette[idx % palette.length] }
-  }));
+  const wcData = [];
+  products.forEach((p, idx) => {
+    const pm = p.period_metrics || p.metrics;
+    wcData.push({
+      name: p.short_word,
+      value: Math.max(14, pm.total_news_count * 4 + pm.total_ptt_count * 10 + pm.total_ptt_pushes * 2),
+      productId: p.product_id,
+      textStyle: { color: palette[idx % palette.length] }
+    });
+    // Add flavor/brand sub-tag for richer period-specific cloud
+    wcData.push({
+      name: `${p.brand.split(' ')[0]}・${p.flavor_category.split('／')[0]}`,
+      value: Math.max(8, pm.total_news_count * 2 + pm.total_ptt_count * 5),
+      productId: p.product_id,
+      textStyle: { color: palette[(idx + 3) % palette.length] }
+    });
+  });
 
   wordCloudChartInstance.setOption({
     tooltip: {
       show: true,
       formatter: function(item) {
-        return `<b>${item.name}</b><br/>點擊於右側查看商品證據摘要`;
+        return `<b>${item.name}</b><br/>點擊於右側查看 [${currentPeriodId}] 商品證據摘要`;
       }
     },
     series: [{
       type: 'wordCloud',
       shape: 'circle',
-      sizeRange: [16, 42],
+      sizeRange: [15, 40],
       rotationRange: [0, 0],
-      gridSize: 12,
+      gridSize: 10,
       drawOutOfBound: false,
       textStyle: { fontFamily: 'sans-serif', fontWeight: 'bold' },
       data: wcData
@@ -672,11 +753,12 @@ function renderWordCloudDetailPanel(productId) {
     panel.innerHTML = `<div class="p-4 text-slate-600 font-bold">此觀察期間無符合之商品資料。</div>`;
     return;
   }
+  const pm = p.period_metrics || p.metrics;
 
   panel.innerHTML = `
     <div class="space-y-3">
       <div class="flex flex-wrap items-center gap-2">
-        <span class="px-2.5 py-0.5 bg-slate-900 text-emerald-300 font-mono font-bold text-xs rounded">📅 期間：${currentPeriodId}</span>
+        <span class="px-2.5 py-0.5 bg-slate-900 text-amber-300 font-mono font-bold text-xs rounded">📅 統計期間：${currentPeriodId}</span>
         <span class="px-2.5 py-0.5 bg-emerald-700 text-white font-extrabold text-xs rounded">${p.brand}</span>
         ${(p.item_types || []).map(getCategoryBadgeHtml).join(' ')}
       </div>
@@ -684,8 +766,8 @@ function renderWordCloudDetailPanel(productId) {
       <div class="text-sm font-bold text-amber-900 bg-amber-50 px-3 py-1.5 rounded border border-amber-300">${p.info_status}</div>
       <div class="text-sm sm:text-base text-slate-700 space-y-1 pt-1">
         <div>💰 <strong>定價／促銷：</strong>${p.price_promo}</div>
-        <div>📰 <strong>新聞曝光：</strong>共 ${p.metrics.total_news_count} 筆（單品專文 ${p.metrics.focused_news_count} ＋ 合集提及 ${p.metrics.roundup_news_count}）</div>
-        <div>💬 <strong>PTT 討論：</strong>共 ${p.metrics.total_ptt_count} 篇（推噓文合計 ${p.metrics.total_ptt_pushes} 則）</div>
+        <div>📰 <strong>當期新聞曝光 (${currentPeriodId})：</strong>共 <strong class="text-emerald-800">${pm.total_news_count}</strong> 筆（專文 ${pm.focused_news_count} ＋ 合集 ${pm.roundup_news_count}）｜全期累計 ${p.metrics.total_news_count} 筆</div>
+        <div>💬 <strong>當期 PTT 討論 (${currentPeriodId})：</strong>共 <strong class="text-indigo-800">${pm.total_ptt_count}</strong> 篇（全期累計 ${p.metrics.total_ptt_count} 篇 / ${p.metrics.total_ptt_pushes} 推文）</div>
       </div>
       <div class="bg-white p-3 rounded-lg border border-emerald-200 text-sm text-slate-800">
         <strong class="text-emerald-900">📢 媒體重點：</strong>${p.media_summary}
@@ -702,28 +784,48 @@ function renderWordCloudDetailPanel(productId) {
   `;
 }
 
-function renderBrandComparisonCharts() {
+function renderBrandComparisonCharts(forceReinit) {
   const products = getPeriodFilteredProducts();
+  const brandChartTitle = document.getElementById('tab1-brand-chart-title');
+  if (brandChartTitle) {
+    brandChartTitle.innerText = `🏢 [${currentPeriodId}] 各品牌「單品專文 vs 合集提及 vs PTT 討論」比較`;
+  }
+  const pieChartTitle = document.getElementById('tab1-pie-chart-title');
+  if (pieChartTitle) {
+    pieChartTitle.innerText = `🗂️ [${currentPeriodId}] 所選期間商品之「項目性質」結構（共 ${products.length} 款）`;
+  }
+
+  const tab1El = document.getElementById('tab-1');
+  if (tab1El && !tab1El.classList.contains('active')) {
+    return;
+  }
+
   const brandStats = {};
   products.forEach(p => {
     const b = p.brand;
+    const pm = p.period_metrics || p.metrics;
     if (!brandStats[b]) {
       brandStats[b] = { focused: 0, roundup: 0, ptt: 0 };
     }
-    brandStats[b].focused += p.metrics.focused_news_count;
-    brandStats[b].roundup += p.metrics.roundup_news_count;
-    brandStats[b].ptt += p.metrics.total_ptt_count;
+    brandStats[b].focused += pm.focused_news_count;
+    brandStats[b].roundup += pm.roundup_news_count;
+    brandStats[b].ptt += pm.total_ptt_count;
   });
 
   const brands = Object.keys(brandStats);
   const barDom = document.getElementById('chart-brand-multipliers');
   if (barDom && typeof echarts !== 'undefined') {
+    if (brandBarChartInstance && forceReinit) {
+      brandBarChartInstance.dispose();
+      brandBarChartInstance = null;
+    }
     if (!brandBarChartInstance) brandBarChartInstance = echarts.init(barDom);
+    else brandBarChartInstance.resize();
     brandBarChartInstance.setOption({
       tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
       legend: { data: ['單品專文新聞', '跨品牌合集提及', 'PTT 討論篇數'], bottom: 0 },
-      grid: { left: '4%', right: '4%', top: '8%', bottom: '15%', containLabel: true },
-      xAxis: { type: 'category', data: brands, axisLabel: { interval: 0, rotate: 22, fontSize: 11, fontWeight: 'bold' } },
+      grid: { left: '4%', right: '4%', top: '8%', bottom: '18%', containLabel: true },
+      xAxis: { type: 'category', data: brands, axisLabel: { interval: 0, rotate: 20, fontSize: 11, fontWeight: 'bold' } },
       yAxis: { type: 'value', minInterval: 1 },
       series: [
         { name: '單品專文新聞', type: 'bar', stack: 'news', data: brands.map(b => brandStats[b].focused), itemStyle: { color: '#059669' } },
@@ -735,7 +837,12 @@ function renderBrandComparisonCharts() {
 
   const pieDom = document.getElementById('chart-category-radar');
   if (pieDom && typeof echarts !== 'undefined') {
+    if (categoryPieChartInstance && forceReinit) {
+      categoryPieChartInstance.dispose();
+      categoryPieChartInstance = null;
+    }
     if (!categoryPieChartInstance) categoryPieChartInstance = echarts.init(pieDom);
+    else categoryPieChartInstance.resize();
     const newCnt = products.filter(p => (p.item_types || []).includes("新品")).length;
     const retCnt = products.filter(p => (p.item_types || []).includes("舊品回歸")).length;
     const proCnt = products.filter(p => (p.item_types || []).includes("促銷")).length;
@@ -845,14 +952,178 @@ function applyNewsFilter() {
   renderVerifiedNewsList();
 }
 
+function getPeriodEventsBase() {
+  const allEvents = newsEventsData.events || [];
+  return allEvents.map(ev => {
+    const periodSources = currentPeriodId === "ALL"
+      ? (ev.source_records || [])
+      : (ev.source_records || []).filter(s => matchDateToPeriod(s.published_at, currentPeriodId));
+    return Object.assign({}, ev, {
+      period_sources: periodSources,
+      period_source_count: periodSources.length
+    });
+  }).filter(ev => ev.period_source_count > 0);
+}
+
+function getPeriodPttArticles() {
+  const allArticles = verifiedPttData.articles || [];
+  if (currentPeriodId === "ALL") return allArticles;
+  const periodProducts = getPeriodFilteredProducts();
+  const recentPushIds = new Set();
+  if (currentPeriodId === "2026-W46") {
+    periodProducts.forEach(p => (p.recent_push_old_post_ids || []).forEach(id => recentPushIds.add(id)));
+  }
+  return allArticles.filter(art => {
+    const pubAt = (art.raw_original && art.raw_original.published_at) || "";
+    return matchDateToPeriod(pubAt, currentPeriodId) || recentPushIds.has(art.ptt_evidence_id);
+  });
+}
+
+function updateTab2ScopeBanner() {
+  const banner = document.getElementById('tab2-scope-banner');
+  if (!banner) return;
+  const periodEvents = getPeriodEventsBase();
+  const periodNewsCount = periodEvents.reduce((acc, e) => acc + (e.period_source_count || 0), 0);
+  const periodProducts = getPeriodFilteredProducts();
+  const periodPtt = getPeriodPttArticles();
+
+  banner.innerHTML = `
+    <div class="flex flex-wrap items-center gap-2 text-base font-extrabold">
+      <span class="px-2.5 py-0.5 bg-amber-400 text-slate-950 rounded font-black">📅 當前查證區間：${currentPeriodId === "ALL" ? "全部期間 (10/13~11/12)" : currentPeriodId}</span>
+      <span>➔ 當期新聞事件：<strong>${periodEvents.length} / 20 個（${periodNewsCount} / 95 筆新聞）</strong></span>
+      <span>｜</span>
+      <span>當期對照商品：<strong>${periodProducts.length} / 16 款</strong></span>
+      <span>｜</span>
+      <span>當期 PTT 發文／新推文：<strong>${periodPtt.length} / 14 篇</strong></span>
+    </div>
+    <span class="text-xs font-bold text-emerald-200">切換上方「觀察期間」即可縮小或擴大本頁查證範圍</span>
+  `;
+}
+
 function renderCrosscheckCases() {
-  const cases = newsEventsData.crosscheck_cases || [];
   const container = document.getElementById('crosscheck-cases-list');
   if (!container) return;
+  const headingEl = document.getElementById('tab2-cases-heading');
+  const badgeEl = document.getElementById('tab2-cases-badge');
 
-  container.innerHTML = cases.map((c, idx) => {
-    const catBadges = (c.event_categories || []).map(getCategoryBadgeHtml).join(' ');
-    const mediaSourcesHtml = (c.what_media_reported.verified_sources || []).map(s => `
+  if (currentPeriodId === "ALL") {
+    const cases = newsEventsData.crosscheck_cases || [];
+    if (headingEl) headingEl.innerText = `🔍 三大代表案例：新聞宣傳訊息 × PTT 消費者實際經驗並列對照（全部期間）`;
+    if (badgeEl) badgeEl.innerText = `共 ${cases.length} 組代表案例｜切換上方「觀察期間」可檢視各週次專屬商品對照`;
+
+    container.innerHTML = cases.map((c, idx) => {
+      const catBadges = (c.event_categories || []).map(getCategoryBadgeHtml).join(' ');
+      const mediaSourcesHtml = (c.what_media_reported.verified_sources || []).map(s => `
+        <li class="text-sm bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col gap-1">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-mono font-bold text-xs px-2 py-0.5 bg-slate-800 text-white rounded">${s.evidence_id}</span>
+            <span class="font-bold text-emerald-800 text-xs">${s.publisher_name} (${s.published_at})</span>
+          </div>
+          <a href="${s.rss_link}" target="_blank" rel="noopener noreferrer"
+             class="font-bold text-slate-900 hover:text-emerald-700 underline decoration-emerald-400 underline-offset-2 leading-snug">
+            ${s.title_clean} ↗
+          </a>
+        </li>
+      `).join('');
+
+      const pttRefsHtml = (c.what_users_actually_said.referenced_ptt_articles || []).map(p => `
+        <li class="text-sm bg-white p-2.5 rounded-lg border border-indigo-200 flex flex-col gap-1">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-mono font-bold text-xs px-2 py-0.5 bg-indigo-800 text-white rounded">${p.ptt_evidence_id}</span>
+            <span class="font-mono text-xs text-slate-600">作者: ${p.author} | ${p.published_at}</span>
+          </div>
+          <a href="${p.url}" target="_blank" rel="noopener noreferrer"
+             class="font-bold text-indigo-900 hover:text-indigo-600 underline decoration-indigo-400 underline-offset-2">
+            ${p.title} ↗
+          </a>
+          <div class="text-xs text-slate-600">${p.relevance_note}</div>
+        </li>
+      `).join('');
+
+      const unknownsHtml = (c.what_is_still_unknown || []).map(u => `
+        <li class="flex items-start gap-2 text-base text-slate-800 leading-relaxed">
+          <span class="text-amber-600 font-black mt-0.5">•</span>
+          <span>${u}</span>
+        </li>
+      `).join('');
+
+      return `
+        <div class="bg-slate-50/95 border-2 border-slate-300 rounded-2xl p-6 shadow-sm space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-200 pb-4">
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-3 py-1 bg-slate-900 text-white font-mono font-black text-sm rounded-md">案例 ${idx + 1} (${c.case_id})</span>
+                <span class="px-3 py-1 bg-emerald-700 text-white font-extrabold text-sm rounded-md">${c.brand_label}</span>
+                ${catBadges}
+              </div>
+              <h3 class="text-xl font-black text-slate-900 pt-1">${c.event_title}</h3>
+            </div>
+            <div class="text-right">
+              <span class="inline-block px-3.5 py-1.5 bg-indigo-50 border-2 border-indigo-300 text-indigo-950 font-extrabold text-sm rounded-lg">
+                🔎 PTT 對照結果：${c.ptt_match_status}
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
+            <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-xl p-5 flex flex-col justify-between">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between border-b border-emerald-200 pb-2">
+                  <h4 class="text-lg font-black text-emerald-950">📢 1. 媒體報導了什麼</h4>
+                  <span class="text-xs font-extrabold px-2.5 py-0.5 bg-emerald-200 text-emerald-950 rounded-full">共 ${c.media_source_count} 筆新聞</span>
+                </div>
+                <p class="text-base text-slate-800 leading-relaxed whitespace-pre-line">${c.what_media_reported.summary}</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-emerald-200">
+                <div class="text-xs font-extrabold text-emerald-900 mb-2">🔗 代表性新聞來源核對：</div>
+                <ul class="space-y-2">${mediaSourcesHtml}</ul>
+              </div>
+            </div>
+
+            <div class="bg-indigo-50/70 border-2 border-indigo-200 rounded-xl p-5 flex flex-col justify-between">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between border-b border-indigo-200 pb-2">
+                  <h4 class="text-lg font-black text-indigo-950">💬 2. 使用者實際說了什麼</h4>
+                  <span class="text-xs font-extrabold px-2.5 py-0.5 bg-indigo-200 text-indigo-950 rounded-full">${c.what_users_actually_said.status_badge}</span>
+                </div>
+                <p class="text-base text-slate-800 leading-relaxed whitespace-pre-line">${c.what_users_actually_said.summary}</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-indigo-200 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold text-indigo-900">🔗 PTT 看板檢索與對照文章：</span>
+                  <a href="${c.what_users_actually_said.ptt_search_url}" target="_blank" rel="noopener noreferrer"
+                     class="text-xs font-bold text-indigo-700 hover:underline">開啟 PTT 搜尋頁 ↗</a>
+                </div>
+                <ul class="space-y-2">${pttRefsHtml}</ul>
+              </div>
+            </div>
+
+            <div class="bg-amber-50/70 border-2 border-amber-200 rounded-xl p-5 flex flex-col justify-between">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-200 pb-2">
+                  <h4 class="text-lg font-black text-amber-950">❓ 3. 目前還不知道什麼</h4>
+                  <span class="text-xs font-extrabold px-2.5 py-0.5 bg-amber-200 text-amber-950 rounded-full">保留不確定性</span>
+                </div>
+                <ul class="space-y-3 pt-1">${unknownsHtml}</ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    return;
+  }
+
+  // Period-specific product cross-check cases
+  const periodProducts = getPeriodFilteredProducts();
+  if (headingEl) headingEl.innerText = `🔍 [${currentPeriodId}] 當期商品案例查證：媒體報導 × PTT 消費者實際經驗並列對照`;
+  if (badgeEl) badgeEl.innerText = `[${currentPeriodId}] 共篩選出 ${periodProducts.length} 款當期商品對照案例`;
+
+  container.innerHTML = periodProducts.map((p, idx) => {
+    const pm = p.period_metrics || p.metrics;
+    const catBadges = (p.item_types || []).map(getCategoryBadgeHtml).join(' ');
+    const periodNewsList = [...(p.period_focused_news || []), ...(p.period_roundup_news || [])].slice(0, 4);
+    const mediaSourcesHtml = periodNewsList.length > 0 ? periodNewsList.map(s => `
       <li class="text-sm bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col gap-1">
         <div class="flex items-center justify-between gap-2">
           <span class="font-mono font-bold text-xs px-2 py-0.5 bg-slate-800 text-white rounded">${s.evidence_id}</span>
@@ -863,23 +1134,26 @@ function renderCrosscheckCases() {
           ${s.title_clean} ↗
         </a>
       </li>
-    `).join('');
+    `).join('') : `<li class="text-xs text-slate-500 p-2 bg-white rounded border border-slate-200">本商品於此期間主要由 PTT 實測文觸發觀察（無當週新聞）</li>`;
 
-    const pttRefsHtml = (c.what_users_actually_said.referenced_ptt_articles || []).map(p => `
-      <li class="text-sm bg-white p-2.5 rounded-lg border border-indigo-200 flex flex-col gap-1">
-        <div class="flex items-center justify-between gap-2">
-          <span class="font-mono font-bold text-xs px-2 py-0.5 bg-indigo-800 text-white rounded">${p.ptt_evidence_id}</span>
-          <span class="font-mono text-xs text-slate-600">作者: ${p.author} | ${p.published_at}</span>
-        </div>
-        <a href="${p.url}" target="_blank" rel="noopener noreferrer"
-           class="font-bold text-indigo-900 hover:text-indigo-600 underline decoration-indigo-400 underline-offset-2">
-          ${p.title} ↗
-        </a>
-        <div class="text-xs text-slate-600">${p.relevance_note}</div>
-      </li>
-    `).join('');
+    const allPtt = [...(p.resolved_current_ptt || []), ...(p.resolved_recent_push_ptt || []), ...(p.resolved_historical_ptt || [])];
+    const pttRefsHtml = allPtt.length > 0 ? allPtt.map(a => {
+      const raw = a.raw_original || {};
+      return `
+        <li class="text-sm bg-white p-2.5 rounded-lg border border-indigo-200 flex flex-col gap-1">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-mono font-bold text-xs px-2 py-0.5 bg-indigo-800 text-white rounded">${a.ptt_evidence_id}</span>
+            <span class="font-mono text-xs text-slate-600">作者: ${raw.author} | ${raw.published_at}</span>
+          </div>
+          <a href="${a.url}" target="_blank" rel="noopener noreferrer"
+             class="font-bold text-indigo-900 hover:text-indigo-600 underline decoration-indigo-400 underline-offset-2">
+            ${raw.title} ↗
+          </a>
+        </li>
+      `;
+    }).join('') : `<li class="text-xs text-slate-500 p-2 bg-white rounded border border-indigo-100">本次 PTT 採集範圍內未找到此商品之討論文章</li>`;
 
-    const unknownsHtml = (c.what_is_still_unknown || []).map(u => `
+    const unknownsHtml = (p.unknowns || []).map(u => `
       <li class="flex items-start gap-2 text-base text-slate-800 leading-relaxed">
         <span class="text-amber-600 font-black mt-0.5">•</span>
         <span>${u}</span>
@@ -891,17 +1165,15 @@ function renderCrosscheckCases() {
         <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-200 pb-4">
           <div class="space-y-1">
             <div class="flex flex-wrap items-center gap-2">
-              <span class="px-3 py-1 bg-slate-900 text-white font-mono font-black text-sm rounded-md">案例 ${idx + 1} (${c.case_id})</span>
-              <span class="px-3 py-1 bg-emerald-700 text-white font-extrabold text-sm rounded-md">${c.brand_label}</span>
+              <span class="px-3 py-1 bg-slate-900 text-amber-300 font-mono font-black text-sm rounded-md">[${currentPeriodId}] 案例 #${idx + 1}</span>
+              <span class="px-3 py-1 bg-emerald-700 text-white font-extrabold text-sm rounded-md">${p.brand}</span>
               ${catBadges}
             </div>
-            <h3 class="text-xl font-black text-slate-900 pt-1">${c.event_title}</h3>
+            <h3 class="text-xl font-black text-slate-900 pt-1">${p.product_name}</h3>
           </div>
-          <div class="text-right">
-            <span class="inline-block px-3.5 py-1.5 bg-indigo-50 border-2 border-indigo-300 text-indigo-950 font-extrabold text-sm rounded-lg">
-              🔎 PTT 對照結果：${c.ptt_match_status}
-            </span>
-          </div>
+          <button onclick="openProductDetailModal('${p.product_id}')" class="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm rounded-lg shadow-sm">
+            🔍 開啟完整證據明細
+          </button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
@@ -909,12 +1181,12 @@ function renderCrosscheckCases() {
             <div class="space-y-3">
               <div class="flex items-center justify-between border-b border-emerald-200 pb-2">
                 <h4 class="text-lg font-black text-emerald-950">📢 1. 媒體報導了什麼</h4>
-                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-emerald-200 text-emerald-950 rounded-full">共 ${c.media_source_count} 筆新聞</span>
+                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-emerald-200 text-emerald-950 rounded-full">當期 ${pm.total_news_count} 筆 / 全期 ${p.metrics.total_news_count} 筆</span>
               </div>
-              <p class="text-base text-slate-800 leading-relaxed whitespace-pre-line">${c.what_media_reported.summary}</p>
+              <p class="text-base text-slate-800 leading-relaxed">${p.media_summary}</p>
             </div>
             <div class="mt-4 pt-3 border-t border-emerald-200">
-              <div class="text-xs font-extrabold text-emerald-900 mb-2">🔗 代表性新聞來源核對：</div>
+              <div class="text-xs font-extrabold text-emerald-900 mb-2">🔗 當期 (${currentPeriodId}) 新聞來源核對：</div>
               <ul class="space-y-2">${mediaSourcesHtml}</ul>
             </div>
           </div>
@@ -923,16 +1195,12 @@ function renderCrosscheckCases() {
             <div class="space-y-3">
               <div class="flex items-center justify-between border-b border-indigo-200 pb-2">
                 <h4 class="text-lg font-black text-indigo-950">💬 2. 使用者實際說了什麼</h4>
-                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-indigo-200 text-indigo-950 rounded-full">${c.what_users_actually_said.status_badge}</span>
+                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-indigo-200 text-indigo-950 rounded-full">關聯 PTT ${p.metrics.total_ptt_count} 篇</span>
               </div>
-              <p class="text-base text-slate-800 leading-relaxed whitespace-pre-line">${c.what_users_actually_said.summary}</p>
+              <p class="text-base text-slate-800 leading-relaxed">${p.consumer_summary}</p>
             </div>
             <div class="mt-4 pt-3 border-t border-indigo-200 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold text-indigo-900">🔗 PTT 看板檢索與對照文章：</span>
-                <a href="${c.what_users_actually_said.ptt_search_url}" target="_blank" rel="noopener noreferrer"
-                   class="text-xs font-bold text-indigo-700 hover:underline">開啟 PTT 搜尋頁 ↗</a>
-              </div>
+              <div class="text-xs font-extrabold text-indigo-900">🔗 關聯 PTT 文章核對：</div>
               <ul class="space-y-2">${pttRefsHtml}</ul>
             </div>
           </div>
@@ -941,7 +1209,7 @@ function renderCrosscheckCases() {
             <div class="space-y-3">
               <div class="flex items-center justify-between border-b border-amber-200 pb-2">
                 <h4 class="text-lg font-black text-amber-950">❓ 3. 目前還不知道什麼</h4>
-                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-amber-200 text-amber-950 rounded-full">保留不確定性</span>
+                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-amber-200 text-amber-950 rounded-full">待查證項目</span>
               </div>
               <ul class="space-y-3 pt-1">${unknownsHtml}</ul>
             </div>
@@ -954,29 +1222,53 @@ function renderCrosscheckCases() {
 
 function renderNewsEventsList() {
   const allEvents = newsEventsData.events || [];
-  let filtered = allEvents.map(ev => {
-    const periodSources = currentPeriodId === "ALL"
-      ? (ev.source_records || [])
-      : (ev.source_records || []).filter(s => matchDateToPeriod(s.published_at, currentPeriodId));
-    return Object.assign({}, ev, {
-      period_sources: periodSources,
-      period_source_count: periodSources.length
-    });
-  }).filter(ev => ev.period_source_count > 0);
+  const periodEvents = getPeriodEventsBase();
 
+  // Compute dynamic category counts within currentPeriodId
+  const focusedCnt = periodEvents.filter(e => !e.event_id.startsWith("EVT-ROUNDUP-") && !e.event_id.startsWith("EVT-INDEPENDENT-")).length;
+  const unmergedCnt = periodEvents.filter(e => e.event_id.startsWith("EVT-INDEPENDENT-")).length;
+  const newCnt = periodEvents.filter(e => (e.event_categories || []).includes("新品")).length;
+  const retCnt = periodEvents.filter(e => (e.event_categories || []).includes("舊品回歸")).length;
+  const proCnt = periodEvents.filter(e => (e.event_categories || []).includes("促銷")).length;
+  const rndCnt = periodEvents.filter(e => (e.event_categories || []).includes("合集")).length;
+  const totalPeriodRecords = periodEvents.reduce((acc, e) => acc + (e.period_source_count || 0), 0);
+
+  const headingEl = document.getElementById('tab2-events-heading');
+  if (headingEl) {
+    headingEl.innerText = currentPeriodId === "ALL"
+      ? `🗂️ 20 個新聞事件整理清單（保留全部 95 筆依連結去重的新聞紀錄）`
+      : `🗂️ [${currentPeriodId}] 當期新聞事件清單（縮小為 ${periodEvents.length} 個事件 ／ ${totalPeriodRecords} 筆當期新聞紀錄）`;
+  }
+
+  // Update button labels with period-specific counts
+  const btnLabels = {
+    'ALL': `全部事件 (${periodEvents.length})`,
+    '新品': `🆕 新品 (${newCnt})`,
+    '舊品回歸': `🔄 舊品回歸 (${retCnt})`,
+    '促銷': `🏷️ 促銷／聯名 (${proCnt})`,
+    '合集': `📦 多品牌合集 (${rndCnt})`,
+    'FOCUSED': `🎯 單一品牌事件 (${focusedCnt})`,
+    'UNMERGED': `🔒 單篇獨立保留 (${unmergedCnt})`
+  };
+  Object.keys(btnLabels).forEach(k => {
+    const b = document.getElementById(`evt-btn-${k}`);
+    if (b) b.innerText = btnLabels[k];
+  });
+
+  let filtered = periodEvents;
   if (currentEventCategoryFilter === "FOCUSED") {
-    filtered = filtered.filter(e => !e.event_id.startsWith("EVT-ROUNDUP-") && !e.event_id.startsWith("EVT-INDEPENDENT-"));
+    filtered = periodEvents.filter(e => !e.event_id.startsWith("EVT-ROUNDUP-") && !e.event_id.startsWith("EVT-INDEPENDENT-"));
   } else if (currentEventCategoryFilter === "UNMERGED") {
-    filtered = filtered.filter(e => e.event_id.startsWith("EVT-INDEPENDENT-"));
+    filtered = periodEvents.filter(e => e.event_id.startsWith("EVT-INDEPENDENT-"));
   } else if (currentEventCategoryFilter !== "ALL") {
-    filtered = filtered.filter(e => (e.event_categories || []).includes(currentEventCategoryFilter));
+    filtered = periodEvents.filter(e => (e.event_categories || []).includes(currentEventCategoryFilter));
   }
 
   const totalRecordsInFiltered = filtered.reduce((acc, e) => acc + (e.period_source_count || 0), 0);
   const badge = document.getElementById('event-filter-badge');
   if (badge) {
     const periodTag = currentPeriodId === "ALL" ? "全部期間" : currentPeriodId;
-    badge.innerText = `[${periodTag}] 顯示：${filtered.length} / ${allEvents.length} 個事件（涵蓋 ${totalRecordsInFiltered} 筆紀錄）`;
+    badge.innerText = `[${periodTag}] 顯示：${filtered.length} / ${periodEvents.length} 個當期事件（涵蓋 ${totalRecordsInFiltered} 筆當期新聞）`;
   }
 
   const container = document.getElementById('news-events-list');
@@ -1023,7 +1315,7 @@ function renderNewsEventsList() {
           </div>
           <div class="text-right shrink-0">
             <div class="px-3.5 py-1.5 bg-emerald-100 text-emerald-950 font-black text-base rounded-lg border border-emerald-300">
-              ${currentPeriodId === "ALL" ? `保留 ${ev.source_count} 筆新聞紀錄（${ev.unique_publisher_count} 家媒體）` : `本期間 ${ev.period_source_count} 筆紀錄（全期共 ${ev.source_count} 筆）`}
+              ${currentPeriodId === "ALL" ? `保留 ${ev.source_count} 筆新聞紀錄（${ev.unique_publisher_count} 家媒體）` : `本期間 ${ev.period_source_count} 筆新聞（全期共 ${ev.source_count} 筆）`}
             </div>
           </div>
         </div>
@@ -1050,19 +1342,19 @@ function renderPttSection() {
   const meta = verifiedPttData.collection_metadata || {};
   const searchLogs = meta.search_logs || [];
   const allArticles = verifiedPttData.articles || [];
-  const periodProducts = getPeriodFilteredProducts();
-  const linkedPttIdsInPeriod = new Set();
-  periodProducts.forEach(p => {
-    (p.current_period_ptt_ids || []).forEach(id => linkedPttIdsInPeriod.add(id));
-    (p.recent_push_old_post_ids || []).forEach(id => linkedPttIdsInPeriod.add(id));
-    (p.historical_ref_ptt_ids || []).forEach(id => linkedPttIdsInPeriod.add(id));
-  });
-  const articles = currentPeriodId === "ALL"
-    ? allArticles
-    : allArticles.filter(art => {
-        const pubAt = (art.raw_original && art.raw_original.published_at) || "";
-        return matchDateToPeriod(pubAt, currentPeriodId) || linkedPttIdsInPeriod.has(art.ptt_evidence_id);
-      });
+  const articles = getPeriodPttArticles();
+  const totalPushesInFiltered = articles.reduce((acc, a) => acc + ((a.raw_original || {}).total_push_entries || 0), 0);
+
+  const pttHeading = document.getElementById('tab2-ptt-heading');
+  if (pttHeading) {
+    pttHeading.innerText = currentPeriodId === "ALL"
+      ? `💬 PTT 飲料板 (bbs/Drink) 端到端採集全文庫（14 篇文章 ＋ 79 則推噓文）`
+      : `💬 [${currentPeriodId}] PTT 飲料板當期發文與新推文查證庫（縮小為 ${articles.length} / ${allArticles.length} 篇文章，共 ${totalPushesInFiltered} 則推文）`;
+  }
+  const pttBadge = document.getElementById('tab2-ptt-badge');
+  if (pttBadge) {
+    pttBadge.innerText = `[${currentPeriodId}] 顯示：${articles.length} / ${allArticles.length} 篇 PTT 原文`;
+  }
 
   const searchContainer = document.getElementById('ptt-search-log-list');
   if (searchContainer) {
@@ -1304,7 +1596,10 @@ function initDashboardApp() {
   const steps = [
     initPeriodAndProductFilters,
     applyProductFilters,
+    renderWordCloudChart,
+    renderBrandComparisonCharts,
     renderCrawlHistoryTable,
+    updateTab2ScopeBanner,
     renderCrosscheckCases,
     renderNewsEventsList,
     renderPttSection,
