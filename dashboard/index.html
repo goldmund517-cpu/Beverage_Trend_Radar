@@ -109,10 +109,10 @@
           <div class="mt-2 text-3xl font-black text-indigo-700" id="kpi-ptt-count">14 篇 / 79 推文</div>
           <p class="mt-1.5 text-sm text-slate-600" id="kpi-ptt-breakdown">區分當期新文、舊文新推文與歷史參考</p>
         </div>
-        <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-amber-200 shadow-sm">
-          <span class="text-base font-bold text-amber-900">目前排序依據 ＆ 評分狀態</span>
-          <div class="mt-2 text-xl font-black text-amber-800" id="kpi-sort-label">📰 依新聞曝光筆數</div>
-          <p class="mt-1.5 text-sm text-slate-600">綜合熱度評分：修訂中（不填模擬分）</p>
+        <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-emerald-300 shadow-sm">
+          <span class="text-base font-bold text-emerald-950">目前排序依據 ＆ 評分狀態</span>
+          <div class="mt-2 text-xl font-black text-emerald-800" id="kpi-sort-label">🌟 優先關注分（試行版 v0.1）</div>
+          <p class="mt-1.5 text-sm text-slate-600 font-medium" id="kpi-score-status-desc">媒體40% ｜ 討論40% ｜ 影音20%（明訂規則不填模擬分）</p>
         </div>
       </div>
 
@@ -120,15 +120,23 @@
       <div class="bg-white/95 backdrop-blur-sm p-5 rounded-2xl border-2 border-emerald-200 shadow-sm space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="text-base font-extrabold text-slate-800 mr-1">🏷️ 項目性質：</span>
-            <button onclick="setProductTypeFilter('ALL')" id="type-btn-ALL" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-emerald-700 text-white shadow-sm">全部項目</button>
-            <button onclick="setProductTypeFilter('新品')" id="type-btn-新品" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-emerald-50">🆕 新品</button>
-            <button onclick="setProductTypeFilter('舊品回歸')" id="type-btn-舊品回歸" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-purple-50">🔄 舊品回歸</button>
-            <button onclick="setProductTypeFilter('促銷')" id="type-btn-促銷" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-amber-50">🏷️ 促銷／聯名</button>
-            <button onclick="setProductTypeFilter('合集')" id="type-btn-合集" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-sky-50">📦 多品牌合集提及</button>
-            <button onclick="setProductTypeFilter('PENDING')" id="type-btn-PENDING" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200">⏳ 待確認品名或原價</button>
+            <span class="text-base font-extrabold text-slate-800 mr-1">🎯 對象分層：</span>
+            <button onclick="setEntityTypeFilter('ALL')" id="entity-btn-ALL" class="entity-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-emerald-800 text-white shadow-sm">全部對象</button>
+            <button onclick="setEntityTypeFilter('單品')" id="entity-btn-單品" class="entity-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-blue-50">📦 單品 (11 款)</button>
+            <button onclick="setEntityTypeFilter('系列')" id="entity-btn-系列" class="entity-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-indigo-50">🗂️ 系列 (4 組)</button>
+            <button onclick="setEntityTypeFilter('活動')" id="entity-btn-活動" class="entity-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-amber-50">🎪 聯名活動 (2 檔)</button>
           </div>
-          <span id="product-filter-count-badge" class="px-3 py-1 bg-emerald-50 border border-emerald-300 text-emerald-900 font-extrabold text-sm rounded-lg">目前顯示：16 / 16 款商品與活動</span>
+          <span id="product-filter-count-badge" class="px-3 py-1 bg-emerald-50 border border-emerald-300 text-emerald-900 font-extrabold text-sm rounded-lg">目前顯示：18 / 18 項對象</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200">
+          <span class="text-base font-extrabold text-slate-800 mr-1">🏷️ 項目性質：</span>
+          <button onclick="setProductTypeFilter('ALL')" id="type-btn-ALL" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-emerald-700 text-white shadow-sm">全部性質</button>
+          <button onclick="setProductTypeFilter('新品')" id="type-btn-新品" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-emerald-50">🆕 新品</button>
+          <button onclick="setProductTypeFilter('舊品回歸')" id="type-btn-舊品回歸" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-purple-50">🔄 舊品回歸</button>
+          <button onclick="setProductTypeFilter('促銷')" id="type-btn-促銷" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-amber-50">🏷️ 促銷／聯名</button>
+          <button onclick="setProductTypeFilter('合集')" id="type-btn-合集" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-sky-50">📦 多品牌合集提及</button>
+          <button onclick="setProductTypeFilter('PENDING')" id="type-btn-PENDING" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200">⏳ 待確認品名或原價</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 border-t border-slate-200">
@@ -147,9 +155,11 @@
           <div>
             <label class="block text-xs font-extrabold text-emerald-800 mb-1">📊 可解釋關注排序（清楚標示依據）</label>
             <select id="product-sort-select" onchange="applyProductFilters()" class="w-full bg-emerald-50 text-emerald-950 font-extrabold text-base px-3 py-2 rounded-lg border-2 border-emerald-400 cursor-pointer">
-              <option value="NEWS_DESC">📰 依新聞曝光筆數排序（單品專文優先，次依總關聯新聞數）</option>
+              <option value="PRIORITY_DESC" selected>🌟 依綜合優先關注分排序（試行版 v0.1）</option>
+              <option value="MEDIA_DESC">📰 依媒體曝光分排序（單品專文+合集提及，上限40）</option>
+              <option value="DISCUSSION_DESC">💬 依消費者討論分排序（PTT實測+有效推文，上限40）</option>
+              <option value="VIDEO_DESC">🎬 依影音曝光分排序（YouTube當期實拍/攻略，上限20）</option>
               <option value="DATE_DESC">🕒 依最新發布／推文時間排序（由近到遠）</option>
-              <option value="PTT_DESC">💬 依當期已取得社群討論數排序（當期新文＞舊文新推文＞歷史參考）</option>
             </select>
           </div>
         </div>
@@ -170,8 +180,8 @@
       <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border-2 border-slate-200 shadow-sm">
         <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
           <div>
-            <h3 class="text-xl font-black text-slate-900">📈 商品「新聞曝光筆數 × 涵蓋媒體與 PTT 討論數」客觀分佈矩陣</h3>
-            <p class="text-base text-slate-600">X 軸為關聯新聞紀錄總數（含專文與合集提及），Y 軸為獨立媒體家數＋PTT 佐證篇數；點擊圖上圓點可直接開啟該商品之證據視窗。</p>
+            <h3 class="text-xl font-black text-slate-900">📈 商品「媒體曝光得分 × 消費者討論得分」雙維度散佈矩陣</h3>
+            <p class="text-base text-slate-600">X 軸為媒體曝光得分 (/40)，Y 軸為消費者討論得分 (/40)，氣泡大小為優先關注分；圓點顏色區分單品(藍)、系列(紫)、活動(橘)。點擊圓點可直接開啟證據與計分明細視窗。</p>
           </div>
         </div>
         <div id="chart-matrix" class="w-full h-[420px]"></div>
@@ -438,16 +448,16 @@
       </div>
       <div class="p-6 overflow-y-auto space-y-5 text-base text-slate-700 leading-relaxed">
         <div class="border-l-4 border-emerald-600 pl-4">
-          <h3 class="font-extrabold text-slate-900 text-lg mb-1">1. 首頁以「商品與活動」為主，新聞與 PTT 作為可核對的證據來源</h3>
-          <p>首頁恢復商品卡片瀏覽、週次切換、品牌／品類篩選與排序。每張商品卡皆可點擊「查看關聯證據明細」，直接檢視該商品關聯之「單品專文新聞」、「跨品牌合集提及新聞」與「PTT 飲料板原文與推噓文」。多商品合集新聞允許同時關聯多個被提及的商品，絕不把新聞篇數直接當成商品數。</p>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">1. 首頁以「商品、系列與聯名活動」為主，新聞與社群為客觀證據來源</h3>
+          <p>分開「📦 單品」、「🗂️ 系列」與「🎪 聯名活動」三層對象，避免不同層級概念混淆。例如 CoCo 皮克敏聯名攻略支持活動關注度，但不直接轉為飲品口味評價；跨品牌合集亦不把整筆曝光灌水給單一商品。每張卡片皆可查看原始關聯新聞、PTT 原文與影音明細。</p>
         </div>
         <div class="border-l-4 border-emerald-600 pl-4">
-          <h3 class="font-extrabold text-slate-900 text-lg mb-1">2. 可解釋的排序依據（暫不填入模擬綜合總分）</h3>
-          <p>提供三種客觀可驗證的排序：「依新聞曝光筆數排序」、「依最新發布時間排序」與「依當期已取得社群討論數排序」。在綜合熱度評分權重與缺值規範完成修訂前，統一標示為「修訂中」，不填入任何模擬分數。</p>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">2. 優先關注分｜試行版 (v0.1-trial) 計算原則與子分數結構</h3>
+          <p>三維度客觀加權：<strong>媒體曝光分 (上限40分) ＋ 消費者討論分 (上限40分) ＋ 影音曝光分 (上限20分) ＝ 綜合優先關注分 (滿分100分)</strong>。所有分數、試算表與敏感度分析，均由同一支 Python 程式（<code>build_product_catalog.py</code>）產生，杜絕人工手填誤差。首頁提供 4 種排序切換，讓使用者依分析目的自由選擇。</p>
         </div>
         <div class="border-l-4 border-emerald-600 pl-4">
-          <h3 class="font-extrabold text-slate-900 text-lg mb-1">3. 嚴格區分「當期新品討論」、「舊文近期新增推文」與「歷史同品項參考」</h3>
-          <p>系統清楚分開記錄文章的「發布日期」、「擷取日期」與「所屬觀察期間」。若舊文在當期有新增推文（如金茶伍兩顆紅蘋於 11/08、11/12 新增推文，或大茗於 11/07 新增推文），會明確標示為「舊文近期新增推文」，絕不混算成當期新發文。</p>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">3. 證據性質細分、滾動 30 天觀察窗與涵蓋範圍標示</h3>
+          <p>嚴格區分「試喝心得 (+12)」、「詢問請益 (+6)」、「促銷情報 (+4)」；舊文新推文需確認與目標品項相關；推文設每篇上限防止少數帳號放大。當期榜明訂滾動 30 天觀察窗，超過 30 天之舊文列為歷史參考不計當期分。分數旁標示「資料涵蓋程度」，明確指出<strong>「未取得資料不等於已確認零討論」</strong>，此分數僅代表現有證據下的研究優先順序。</p>
         </div>
       </div>
       <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end">
@@ -458,10 +468,10 @@
 
   <footer class="bg-white/90 backdrop-blur-sm border-t border-emerald-200 py-4 mt-auto">
     <div class="max-w-7xl mx-auto px-4 text-center text-base font-medium text-slate-600">
-      飲品新品市場熱度戰情室 • 商品趨勢總覽 × 新聞與 PTT 原文證據溯源版 • 任一筆資料皆可點擊核對原始來源
+      飲品新品市場熱度戰情室 • 優先關注分試行版 (v0.1) • 新聞、PTT、YouTube 與社群公開索引多向溯源 • 任一筆資料皆可核對原始證據
     </div>
   </footer>
 
-  <script src="js/app.js?v=stage3_v5_20261113"></script>
+  <script src="js/app.js?v=stage3_v6_20261113"></script>
 </body>
 </html>

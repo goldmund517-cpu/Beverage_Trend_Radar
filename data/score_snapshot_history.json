@@ -1,0 +1,843 @@
+{
+  "snapshots": [
+    {
+      "snapshot_id": "SNAP-20261113-V01",
+      "generated_at": "2026-11-13T00:35:00+08:00",
+      "model_version": "v0.1-trial",
+      "rolling_window_range": "2026-10-14 ~ 2026-11-13",
+      "parameters": {
+        "model_version": "v0.1-trial",
+        "rolling_window_days": 30,
+        "rolling_window_range": "2026-10-14 ~ 2026-11-13",
+        "media_cap": 40.0,
+        "focused_publisher_unit": 3.5,
+        "focused_publisher_cap": 28.0,
+        "roundup_news_unit": 0.5,
+        "roundup_news_cap": 6.0,
+        "official_social_unit": 2.0,
+        "official_social_cap": 6.0,
+        "discussion_cap": 40.0,
+        "ptt_tasting_post_unit": 12.0,
+        "ptt_inquiry_post_unit": 6.0,
+        "ptt_promo_post_unit": 4.0,
+        "ptt_old_post_active_trigger": 4.0,
+        "ptt_push_tasting_unit": 2.0,
+        "ptt_push_intent_promo_unit": 1.5,
+        "ptt_push_per_post_cap": 10.0,
+        "video_cap": 20.0,
+        "yt_single_long_unit": 5.0,
+        "yt_single_short_unit": 3.0,
+        "yt_collab_guide_unit": 3.5,
+        "yt_multi_brand_news_unit": 1.5,
+        "yt_view_tier_1k": 2.0,
+        "yt_view_tier_5k": 3.0
+      },
+      "items": [
+        {
+          "product_id": "PROD-COCO-PIKMIN-EVENT",
+          "entity_type": "活動",
+          "brand": "CoCo都可",
+          "product_name": "《Pikmin Bloom 皮克敏》五週年跨界聯名尋寶活動（咖啡杯皮克敏花苗＆明信片）",
+          "media_score": 29.5,
+          "discussion_score": 0.0,
+          "video_score": 20.0,
+          "priority_score": 49.5,
+          "score_breakdown": [
+            "[媒體] 當期單品/專題獨立媒體 12 家 × 3.5 = 28.0 分（達上限 28.0 分）",
+            "[媒體] 當期跨品牌合集提及 3 筆 × 0.5（按合集比重折減）= 1.5 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] YT-015 當期聯名遊戲攻略提及（觀看次數：5,728次，按聯名比重折算）：基礎 +3.5 ＋ 觀看級距 +3.0 = +6.5 分",
+            "[影音] YT-016 當期聯名遊戲攻略提及（觀看次數：2,184次，按聯名比重折算）：基礎 +3.5 ＋ 觀看級距 +1.2 = +4.7 分",
+            "[影音] YT-017 當期單一活動/商品實拍（觀看次數：314次）：基礎 +5.0 ＋ 觀看級距 +0.0 = +5.0 分",
+            "[影音] YT-018 當期單一活動/商品實拍（觀看次數：189次）：基礎 +5.0 ＋ 觀看級距 +0.0 = +5.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 29.5 ＋ 討論 0.0 ＋ 影音 20.0 = 49.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 49.5,
+              "media_score": 29.5,
+              "discussion_score": 0.0,
+              "video_score": 20.0,
+              "rank": 1
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 43.9,
+              "media_score": 23.9,
+              "discussion_score": 0.0,
+              "video_score": 20.0,
+              "rank": 1
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 47.0,
+              "media_score": 28.8,
+              "discussion_score": 0.0,
+              "video_score": 18.2,
+              "rank": 1
+            }
+          }
+        },
+        {
+          "product_id": "PROD-MILKSHA-WINTER-1111",
+          "entity_type": "系列",
+          "brand": "迷客夏 Milksha",
+          "product_name": "冬季「太妃序曲（太妃奶Q）／森半抹茶」系列 ＆ 法芙娜可可回歸",
+          "media_score": 35.5,
+          "discussion_score": 0.0,
+          "video_score": 3.0,
+          "priority_score": 38.5,
+          "score_breakdown": [
+            "[媒體] 當期單品/專題獨立媒體 13 家 × 3.5 = 28.0 分（達上限 28.0 分）",
+            "[媒體] 當期跨品牌合集提及 7 筆 × 0.5（按合集比重折減）= 3.5 分",
+            "[媒體] 當期官方 IG/FB 公開貼文索引 2 筆 × 2.0 = 4.0 分",
+            "[討論] PTT-DRINK-007 為超過 30 天之歷史參考文（歷史優惠情報 (8/05)），依規不計入當期分 = 0.0 分",
+            "[討論] PTT-DRINK-008 為超過 30 天之歷史參考文（歷史贈送文 (4/29)），依規不計入當期分 = 0.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] YT-005 當期多品牌電視新聞合集（觀看次數：7,438次，3品牌均分折算）：基礎 +1.5 ＋ 觀看折算 +1.5 = +3.0 分",
+            "[影音] YT-006 與同源新聞片重複上傳（已合併計分），不重複計分 = 0.0 分",
+            "[影音] YT-001 為非當期舊片（4 年前，觀看次數：1,036次），列歷史參考 = 0.0 分",
+            "[影音] YT-002 為非當期舊片（4 年前，觀看次數：1,261次），列歷史參考 = 0.0 分",
+            "[影音] YT-003 為非當期舊片（3 個月前，觀看次數：82次），列歷史參考 = 0.0 分",
+            "[影音] YT-004 為非當期舊片（5 年前，觀看次數：972次），列歷史參考 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 35.5 ＋ 討論 0.0 ＋ 影音 3.0 = 38.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 38.5,
+              "media_score": 35.5,
+              "discussion_score": 0.0,
+              "video_score": 3.0,
+              "rank": 2
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 32.9,
+              "media_score": 29.9,
+              "discussion_score": 0.0,
+              "video_score": 3.0,
+              "rank": 2
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 36.0,
+              "media_score": 33.8,
+              "discussion_score": 0.0,
+              "video_score": 2.2,
+              "rank": 2
+            }
+          }
+        },
+        {
+          "product_id": "PROD-LIJI-BLACKTEA",
+          "entity_type": "單品",
+          "brand": "李記紅茶冰",
+          "product_name": "招牌紅茶 ／ 琥珀紅茶（PTT Drink 板 11/07 當期獨立試喝心得）",
+          "media_score": 0.0,
+          "discussion_score": 18.5,
+          "video_score": 0.0,
+          "priority_score": 18.5,
+          "score_breakdown": [
+            "[媒體] 當期無單品專文或合集新聞 = 0.0 分",
+            "[討論] PTT-DRINK-001 當期新發文（性質：試喝心得）基礎分 = +12.0 分",
+            "[討論] PTT-DRINK-001 當期目標相關推文（同帳號去重：試喝回饋 1 人 × 2.0 ＋ 購買意圖/促銷回報 3 人 × 1.5）= +6.5 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 0.0 ＋ 討論 18.5 ＋ 影音 0.0 = 18.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 18.5,
+              "media_score": 0.0,
+              "discussion_score": 18.5,
+              "video_score": 0.0,
+              "rank": 3
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 23.5,
+              "media_score": 0.0,
+              "discussion_score": 23.5,
+              "video_score": 0.0,
+              "rank": 3
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 18.5,
+              "media_score": 0.0,
+              "discussion_score": 18.5,
+              "video_score": 0.0,
+              "rank": 3
+            }
+          }
+        },
+        {
+          "product_id": "PROD-COCO-MOLI-MILKGREEN",
+          "entity_type": "單品",
+          "brand": "CoCo都可",
+          "product_name": "茉香凍奶綠 ／ 奶茶三兄弟（11月皮克敏檔期＆雙11買一送一主力飲品）",
+          "media_score": 16.5,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 16.5,
+          "score_breakdown": [
+            "[媒體] 當期單品/專題獨立媒體 4 家 × 3.5 = 14.0 分",
+            "[媒體] 當期跨品牌合集提及 5 筆 × 0.5（按合集比重折減）= 2.5 分",
+            "[討論] PTT-DRINK-009 為超過 30 天之歷史參考文（同品項試喝心得 (9/04，7則推文)），依規不計入當期分 = 0.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 16.5 ＋ 討論 0.0 ＋ 影音 0.0 = 16.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 16.5,
+              "media_score": 16.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 4
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 13.7,
+              "media_score": 13.7,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 6
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 15.2,
+              "media_score": 15.2,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 6
+            }
+          }
+        },
+        {
+          "product_id": "PROD-DAMING-AVOCADO",
+          "entity_type": "單品",
+          "brand": "大茗本位製茶堂",
+          "product_name": "酪梨奶蓋紅茶 ／ 烤糖蕎麥凍奶青 ／ 四季春（品牌常態招牌與 PTT 當期詢問推文）",
+          "media_score": 1.0,
+          "discussion_score": 15.5,
+          "video_score": 0.0,
+          "priority_score": 16.5,
+          "score_breakdown": [
+            "[媒體] 當期跨品牌合集提及 2 筆 × 0.5（按合集比重折減）= 1.0 分",
+            "[討論] PTT-DRINK-012 當期新發文（性質：詢問請益）基礎分 = +6.0 分",
+            "[討論] PTT-DRINK-012 當期目標相關推文（同帳號去重：試喝回饋 4 人 × 2.0 ＋ 購買意圖/促銷回報 1 人 × 1.5）= +9.5 分",
+            "[討論] PTT-DRINK-013 為超過 30 天之歷史參考文（歷史桂花青茶心得 (2024/08)），依規不計入當期分 = 0.0 分",
+            "[影音] YT-009 為非當期舊片（3 年前，觀看次數：21,440次），列歷史參考 = 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 1.0 ＋ 討論 15.5 ＋ 影音 0.0 = 16.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 16.5,
+              "media_score": 1.0,
+              "discussion_score": 15.5,
+              "video_score": 0.0,
+              "rank": 5
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 18.5,
+              "media_score": 1.0,
+              "discussion_score": 17.5,
+              "video_score": 0.0,
+              "rank": 5
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 16.0,
+              "media_score": 0.5,
+              "discussion_score": 15.5,
+              "video_score": 0.0,
+              "rank": 4
+            }
+          }
+        },
+        {
+          "product_id": "PROD-CHICHA3000",
+          "entity_type": "單品",
+          "brand": "吃茶三千 Chicha San Chen",
+          "product_name": "松針綠茶＋百花香蜜＋皇家厚奶 ＆ 玉露青茶（PTT Drink 板 10/29 當期實測）",
+          "media_score": 0.0,
+          "discussion_score": 15.5,
+          "video_score": 0.0,
+          "priority_score": 15.5,
+          "score_breakdown": [
+            "[媒體] 當期無單品專文或合集新聞 = 0.0 分",
+            "[討論] PTT-DRINK-002 當期新發文（性質：試喝心得）基礎分 = +12.0 分",
+            "[討論] PTT-DRINK-002 當期目標相關推文（同帳號去重：試喝回饋 1 人 × 2.0 ＋ 購買意圖/促銷回報 1 人 × 1.5）= +3.5 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 0.0 ＋ 討論 15.5 ＋ 影音 0.0 = 15.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 15.5,
+              "media_score": 0.0,
+              "discussion_score": 15.5,
+              "video_score": 0.0,
+              "rank": 6
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 19.5,
+              "media_score": 0.0,
+              "discussion_score": 19.5,
+              "video_score": 0.0,
+              "rank": 4
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 15.5,
+              "media_score": 0.0,
+              "discussion_score": 15.5,
+              "video_score": 0.0,
+              "rank": 5
+            }
+          }
+        },
+        {
+          "product_id": "PROD-DAMING-DURIAN",
+          "entity_type": "單品",
+          "brand": "大茗本位製茶堂",
+          "product_name": "萬聖節限定「榴槤奶蓋冰淇淋紅茶」（獵奇果香奶蓋系列）",
+          "media_score": 9.5,
+          "discussion_score": 0.0,
+          "video_score": 3.0,
+          "priority_score": 12.5,
+          "score_breakdown": [
+            "[媒體] 當期單品/專題獨立媒體 2 家 × 3.5 = 7.0 分",
+            "[媒體] 當期跨品牌合集提及 5 筆 × 0.5（按合集比重折減）= 2.5 分",
+            "[討論] PTT-DRINK-012 為超過 30 天之歷史參考文（同品牌菜單請益文（推文談四季春/酪梨奶蓋，未談榴槤故不計入榴槤單品分）），依規不計入當期分 = 0.0 分",
+            "[討論] PTT-DRINK-013 為超過 30 天之歷史參考文（歷史桂花青茶心得 (2024/08)），依規不計入當期分 = 0.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] YT-005 當期多品牌電視新聞合集（觀看次數：7,438次，3品牌均分折算）：基礎 +1.5 ＋ 觀看折算 +1.5 = +3.0 分",
+            "[影音] YT-006 與同源新聞片重複上傳（已合併計分），不重複計分 = 0.0 分",
+            "[影音] YT-007 為非當期舊片（2 年前，觀看次數：112,442次），列歷史參考 = 0.0 分",
+            "[影音] YT-008 為非當期舊片（2 週前，觀看次數：559次），列歷史參考 = 0.0 分",
+            "[影音] YT-009 為非當期舊片（3 年前，觀看次數：21,440次），列歷史參考 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 9.5 ＋ 討論 0.0 ＋ 影音 3.0 = 12.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 12.5,
+              "media_score": 9.5,
+              "discussion_score": 0.0,
+              "video_score": 3.0,
+              "rank": 7
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 11.1,
+              "media_score": 8.1,
+              "discussion_score": 0.0,
+              "video_score": 3.0,
+              "rank": 7
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 10.4,
+              "media_score": 8.2,
+              "discussion_score": 0.0,
+              "video_score": 2.2,
+              "rank": 7
+            }
+          }
+        },
+        {
+          "product_id": "PROD-JINCHA5-APPLE",
+          "entity_type": "單品",
+          "brand": "金茶伍",
+          "product_name": "「兩顆紅蘋」鮮果茶（雙11買一送一 ＆ PTT 舊文當期新增推文）",
+          "media_score": 1.0,
+          "discussion_score": 7.5,
+          "video_score": 0.0,
+          "priority_score": 8.5,
+          "score_breakdown": [
+            "[媒體] 當期跨品牌合集提及 2 筆 × 0.5（按合集比重折減）= 1.0 分",
+            "[討論] PTT-DRINK-003 舊文於當期滾動 30 天內有目標商品新增推文（觸發基礎分）= +4.0 分",
+            "[討論] PTT-DRINK-003 當期目標相關推文（同帳號去重：試喝回饋 1 人 × 2.0 ＋ 購買意圖/促銷回報 1 人 × 1.5）= +3.5 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 1.0 ＋ 討論 7.5 ＋ 影音 0.0 = 8.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 8.5,
+              "media_score": 1.0,
+              "discussion_score": 7.5,
+              "video_score": 0.0,
+              "rank": 8
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 10.5,
+              "media_score": 1.0,
+              "discussion_score": 9.5,
+              "video_score": 0.0,
+              "rank": 8
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 8.0,
+              "media_score": 0.5,
+              "discussion_score": 7.5,
+              "video_score": 0.0,
+              "rank": 8
+            }
+          }
+        },
+        {
+          "product_id": "PROD-MILKSHA-SMOKE-BLACK",
+          "entity_type": "系列",
+          "brand": "迷客夏 Milksha",
+          "product_name": "「糖燻野境（娜杯糖燻奶霜／煙燻黑糖）」系列 ＆「朝等紅茶」回歸",
+          "media_score": 6.0,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 6.0,
+          "score_breakdown": [
+            "[媒體] 當期跨品牌合集提及 4 筆 × 0.5（按合集比重折減）= 2.0 分",
+            "[媒體] 當期官方 IG/FB 公開貼文索引 2 筆 × 2.0 = 4.0 分",
+            "[討論] PTT-DRINK-007 為超過 30 天之歷史參考文（歷史折價券文 (8/05)），依規不計入當期分 = 0.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 6.0 ＋ 討論 0.0 ＋ 影音 0.0 = 6.0 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 6.0,
+              "media_score": 6.0,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 9
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 6.0,
+              "media_score": 6.0,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 9
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 5.0,
+              "media_score": 5.0,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 9
+            }
+          }
+        },
+        {
+          "product_id": "PROD-MACU-TARO-2026",
+          "entity_type": "系列",
+          "brand": "麻古茶坊 MACU",
+          "product_name": "冬季大甲芋泥系列回歸「濃厚芋泥鮮奶／芋泥波波鮮奶2.0」＆ 新品「金絨芋泥玉米圓」",
+          "media_score": 5.5,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 5.5,
+          "score_breakdown": [
+            "[媒體] 當期跨品牌合集提及 3 筆 × 0.5（按合集比重折減）= 1.5 分",
+            "[媒體] 當期官方 IG/FB 公開貼文索引 2 筆 × 2.0 = 4.0 分",
+            "[討論] PTT-DRINK-011 為超過 30 天之歷史參考文（歷史同品項試喝心得 (15推)），依規不計入當期分 = 0.0 分",
+            "[討論] PTT-DRINK-010 為超過 30 天之歷史參考文（歷史品牌心得 (11推)），依規不計入當期分 = 0.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] YT-010 為非當期舊片（5 年前，觀看次數：1,971次），列歷史參考 = 0.0 分",
+            "[影音] YT-011 為非當期舊片（4 年前，觀看次數：1,549次），列歷史參考 = 0.0 分",
+            "[影音] YT-012 為非當期舊片（3 年前，觀看次數：418,807次），列歷史參考 = 0.0 分",
+            "[影音] YT-013 為非當期舊片（5 年前，觀看次數：1,679次），列歷史參考 = 0.0 分",
+            "[影音] YT-014 為非當期舊片（7 年前，觀看次數：9,108次），列歷史參考 = 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 5.5 ＋ 討論 0.0 ＋ 影音 0.0 = 5.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 5.5,
+              "media_score": 5.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 10
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 5.5,
+              "media_score": 5.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 10
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 4.8,
+              "media_score": 4.8,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 10
+            }
+          }
+        },
+        {
+          "product_id": "PROD-CHINGSHIN-PUER",
+          "entity_type": "單品",
+          "brand": "清心福全",
+          "product_name": "經典回歸「珍珠蜂蜜鮮奶普洱」",
+          "media_score": 5.0,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 5.0,
+          "score_breakdown": [
+            "[媒體] 當期單品/專題獨立媒體 1 家 × 3.5 = 3.5 分",
+            "[媒體] 當期跨品牌合集提及 3 筆 × 0.5（按合集比重折減）= 1.5 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 5.0 ＋ 討論 0.0 ＋ 影音 0.0 = 5.0 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 5.0,
+              "media_score": 5.0,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 11
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 4.3,
+              "media_score": 4.3,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 11
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 4.2,
+              "media_score": 4.2,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 11
+            }
+          }
+        },
+        {
+          "product_id": "PROD-COCO-CHOCO",
+          "entity_type": "系列",
+          "brand": "CoCo都可 ＆ 茶湯會",
+          "product_name": "秋冬頂級可可季新品（CoCo可可系列 ＆ 茶湯會生巧可可系列）",
+          "media_score": 4.5,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 4.5,
+          "score_breakdown": [
+            "[媒體] 當期單品/專題獨立媒體 1 家 × 3.5 = 3.5 分",
+            "[媒體] 當期跨品牌合集提及 2 筆 × 0.5（按合集比重折減）= 1.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 4.5 ＋ 討論 0.0 ＋ 影音 0.0 = 4.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 4.5,
+              "media_score": 4.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 12
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 3.8,
+              "media_score": 3.8,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 12
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 4.0,
+              "media_score": 4.0,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 12
+            }
+          }
+        },
+        {
+          "product_id": "PROD-TRUEDAN-BUCKWHEAT",
+          "entity_type": "系列",
+          "brand": "珍煮丹 Truedan",
+          "product_name": "「拾穗蕎麥」無咖啡因穀物茶系列 ＆ 雙11指定飲品買一送一",
+          "media_score": 3.5,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 3.5,
+          "score_breakdown": [
+            "[媒體] 當期跨品牌合集提及 7 筆 × 0.5（按合集比重折減）= 3.5 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 3.5 ＋ 討論 0.0 ＋ 影音 0.0 = 3.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 3.5,
+              "media_score": 3.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 13
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 3.5,
+              "media_score": 3.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 13
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 1.8,
+              "media_score": 1.8,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 15
+            }
+          }
+        },
+        {
+          "product_id": "PROD-JIYUAN-GRAPE",
+          "entity_type": "單品",
+          "brand": "季緣 CHI YUAN",
+          "product_name": "秋季果茶新品「葡萄青韻」",
+          "media_score": 3.5,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 3.5,
+          "score_breakdown": [
+            "[媒體] 當期單品/專題獨立媒體 1 家 × 3.5 = 3.5 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 3.5 ＋ 討論 0.0 ＋ 影音 0.0 = 3.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 3.5,
+              "media_score": 3.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 14
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 2.8,
+              "media_score": 2.8,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 14
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 3.5,
+              "media_score": 3.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 13
+            }
+          }
+        },
+        {
+          "product_id": "PROD-GUIJI-OATLY",
+          "entity_type": "系列",
+          "brand": "龜記茗品 Guiji",
+          "product_name": "冬季限定「Oatly 燕麥奶 × 靜岡抹茶」系列（3款冬季熱飲／冷飲）",
+          "media_score": 2.5,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 2.5,
+          "score_breakdown": [
+            "[媒體] 當期跨品牌合集提及 5 筆 × 0.5（按合集比重折減）= 2.5 分",
+            "[討論] PTT-DRINK-004 為超過 30 天之歷史參考文（歷史紅茶王心得），依規不計入當期分 = 0.0 分",
+            "[討論] PTT-DRINK-005 為超過 30 天之歷史參考文（歷史紅水烏龍心得），依規不計入當期分 = 0.0 分",
+            "[討論] PTT-DRINK-006 為超過 30 天之歷史參考文（歷史菜單詢問文），依規不計入當期分 = 0.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 2.5 ＋ 討論 0.0 ＋ 影音 0.0 = 2.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 2.5,
+              "media_score": 2.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 15
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 2.5,
+              "media_score": 2.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 15
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 1.2,
+              "media_score": 1.2,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 16
+            }
+          }
+        },
+        {
+          "product_id": "PROD-MACU-GRAPE",
+          "entity_type": "系列",
+          "brand": "麻古茶坊 MACU",
+          "product_name": "「巨峰葡萄」鮮果茶系列（芝芝葡萄果粒／葡萄果粒波波）",
+          "media_score": 2.5,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 2.5,
+          "score_breakdown": [
+            "[媒體] 當期跨品牌合集提及 1 筆 × 0.5（按合集比重折減）= 0.5 分",
+            "[媒體] 當期官方 IG/FB 公開貼文索引 1 筆 × 2.0 = 2.0 分",
+            "[討論] PTT-DRINK-010 為超過 30 天之歷史參考文（歷史品牌果茶討論），依規不計入當期分 = 0.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] YT-011 為非當期舊片（4 年前，觀看次數：1,549次），列歷史參考 = 0.0 分",
+            "[影音] YT-012 為非當期舊片（3 年前，觀看次數：418,807次），列歷史參考 = 0.0 分",
+            "[影音] YT-014 為非當期舊片（7 年前，觀看次數：9,108次），列歷史參考 = 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 2.5 ＋ 討論 0.0 ＋ 影音 0.0 = 2.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 2.5,
+              "media_score": 2.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 16
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 2.5,
+              "media_score": 2.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 16
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 2.2,
+              "media_score": 2.2,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 14
+            }
+          }
+        },
+        {
+          "product_id": "PROD-50LAN-OOLONG",
+          "entity_type": "單品",
+          "brand": "50嵐",
+          "product_name": "「重焙烏龍拿鐵」全台擴大開賣",
+          "media_score": 1.5,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 1.5,
+          "score_breakdown": [
+            "[媒體] 當期跨品牌合集提及 3 筆 × 0.5（按合集比重折減）= 1.5 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 1.5 ＋ 討論 0.0 ＋ 影音 0.0 = 1.5 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 1.5,
+              "media_score": 1.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 17
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 1.5,
+              "media_score": 1.5,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 17
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 0.8,
+              "media_score": 0.8,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 17
+            }
+          }
+        },
+        {
+          "product_id": "PROD-ROUNDUP-1111",
+          "entity_type": "活動",
+          "brand": "跨品牌雙11檔期（五桐號／先喝道／御私藏／日出茶太等）",
+          "product_name": "雙11手搖飲「買一送一／11元加購」跨品牌促銷懶人包合集",
+          "media_score": 0.0,
+          "discussion_score": 0.0,
+          "video_score": 0.0,
+          "priority_score": 0.0,
+          "score_breakdown": [
+            "[媒體] 當期無單品專文或合集新聞 = 0.0 分",
+            "[討論] 當期 30 天滾動窗內無直接 PTT 試喝或目標推文（未檢出不倒扣）= 0.0 分",
+            "[影音] 當期 30 天內無直接關聯之新上架影片 = 0.0 分",
+            "👉 合計【優先關注分｜試行版】= 媒體 0.0 ＋ 討論 0.0 ＋ 影音 0.0 = 0.0 分"
+          ],
+          "sensitivity_scores": {
+            "Scheme_A_Baseline": {
+              "label": "方案 A（基準試行版 40/40/20）",
+              "priority_score": 0.0,
+              "media_score": 0.0,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 18
+            },
+            "Scheme_B_Discussion_Up": {
+              "label": "方案 B（降媒體權重 -20% ／ 升消費者討論 +25%）",
+              "priority_score": 0.0,
+              "media_score": 0.0,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 18
+            },
+            "Scheme_C_Strict_Roundup": {
+              "label": "方案 C（合集新聞與跨界攻略權重減半）",
+              "priority_score": 0.0,
+              "media_score": 0.0,
+              "discussion_score": 0.0,
+              "video_score": 0.0,
+              "rank": 18
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

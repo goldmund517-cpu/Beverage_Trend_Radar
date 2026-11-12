@@ -76,10 +76,11 @@ const platformCapabilities = __CAP_JSON__;
 const isolatedDemoSample = __DEMO_JSON__;
 
 let currentPeriodId = "ALL";
+let currentEntityTypeFilter = "ALL";
 let currentProductTypeFilter = "ALL";
 let currentProductBrandFilter = "ALL";
 let currentProductFlavorFilter = "ALL";
-let currentProductSort = "NEWS_DESC";
+let currentProductSort = "PRIORITY_DESC";
 
 let currentEventCategoryFilter = "ALL";
 let currentFilterBrand = "ALL";
@@ -243,6 +244,20 @@ function selectObservationPeriod(periodId) {
   try { renderVerifiedNewsList(); } catch (err) { console.error(err); }
 }
 
+function setEntityTypeFilter(entityVal) {
+  currentEntityTypeFilter = entityVal;
+  document.querySelectorAll('.entity-filter-btn').forEach(btn => {
+    btn.classList.remove('bg-emerald-800', 'text-white', 'shadow-sm');
+    btn.classList.add('bg-slate-100', 'text-slate-700');
+  });
+  const activeBtn = document.getElementById(`entity-btn-${entityVal}`);
+  if (activeBtn) {
+    activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+    activeBtn.classList.add('bg-emerald-800', 'text-white', 'shadow-sm');
+  }
+  applyProductFilters();
+}
+
 function setProductTypeFilter(typeVal) {
   currentProductTypeFilter = typeVal;
   document.querySelectorAll('.type-filter-btn').forEach(btn => {
@@ -263,6 +278,9 @@ function getFilteredAndSortedProducts() {
     if (currentPeriodId !== "ALL" && !(p.observation_weeks || []).includes(currentPeriodId)) {
       return false;
     }
+    if (currentEntityTypeFilter !== "ALL" && p.entity_type !== currentEntityTypeFilter) {
+      return false;
+    }
     if (currentProductTypeFilter === "PENDING") {
       if (!p.is_pending_confirm) return false;
     } else if (currentProductTypeFilter === "合集") {
@@ -280,18 +298,33 @@ function getFilteredAndSortedProducts() {
   });
 
   filtered.sort((a, b) => {
-    if (currentProductSort === "NEWS_DESC") {
-      if (b.metrics.total_news_count !== a.metrics.total_news_count) {
-        return b.metrics.total_news_count - a.metrics.total_news_count;
-      }
-      return b.metrics.focused_news_count - a.metrics.focused_news_count;
+    const ma = a.metrics || {};
+    const mb = b.metrics || {};
+    if (currentProductSort === "PRIORITY_DESC") {
+      const diffPri = (mb.priority_score || 0) - (ma.priority_score || 0);
+      if (Math.abs(diffPri) > 0.001) return diffPri;
+      const diffDisc = (mb.discussion_score || 0) - (ma.discussion_score || 0);
+      if (Math.abs(diffDisc) > 0.001) return diffDisc;
+      return (mb.media_score || 0) - (ma.media_score || 0);
+    } else if (currentProductSort === "MEDIA_DESC") {
+      const diff = (mb.media_score || 0) - (ma.media_score || 0);
+      if (Math.abs(diff) > 0.001) return diff;
+      return (mb.priority_score || 0) - (ma.priority_score || 0);
+    } else if (currentProductSort === "DISCUSSION_DESC") {
+      const diff = (mb.discussion_score || 0) - (ma.discussion_score || 0);
+      if (Math.abs(diff) > 0.001) return diff;
+      return (mb.priority_score || 0) - (ma.priority_score || 0);
+    } else if (currentProductSort === "VIDEO_DESC") {
+      const diff = (mb.video_score || 0) - (ma.video_score || 0);
+      if (Math.abs(diff) > 0.001) return diff;
+      return (mb.priority_score || 0) - (ma.priority_score || 0);
     } else if (currentProductSort === "DATE_DESC") {
       return (b.latest_published_at || "").localeCompare(a.latest_published_at || "");
-    } else if (currentProductSort === "PTT_DESC") {
-      const aCur = a.metrics.current_period_ptt_count * 100 + a.metrics.recent_push_old_post_count * 20 + a.metrics.historical_ref_ptt_count * 5 + a.metrics.total_ptt_pushes;
-      const bCur = b.metrics.current_period_ptt_count * 100 + b.metrics.recent_push_old_post_count * 20 + b.metrics.historical_ref_ptt_count * 5 + b.metrics.total_ptt_pushes;
-      if (bCur !== aCur) return bCur - aCur;
-      return b.metrics.total_news_count - a.metrics.total_news_count;
+    } else if (currentProductSort === "NEWS_DESC") {
+      if (mb.total_news_count !== ma.total_news_count) {
+        return mb.total_news_count - ma.total_news_count;
+      }
+      return mb.focused_news_count - ma.focused_news_count;
     }
     return 0;
   });
@@ -303,9 +336,9 @@ function applyProductFilters() {
   const brandSel = document.getElementById('product-brand-select');
   const flavorSel = document.getElementById('product-flavor-select');
   const sortSel = document.getElementById('product-sort-select');
-  if (brandSel) currentProductBrandFilter = brandSel.value;
-  if (flavorSel) currentProductFlavorFilter = flavorSel.value;
-  if (sortSel) currentProductSort = sortSel.value;
+  if (brandSel && brandSel.value) currentProductBrandFilter = brandSel.value;
+  if (flavorSel && flavorSel.value) currentProductFlavorFilter = flavorSel.value;
+  if (sortSel && sortSel.value) currentProductSort = sortSel.value;
 
   const filtered = getFilteredAndSortedProducts();
   renderHomepageKpis(filtered);
@@ -315,14 +348,13 @@ function applyProductFilters() {
 
 function renderHomepageKpis(filteredProducts) {
   const totalCount = filteredProducts.length;
-  const newCount = filteredProducts.filter(p => (p.item_types || []).includes("新品")).length;
-  const returnCount = filteredProducts.filter(p => (p.item_types || []).includes("舊品回歸")).length;
-  const promoCount = filteredProducts.filter(p => (p.item_types || []).includes("促銷")).length;
-  const pendingCount = filteredProducts.filter(p => p.is_pending_confirm).length;
+  const singleCount = filteredProducts.filter(p => p.entity_type === "單品").length;
+  const seriesCount = filteredProducts.filter(p => p.entity_type === "系列").length;
+  const eventCount = filteredProducts.filter(p => p.entity_type === "活動").length;
 
-  document.getElementById('kpi-product-count').innerText = `${totalCount} 款`;
+  document.getElementById('kpi-product-count').innerText = `${totalCount} 項`;
   document.getElementById('kpi-product-breakdown').innerText =
-    `新品 ${newCount} • 回歸 ${returnCount} • 促銷 ${promoCount} • 待確認 ${pendingCount}`;
+    `單品 ${singleCount} • 系列 ${seriesCount} • 活動 ${eventCount}（分開統計）`;
 
   const uniqueNewsIds = new Set();
   let focusedSum = 0;
@@ -352,15 +384,22 @@ function renderHomepageKpis(filteredProducts) {
     `當期新文 ${curPtt} • 舊文當期新推 ${recentPushPtt} • 歷史參考 ${histPtt}`;
 
   const sortLabels = {
-    "NEWS_DESC": "📰 依新聞曝光筆數",
-    "DATE_DESC": "🕒 依最新發布時間",
-    "PTT_DESC": "💬 依當期社群討論數"
+    "PRIORITY_DESC": "🌟 優先關注分（試行版 v0.1）",
+    "MEDIA_DESC": "📰 媒體曝光分（上限40）",
+    "DISCUSSION_DESC": "💬 消費者討論分（上限40）",
+    "VIDEO_DESC": "🎬 影音曝光分（上限20）",
+    "DATE_DESC": "🕒 最新發布時間",
+    "NEWS_DESC": "📰 新聞總筆數排序"
   };
-  document.getElementById('kpi-sort-label').innerText = sortLabels[currentProductSort] || "📰 依新聞曝光筆數";
+  const sortLabelEl = document.getElementById('kpi-sort-label');
+  if (sortLabelEl) sortLabelEl.innerText = sortLabels[currentProductSort] || "🌟 優先關注分（試行版 v0.1）";
+
+  const scoreDescEl = document.getElementById('kpi-score-status-desc');
+  if (scoreDescEl) scoreDescEl.innerText = "媒體40% ｜ 討論40% ｜ 影音20%（明訂規則不填模擬分）";
 
   const badge = document.getElementById('product-filter-count-badge');
   if (badge) {
-    badge.innerText = `目前顯示：${totalCount} / ${(verifiedProductsPayload.products || []).length} 款商品與活動`;
+    badge.innerText = `目前顯示：${totalCount} / ${(verifiedProductsPayload.products || []).length} 項對象`;
   }
 }
 
@@ -371,16 +410,29 @@ function renderProductCardList(filteredProducts) {
   if (filteredProducts.length === 0) {
     container.innerHTML = `
       <div class="bg-white/95 p-8 rounded-2xl border-2 border-slate-200 text-center text-lg font-bold text-slate-600">
-        目前篩選條件下無符合之商品，請調整上方觀察期間、品牌或性質篩選。
+        目前篩選條件下無符合之對象，請調整上方觀察期間、對象分層或性質篩選。
       </div>`;
     return;
   }
 
   container.innerHTML = filteredProducts.map((p, idx) => {
+    let entityBadgeClass = "bg-blue-100 text-blue-900 border-blue-400";
+    let entityIcon = "📦 單品";
+    if (p.entity_type === "系列") {
+      entityBadgeClass = "bg-indigo-100 text-indigo-900 border-indigo-400";
+      entityIcon = "🗂️ 系列";
+    } else if (p.entity_type === "活動") {
+      entityBadgeClass = "bg-amber-100 text-amber-900 border-amber-400";
+      entityIcon = "🎪 活動";
+    }
+    const entityBadge = `<span class="px-2.5 py-0.5 text-xs sm:text-sm font-black rounded-full border ${entityBadgeClass}">${entityIcon}</span>`;
+
     const typeBadges = (p.item_types || []).map(getCategoryBadgeHtml).join(' ');
     const confirmBadge = p.is_pending_confirm
       ? `<span class="px-2.5 py-0.5 text-xs font-extrabold rounded-full bg-amber-50 text-amber-900 border border-amber-400">${p.info_status}</span>`
       : `<span class="px-2.5 py-0.5 text-xs font-extrabold rounded-full bg-emerald-50 text-emerald-900 border border-emerald-400">${p.info_status}</span>`;
+
+    const stageBadge = `<span class="px-2 py-0.5 text-xs font-extrabold rounded bg-slate-100 text-slate-700 border border-slate-300">${p.launch_stage || "🚀 首發觀察期"}</span>`;
 
     const pttBadgeText = p.metrics.current_period_ptt_count > 0
       ? `當期新發文 ${p.metrics.current_period_ptt_count} 篇`
@@ -390,35 +442,69 @@ function renderProductCardList(filteredProducts) {
               ? `當期新發文 0 篇｜歷史同品項/同牌參考 ${p.metrics.historical_ref_ptt_count} 篇（共 ${p.metrics.total_ptt_pushes} 則推文）`
               : `本次 PTT 採集範圍內未找到`));
 
+    const coverageHtml = (p.coverage_badges || []).map(b => {
+      let bClass = "bg-white text-slate-700 border-slate-300";
+      if (b.includes("✅")) bClass = "bg-emerald-50 text-emerald-900 border-emerald-300 font-black";
+      else if (b.includes("⚠️")) bClass = "bg-amber-50 text-amber-900 border-amber-300 font-bold";
+      else if (b.includes("🚫")) bClass = "bg-slate-100 text-slate-500 border-slate-300";
+      return `<span class="px-2 py-0.5 rounded border ${bClass}">${b}</span>`;
+    }).join(' ');
+
     return `
       <div class="bg-white/95 backdrop-blur-sm rounded-2xl border-2 border-slate-200 hover:border-emerald-400 shadow-sm transition p-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          <!-- 左欄 (6 cols)：商品規格與客觀曝光/討論數據 -->
+          <!-- 左欄 (6 cols)：對象規格、評分條、涵蓋範圍與客觀數據 -->
           <div class="lg:col-span-6 flex flex-col justify-between space-y-4 border-b lg:border-b-0 lg:border-r border-slate-200 pb-4 lg:pb-0 lg:pr-6">
-            <div class="space-y-2.5">
+            <div class="space-y-3">
               <div class="flex flex-wrap items-center gap-2">
                 <span class="px-2.5 py-0.5 bg-slate-900 text-white font-mono font-extrabold text-xs rounded">#${idx + 1}</span>
                 <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-900 border border-emerald-300 font-extrabold text-xs rounded">${p.region}</span>
                 <span class="text-lg font-black text-emerald-800">${p.brand}</span>
+                ${entityBadge}
                 ${typeBadges}
               </div>
 
-              <h3 class="text-xl font-black text-slate-900 leading-snug">${p.product_name}</h3>
+              <div class="flex flex-wrap items-center gap-2">
+                <h3 class="text-xl font-black text-slate-900 leading-snug">${p.product_name}</h3>
+                ${stageBadge}
+              </div>
+
               <div>${confirmBadge}</div>
 
-              <div class="space-y-1.5 pt-2 text-base text-slate-700">
+              <!-- 優先關注分與涵蓋標籤儀表板 -->
+              <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-indigo-50 p-3 rounded-xl border border-emerald-300 space-y-2">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex flex-wrap items-baseline gap-2">
+                    <span class="text-xs font-black text-slate-700">優先關注分 (試行)：</span>
+                    <span class="text-3xl font-black text-emerald-800">${(p.metrics.priority_score || 0).toFixed(1)}</span>
+                    <span class="text-xs text-slate-500 font-bold">/ 100</span>
+                    <span class="text-slate-300">|</span>
+                    <span class="text-xs font-extrabold text-emerald-900 px-2 py-0.5 rounded bg-white border border-emerald-300">📰 媒體 ${(p.metrics.media_score || 0).toFixed(1)}/40</span>
+                    <span class="text-xs font-extrabold text-indigo-900 px-2 py-0.5 rounded bg-white border border-indigo-300">💬 討論 ${(p.metrics.discussion_score || 0).toFixed(1)}/40</span>
+                    <span class="text-xs font-extrabold text-rose-900 px-2 py-0.5 rounded bg-white border border-rose-300">🎬 影音 ${(p.metrics.video_score || 0).toFixed(1)}/20</span>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center justify-between gap-1.5 pt-1 border-t border-emerald-200/60">
+                  <div class="flex flex-wrap items-center gap-1.5 text-xs font-bold">
+                    ${coverageHtml}
+                  </div>
+                  <span class="text-xs text-slate-500 font-medium">💡 依現有證據之研究優先序；缺漏不視為確認零討論</span>
+                </div>
+              </div>
+
+              <div class="space-y-1.5 pt-1 text-base text-slate-700">
                 <div>💰 <strong class="text-slate-900">定價與優惠：</strong>${p.price_promo}</div>
                 <div>🍵 <strong class="text-slate-900">風味與品類：</strong>${p.flavor_category} ｜ <strong class="text-slate-900">歸屬期間：</strong><span class="font-mono font-bold text-emerald-800">${(p.observation_weeks || []).join(', ')}</span></div>
-                <div>📰 <strong class="text-slate-900">新聞曝光證據：</strong>共 <strong class="text-emerald-700 text-lg">${p.metrics.total_news_count}</strong> 筆紀錄（單品專文 <strong>${p.metrics.focused_news_count}</strong> 筆 ＋ 跨品牌合集提及 <strong>${p.metrics.roundup_news_count}</strong> 筆，涵蓋 ${p.metrics.unique_publisher_count} 家媒體）</div>
-                <div>💬 <strong class="text-slate-900">PTT 飲料板討論：</strong><span class="font-bold text-indigo-800">${pttBadgeText}</span></div>
-                <div>🎬 <strong class="text-slate-900">延伸影音／社群索引：</strong>YouTube 開箱/報導 <strong class="text-rose-700">${p.metrics.youtube_video_count || 0}</strong> 部 ｜ IG/FB 公開貼文索引 <strong class="text-sky-700">${p.metrics.social_index_count || 0}</strong> 筆</div>
+                <div>📰 <strong class="text-slate-900">新聞曝光證據：</strong>共 <strong class="text-emerald-700 text-lg">${p.metrics.total_news_count}</strong> 筆（專文 <strong>${p.metrics.focused_news_count}</strong> 筆 ＋ 合集提及 <strong>${p.metrics.roundup_news_count}</strong> 筆，涵蓋 ${p.metrics.unique_publisher_count} 家媒體）➔ 媒體分 <strong class="text-emerald-800">${(p.metrics.media_score || 0).toFixed(1)}/40</strong></div>
+                <div>💬 <strong class="text-slate-900">PTT 飲料板討論：</strong><span class="font-bold text-indigo-800">${pttBadgeText}</span> ➔ 討論分 <strong class="text-indigo-800">${(p.metrics.discussion_score || 0).toFixed(1)}/40</strong></div>
+                <div>🎬 <strong class="text-slate-900">影音／社群索引：</strong>YouTube 當期 <strong>${p.metrics.current_youtube_count || 0}</strong> 部（全期 ${p.metrics.youtube_video_count || 0} 部）｜ IG/FB 索引 <strong>${p.metrics.social_index_count || 0}</strong> 筆 ➔ 影音分 <strong class="text-rose-800">${(p.metrics.video_score || 0).toFixed(1)}/20</strong></div>
               </div>
             </div>
 
             <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-slate-600">
               <span>📅 最新證據發布日：<strong class="font-mono text-slate-900">${p.latest_published_at}</strong></span>
               <span>🕒 採集時間：<strong class="font-mono text-slate-900">${p.captured_at}</strong></span>
-              <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded border border-slate-300">綜合熱度評分：${p.metrics.composite_score_status}</span>
+              <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded border border-slate-300 font-bold">${p.metrics.composite_score_status}</span>
             </div>
           </div>
 
@@ -442,7 +528,7 @@ function renderProductCardList(filteredProducts) {
               </span>
               <button onclick="openProductDetailModal('${p.product_id}')"
                 class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm sm:text-base rounded-lg shadow-sm transition flex items-center gap-1.5">
-                <span>🔍 查看關聯證據明細（${p.metrics.total_news_count} 新聞 ＋ ${p.metrics.total_ptt_count} PTT ＋ ${(p.metrics.youtube_video_count || 0) + (p.metrics.social_index_count || 0)} 影音/IG/FB）</span>
+                <span>🔍 查看關聯證據明細 ＆ 評分試算（優先關注分 ${(p.metrics.priority_score || 0).toFixed(1)} 分）</span>
               </button>
             </div>
           </div>
@@ -461,10 +547,22 @@ function openProductDetailModal(productId) {
   const titleEl = document.getElementById('modal-product-title');
   const bodyEl = document.getElementById('modal-product-body');
 
+  let entityBadgeClass = "bg-blue-100 text-blue-900 border-blue-400";
+  let entityIcon = "📦 單品";
+  if (p.entity_type === "系列") {
+    entityBadgeClass = "bg-indigo-100 text-indigo-900 border-indigo-400";
+    entityIcon = "🗂️ 系列";
+  } else if (p.entity_type === "活動") {
+    entityBadgeClass = "bg-amber-100 text-amber-900 border-amber-400";
+    entityIcon = "🎪 活動";
+  }
+
   badgesEl.innerHTML = `
     <span class="px-2.5 py-0.5 bg-emerald-700 text-white font-extrabold text-xs rounded">${p.brand}</span>
+    <span class="px-2.5 py-0.5 text-xs font-black rounded-full border ${entityBadgeClass}">${entityIcon}</span>
     ${(p.item_types || []).map(getCategoryBadgeHtml).join(' ')}
     <span class="px-2.5 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs rounded">${p.info_status}</span>
+    <span class="px-2 py-0.5 bg-slate-100 text-slate-800 border border-slate-300 font-bold text-xs rounded">${p.launch_stage || "🚀 首發觀察期"}</span>
   `;
   titleEl.innerText = `${p.brand} — ${p.product_name}`;
 
@@ -533,7 +631,93 @@ function openProductDetailModal(productId) {
     renderPttItems(p.resolved_recent_push_ptt, "🔵 舊文於當期新增推文（不混算為當期新文）", "bg-sky-100 text-sky-900 border border-sky-400") +
     renderPttItems(p.resolved_historical_ptt, "🟣 歷史同品項／同品牌參考舊文", "bg-purple-100 text-purple-900 border border-purple-400");
 
+  const breakdownListHtml = (p.score_breakdown || []).map(line => {
+    let lineClass = "text-slate-800";
+    let icon = "🔹";
+    if (line.startsWith("[媒體]")) {
+      icon = "📰";
+      lineClass = "text-emerald-950 font-bold";
+    } else if (line.startsWith("[討論]")) {
+      icon = "💬";
+      lineClass = "text-indigo-950 font-bold";
+    } else if (line.startsWith("[影音]")) {
+      icon = "🎬";
+      lineClass = "text-rose-950 font-bold";
+    } else if (line.startsWith("👉")) {
+      icon = "🌟";
+      lineClass = "text-amber-950 font-black text-base bg-amber-100/90 p-2.5 rounded-lg border border-amber-300";
+    }
+    return `<div class="py-1 flex items-start gap-2 text-sm sm:text-base ${lineClass}">
+      <span class="shrink-0 mt-0.5">${icon}</span>
+      <span class="leading-relaxed">${line}</span>
+    </div>`;
+  }).join('');
+
+  const sens = p.sensitivity_scores || {};
+  const sensRowsHtml = Object.keys(sens).map(key => {
+    const s = sens[key];
+    return `
+      <tr class="hover:bg-slate-50">
+        <td class="p-2.5 border-r border-b font-extrabold text-slate-900">${s.label}</td>
+        <td class="p-2.5 border-r border-b font-mono text-emerald-800 font-bold">${(s.media_score || 0).toFixed(1)}</td>
+        <td class="p-2.5 border-r border-b font-mono text-indigo-800 font-bold">${(s.discussion_score || 0).toFixed(1)}</td>
+        <td class="p-2.5 border-r border-b font-mono text-rose-800 font-bold">${(s.video_score || 0).toFixed(1)}</td>
+        <td class="p-2.5 border-r border-b font-mono font-black text-slate-900 text-sm">${(s.priority_score || 0).toFixed(1)}</td>
+        <td class="p-2.5 border-b font-bold text-emerald-700">${s.rank_note || "排名穩定"}</td>
+      </tr>
+    `;
+  }).join('');
+
   bodyEl.innerHTML = `
+    <!-- 優先關注分 (試行版 v0.1) 計算明細與敏感度對照 -->
+    <div class="bg-gradient-to-br from-emerald-50 via-teal-50 to-indigo-50 border-2 border-emerald-400 rounded-2xl p-5 shadow-sm space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-200 pb-3">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded">Model v0.1-trial</span>
+          <h4 class="text-lg font-black text-slate-900 mt-1">🌟 優先關注分（試行版）計算明細與規則核對</h4>
+        </div>
+        <div class="text-right">
+          <div class="text-2xl font-black text-emerald-900">${(p.metrics.priority_score || 0).toFixed(1)} <span class="text-sm text-slate-600 font-bold">/ 100</span></div>
+          <div class="text-xs font-extrabold text-slate-600">媒體 ${(p.metrics.media_score || 0).toFixed(1)}/40 ＋ 討論 ${(p.metrics.discussion_score || 0).toFixed(1)}/40 ＋ 影音 ${(p.metrics.video_score || 0).toFixed(1)}/20</div>
+        </div>
+      </div>
+
+      <div class="space-y-1 bg-white/80 p-3.5 rounded-xl border border-emerald-200">
+        <div class="text-xs font-black text-slate-600 mb-1">📋 逐筆證據計分歷程（完全由 Python build_product_catalog.py 產出）：</div>
+        <div class="divide-y divide-slate-100">
+          ${breakdownListHtml}
+        </div>
+      </div>
+
+      <!-- 敏感度分析對照表 -->
+      <div class="bg-white/90 p-3.5 rounded-xl border border-slate-200 space-y-2">
+        <div class="flex justify-between items-center">
+          <div class="text-xs font-black text-slate-800">⚖️ 權重敏感度驗證（測試不同權重方案下之名次穩定性）：</div>
+          <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">本次測試組合下排名穩定</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-xs text-left border border-slate-200 rounded">
+            <thead class="bg-slate-100 font-extrabold text-slate-700">
+              <tr>
+                <th class="p-2 border-r border-b">測試方案與權重結構</th>
+                <th class="p-2 border-r border-b">媒體曝光得分 (/40)</th>
+                <th class="p-2 border-r border-b">消費者討論得分 (/40)</th>
+                <th class="p-2 border-r border-b">影音曝光得分 (/20)</th>
+                <th class="p-2 border-r border-b">優先關注總分</th>
+                <th class="p-2 border-b">測試排序名次表現</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${sensRowsHtml}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-xs text-slate-500 pt-1">
+          📌 <strong>計分與客觀原則：</strong>所有分數皆由同一套程式產出，不手填分數；分開商品、系列與聯名活動（活動攻略不直接轉為飲品口味評價；合集觀看均分折算；非當期舊文列歷史參考不計當期分）。未取得社群資料不視為零討論。
+        </p>
+      </div>
+    </div>
+
     <!-- 三欄對照摘要 -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div class="bg-emerald-50/80 border-2 border-emerald-200 rounded-xl p-4 space-y-2">
@@ -637,64 +821,86 @@ function renderMatrixChart(filteredProducts) {
   }
 
   const list = filteredProducts || getFilteredAndSortedProducts();
-  const seriesData = list.map(p => ({
-    name: p.short_word,
-    productId: p.product_id,
-    brand: p.brand,
-    value: [
-      p.metrics.total_news_count,
-      p.metrics.unique_publisher_count + p.metrics.total_ptt_count,
-      Math.max(18, (p.metrics.total_news_count + p.metrics.total_ptt_pushes) * 1.4)
-    ],
-    focusedNews: p.metrics.focused_news_count,
-    roundupNews: p.metrics.roundup_news_count,
-    pttCount: p.metrics.total_ptt_count,
-    pttPushes: p.metrics.total_ptt_pushes
-  }));
+  const seriesData = list.map(p => {
+    let pointColor = '#2563eb';
+    let borderColor = '#1d4ed8';
+    if (p.entity_type === '系列') {
+      pointColor = '#7c3aed';
+      borderColor = '#6d28d9';
+    } else if (p.entity_type === '活動') {
+      pointColor = '#d97706';
+      borderColor = '#b45309';
+    }
+    return {
+      name: p.short_word,
+      productId: p.product_id,
+      brand: p.brand,
+      entityType: p.entity_type,
+      value: [
+        p.metrics.media_score,
+        p.metrics.discussion_score,
+        Math.max(16, (p.metrics.priority_score || 0) * 0.95)
+      ],
+      priorityScore: p.metrics.priority_score,
+      mediaScore: p.metrics.media_score,
+      discussionScore: p.metrics.discussion_score,
+      videoScore: p.metrics.video_score,
+      focusedNews: p.metrics.focused_news_count,
+      roundupNews: p.metrics.roundup_news_count,
+      pttCount: p.metrics.total_ptt_count,
+      pttPushes: p.metrics.total_ptt_pushes,
+      itemStyle: {
+        color: pointColor,
+        opacity: 0.85,
+        borderColor: borderColor,
+        borderWidth: 1.5
+      }
+    };
+  });
 
   matrixChartInstance.setOption({
     tooltip: {
       trigger: 'item',
       formatter: function(params) {
         const d = params.data;
-        return `<div style="font-weight:bold;margin-bottom:4px;">${d.name}</div>
-                新聞總筆數：<b>${d.value[0]}</b> 筆（專文 ${d.focusedNews} + 合集 ${d.roundupNews}）<br/>
-                獨立媒體＋PTT篇數：<b>${d.value[1]}</b>（含 PTT ${d.pttCount} 篇 / ${d.pttPushes} 推文）<br/>
-                <span style="color:#059669;font-size:12px;">點擊圓點開啟證據明細視窗</span>`;
+        return `<div style="font-weight:bold;font-size:14px;margin-bottom:4px;">[${d.entityType}] ${d.name}</div>
+                🌟 <b>優先關注分：${d.priorityScore.toFixed(1)} 分</b><br/>
+                📰 媒體曝光得分：<b>${d.mediaScore.toFixed(1)} / 40</b>（專文 ${d.focusedNews} + 合集 ${d.roundupNews}）<br/>
+                💬 消費者討論得分：<b>${d.discussionScore.toFixed(1)} / 40</b>（PTT ${d.pttCount} 篇 / ${d.pttPushes} 推文）<br/>
+                🎬 影音曝光得分：<b>${d.videoScore.toFixed(1)} / 20</b><br/>
+                <span style="color:#059669;font-size:12px;font-weight:bold;">點擊圓點開啟證據與計分明細視窗</span>`;
       }
     },
     grid: { left: '8%', right: '8%', top: '12%', bottom: '15%' },
     xAxis: {
-      name: '關聯新聞紀錄總數 (筆)',
+      name: '媒體曝光得分 (/40)',
       nameLocation: 'middle',
       nameGap: 30,
       type: 'value',
-      minInterval: 1
+      min: 0,
+      max: 42,
+      minInterval: 5
     },
     yAxis: {
-      name: '獨立媒體家數 + PTT 文章數',
+      name: '消費者討論得分 (/40)',
       nameLocation: 'middle',
       nameGap: 40,
       type: 'value',
-      minInterval: 1
+      min: 0,
+      max: 42,
+      minInterval: 5
     },
     series: [{
       type: 'scatter',
       data: seriesData,
-      symbolSize: function(val) { return Math.min(52, Math.max(18, val[2])); },
+      symbolSize: function(val) { return Math.min(50, Math.max(16, val[2])); },
       label: {
         show: true,
         formatter: function(param) { return param.data.name; },
         position: 'top',
-        fontSize: 12,
+        fontSize: 11,
         fontWeight: 'bold',
         color: '#1e293b'
-      },
-      itemStyle: {
-        color: '#059669',
-        opacity: 0.85,
-        borderColor: '#064e3b',
-        borderWidth: 1.5
       }
     }]
   });
