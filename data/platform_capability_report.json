@@ -8,10 +8,10 @@
   },
   {
     "platform": "PTT 飲料板 (Drink)",
-    "status": "已測試可取得",
+    "status": "已測試可取得（已完成端到端採集）",
     "tested_at": "2026-11-12 11:32:14",
-    "test_method": "HTTP GET https://www.ptt.cc/bbs/Drink/index.html (附 User-Agent)",
-    "test_result": "HTTP 200 成功取得列表頁，解析出 8 篇公開文章標題與網址（例如：[心得] 御私藏Cozy Tea 蜜奶粿鮮奶茶）。可取得標題、作者、日期、推文數與單篇內文。"
+    "test_method": "Python urllib 帶 Cookie: over18=1 實測抓取列表頁、5組關鍵字搜尋頁與 14 篇單篇內文＋推噓文",
+    "test_result": "HTTP 200 成功。已實際保存 14 篇文章之網址、標題、作者、發布時間、擷取時間、完整內文與 79 則推噓文（見分頁 1）。"
   },
   {
     "platform": "Dcard (公開 API / 網頁)",
