@@ -64,6 +64,11 @@
         </label>
         <select id="week-timeline-select" onchange="selectObservationPeriod(this.value)"
           class="w-full max-w-[340px] sm:max-w-[380px] truncate bg-white text-emerald-950 font-extrabold text-base px-3 py-1.5 rounded-lg border-2 border-emerald-300 shadow-sm focus:outline-none cursor-pointer">
+          <option value="ALL">全部已採集期間（95 筆新聞 / 14 篇 PTT，涵蓋 16 款商品）</option>
+          <option value="2026-W46">2026-W46 當期觀察（2026/11/09 ~ 11/12 實測採集）</option>
+          <option value="2026-W45">2026-W45 觀察期（2026/11/02 ~ 11/08 發布紀錄）</option>
+          <option value="2026-W44">2026-W44 觀察期（2026/10/26 ~ 11/01 發布紀錄）</option>
+          <option value="2026-W43">2026-W43 觀察期（2026/10/19 ~ 10/25 發布紀錄）</option>
         </select>
       </div>
 
@@ -120,9 +125,10 @@
             <button onclick="setProductTypeFilter('新品')" id="type-btn-新品" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-emerald-50">🆕 新品</button>
             <button onclick="setProductTypeFilter('舊品回歸')" id="type-btn-舊品回歸" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-purple-50">🔄 舊品回歸</button>
             <button onclick="setProductTypeFilter('促銷')" id="type-btn-促銷" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-amber-50">🏷️ 促銷／聯名</button>
+            <button onclick="setProductTypeFilter('合集')" id="type-btn-合集" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-sky-50">📦 多品牌合集提及</button>
             <button onclick="setProductTypeFilter('PENDING')" id="type-btn-PENDING" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200">⏳ 待確認品名或原價</button>
           </div>
-          <span id="product-filter-count-badge" class="px-3 py-1 bg-emerald-50 border border-emerald-300 text-emerald-900 font-extrabold text-sm rounded-lg"></span>
+          <span id="product-filter-count-badge" class="px-3 py-1 bg-emerald-50 border border-emerald-300 text-emerald-900 font-extrabold text-sm rounded-lg">目前顯示：16 / 16 款商品與活動</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 border-t border-slate-200">
@@ -227,25 +233,37 @@
 
       <!-- 區塊 B：20 個新聞事件整理清單 -->
       <div class="space-y-4">
-        <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3">
-          <div>
-            <h2 class="text-2xl font-black text-slate-900">🗂️ 20 個新聞事件整理清單（保留全部 95 筆依連結去重的新聞紀錄）</h2>
-            <p class="text-base text-slate-600 mt-1">
-              區分新品、舊品回歸、促銷、跨品牌合集，以及 8 篇無法確認同源之單篇獨立保留報導。
-            </p>
+        <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-slate-200 shadow-sm space-y-4">
+          <div class="flex flex-wrap justify-between items-center gap-3">
+            <div>
+              <h2 class="text-2xl font-black text-slate-900">🗂️ 20 個新聞事件整理清單（保留全部 95 筆依連結去重的新聞紀錄）</h2>
+              <p class="text-base text-slate-600 mt-1">
+                區分新品、舊品回歸、促銷、跨品牌合集，以及 8 篇無法確認同源之單篇獨立保留報導。
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <select id="filter-event-cat-select" onchange="applyEventFilter()"
+                class="bg-emerald-50 text-emerald-950 font-extrabold text-base px-3 py-2 rounded-lg border-2 border-emerald-400 cursor-pointer">
+                <option value="ALL">全部新聞事件 (20 個事件 / 95 筆紀錄)</option>
+                <option value="FOCUSED">🎯 單一品牌明確同源事件 (9 個事件 / 46 筆紀錄)</option>
+                <option value="新品">🆕 包含「新品」標籤之事件</option>
+                <option value="舊品回歸">🔄 包含「舊品回歸」標籤之事件</option>
+                <option value="促銷">🏷️ 包含「促銷／聯名」標籤之事件</option>
+                <option value="合集">📦 跨品牌媒體「合集／懶人包」事件 (3 個合集 / 41 筆紀錄)</option>
+                <option value="UNMERGED">🔒 無法確認同源・單篇獨立保留 (8 篇)</option>
+              </select>
+              <span id="event-filter-badge" class="bg-slate-100 border border-slate-300 px-3 py-2 rounded-lg font-bold text-slate-800 text-sm"></span>
+            </div>
           </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <select id="filter-event-cat-select" onchange="applyEventFilter()"
-              class="bg-emerald-50 text-emerald-950 font-extrabold text-base px-3 py-2 rounded-lg border-2 border-emerald-400 cursor-pointer">
-              <option value="ALL">全部新聞事件 (20 個事件 / 95 筆紀錄)</option>
-              <option value="FOCUSED">🎯 單一品牌明確同源事件 (9 個事件 / 46 筆紀錄)</option>
-              <option value="新品">🆕 包含「新品」標籤之事件</option>
-              <option value="舊品回歸">🔄 包含「舊品回歸」標籤之事件</option>
-              <option value="促銷">🏷️ 包含「促銷／聯名」標籤之事件</option>
-              <option value="合集">📦 跨品牌媒體「合集／懶人包」事件 (3 個合集 / 41 筆紀錄)</option>
-              <option value="UNMERGED">🔒 無法確認同源・單篇獨立保留 (8 篇)</option>
-            </select>
-            <span id="event-filter-badge" class="bg-slate-100 border border-slate-300 px-3 py-2 rounded-lg font-bold text-slate-800 text-sm"></span>
+          <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200">
+            <span class="text-sm font-extrabold text-slate-700 mr-1">快速切換分類：</span>
+            <button onclick="setEventCategoryFilter('ALL')" id="evt-btn-ALL" class="evt-filter-btn px-3 py-1 rounded-lg text-sm font-extrabold bg-emerald-700 text-white shadow-sm">全部事件 (20)</button>
+            <button onclick="setEventCategoryFilter('新品')" id="evt-btn-新品" class="evt-filter-btn px-3 py-1 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-emerald-50">🆕 新品</button>
+            <button onclick="setEventCategoryFilter('舊品回歸')" id="evt-btn-舊品回歸" class="evt-filter-btn px-3 py-1 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-purple-50">🔄 舊品回歸</button>
+            <button onclick="setEventCategoryFilter('促銷')" id="evt-btn-促銷" class="evt-filter-btn px-3 py-1 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-amber-50">🏷️ 促銷／聯名</button>
+            <button onclick="setEventCategoryFilter('合集')" id="evt-btn-合集" class="evt-filter-btn px-3 py-1 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-sky-50">📦 多品牌合集 (3)</button>
+            <button onclick="setEventCategoryFilter('FOCUSED')" id="evt-btn-FOCUSED" class="evt-filter-btn px-3 py-1 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-emerald-50">🎯 單一品牌事件 (9)</button>
+            <button onclick="setEventCategoryFilter('UNMERGED')" id="evt-btn-UNMERGED" class="evt-filter-btn px-3 py-1 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200">🔒 單篇獨立保留 (8)</button>
           </div>
         </div>
         <div id="news-events-list" class="space-y-5"></div>
@@ -434,6 +452,6 @@
     </div>
   </footer>
 
-  <script src="js/app.js?v=stage3_fixed_20261112"></script>
+  <script src="js/app.js?v=stage3_v2_20261112"></script>
 </body>
 </html>

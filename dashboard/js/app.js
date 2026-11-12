@@ -10260,6 +10260,8 @@ function getFilteredAndSortedProducts() {
     }
     if (currentProductTypeFilter === "PENDING") {
       if (!p.is_pending_confirm) return false;
+    } else if (currentProductTypeFilter === "合集") {
+      if (!(p.metrics && p.metrics.roundup_news_count > 0) && !(p.item_types || []).includes("合集")) return false;
     } else if (currentProductTypeFilter !== "ALL") {
       if (!(p.item_types || []).includes(currentProductTypeFilter)) return false;
     }
@@ -10303,7 +10305,7 @@ function applyProductFilters() {
   const filtered = getFilteredAndSortedProducts();
   renderHomepageKpis(filtered);
   renderProductCardList(filtered);
-  renderMatrixChart(filtered);
+  try { renderMatrixChart(filtered); } catch (err) { console.error(err); }
 }
 
 function renderHomepageKpis(filteredProducts) {
@@ -10844,8 +10846,25 @@ function toggleEventSources(eventId) {
 }
 
 function applyEventFilter() {
-  currentEventCategoryFilter = document.getElementById('filter-event-cat-select').value;
+  const sel = document.getElementById('filter-event-cat-select');
+  if (sel) currentEventCategoryFilter = sel.value;
+  document.querySelectorAll('.evt-filter-btn').forEach(btn => {
+    btn.classList.remove('bg-emerald-700', 'text-white', 'shadow-sm');
+    btn.classList.add('bg-slate-100', 'text-slate-700');
+  });
+  const activeBtn = document.getElementById(`evt-btn-${currentEventCategoryFilter}`);
+  if (activeBtn) {
+    activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+    activeBtn.classList.add('bg-emerald-700', 'text-white', 'shadow-sm');
+  }
   renderNewsEventsList();
+}
+
+function setEventCategoryFilter(catVal) {
+  currentEventCategoryFilter = catVal;
+  const sel = document.getElementById('filter-event-cat-select');
+  if (sel) sel.value = catVal;
+  applyEventFilter();
 }
 
 function applyNewsFilter() {
@@ -11278,14 +11297,27 @@ window.addEventListener('resize', () => {
   if (categoryPieChartInstance) categoryPieChartInstance.resize();
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  initPeriodAndProductFilters();
-  applyProductFilters();
-  renderCrawlHistoryTable();
-  renderCrosscheckCases();
-  renderNewsEventsList();
-  renderPttSection();
-  initRawNewsSection();
-  renderCapabilityReport();
-  renderIsolatedDemo();
-});
+function initDashboardApp() {
+  if (window.__btrInitialized) return;
+  window.__btrInitialized = true;
+  const steps = [
+    initPeriodAndProductFilters,
+    applyProductFilters,
+    renderCrawlHistoryTable,
+    renderCrosscheckCases,
+    renderNewsEventsList,
+    renderPttSection,
+    initRawNewsSection,
+    renderCapabilityReport,
+    renderIsolatedDemo
+  ];
+  steps.forEach(fn => {
+    try { fn(); } catch (err) { console.error('[BeverageTrendRadar init step error]', err); }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDashboardApp);
+} else {
+  initDashboardApp();
+}
