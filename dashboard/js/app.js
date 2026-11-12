@@ -10233,9 +10233,50 @@ function initPeriodAndProductFilters() {
   }
 }
 
+function getPeriodLabel(periodId) {
+  const periods = verifiedProductsPayload.observation_periods || [];
+  const found = periods.find(p => p.period_id === periodId);
+  return found ? found.label : periodId;
+}
+
+function matchDateToPeriod(dateStr, periodId) {
+  if (!periodId || periodId === "ALL") return true;
+  if (!dateStr) return false;
+  // Normalize YYYY-MM-DD from "2026-11-11 13:30:33" or "Mon Nov 9 16:40:28 2026"
+  let isoDate = "";
+  if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+    isoDate = dateStr.slice(0, 10);
+  } else {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      isoDate = `${y}-${m}-${day}`;
+    }
+  }
+  if (!isoDate) return false;
+  if (periodId === "2026-W46") return isoDate >= "2026-11-09" && isoDate <= "2026-11-15";
+  if (periodId === "2026-W45") return isoDate >= "2026-11-02" && isoDate <= "2026-11-08";
+  if (periodId === "2026-W44") return isoDate >= "2026-10-26" && isoDate <= "2026-11-01";
+  if (periodId === "2026-W43") return isoDate >= "2026-10-13" && isoDate <= "2026-10-25";
+  return true;
+}
+
+function getPeriodFilteredProducts() {
+  const allProducts = verifiedProductsPayload.products || [];
+  if (currentPeriodId === "ALL") return allProducts;
+  return allProducts.filter(p => (p.observation_weeks || []).includes(currentPeriodId));
+}
+
 function selectObservationPeriod(periodId) {
   currentPeriodId = periodId;
   applyProductFilters();
+  try { renderWordCloudChart(); } catch (err) { console.error(err); }
+  try { renderBrandComparisonCharts(); } catch (err) { console.error(err); }
+  try { renderNewsEventsList(); } catch (err) { console.error(err); }
+  try { renderPttSection(); } catch (err) { console.error(err); }
+  try { renderVerifiedNewsList(); } catch (err) { console.error(err); }
 }
 
 function setProductTypeFilter(typeVal) {
@@ -10648,9 +10689,13 @@ function renderMatrixChart(filteredProducts) {
 }
 
 // ============================================================================
-// 分頁 1：詞雲與品牌比較
+// 分頁 1：詞雲與品牌比較（隨上方「觀察期間」動態連動）
 // ============================================================================
 function renderWordCloudChart() {
+  const products = getPeriodFilteredProducts();
+  if (products.length > 0) {
+    renderWordCloudDetailPanel(products[0].product_id);
+  }
   const chartDom = document.getElementById('chart-wordcloud');
   if (!chartDom || typeof echarts === 'undefined') return;
   if (!wordCloudChartInstance) {
@@ -10662,7 +10707,6 @@ function renderWordCloudChart() {
     });
   }
 
-  const products = verifiedProductsPayload.products || [];
   const palette = ['#047857', '#0f766e', '#1d4ed8', '#4338ca', '#7e22ce', '#b45309', '#be123c'];
   const wcData = products.map((p, idx) => ({
     name: p.short_word,
@@ -10688,23 +10732,23 @@ function renderWordCloudChart() {
       textStyle: { fontFamily: 'sans-serif', fontWeight: 'bold' },
       data: wcData
     }]
-  });
-
-  if (products.length > 0) {
-    renderWordCloudDetailPanel(products[0].product_id);
-  }
+  }, true);
 }
 
 function renderWordCloudDetailPanel(productId) {
   const panel = document.getElementById('wordcloud-detail-panel');
   if (!panel) return;
-  const products = verifiedProductsPayload.products || [];
+  const products = getPeriodFilteredProducts();
   const p = products.find(item => item.product_id === productId) || products[0];
-  if (!p) return;
+  if (!p) {
+    panel.innerHTML = `<div class="p-4 text-slate-600 font-bold">此觀察期間無符合之商品資料。</div>`;
+    return;
+  }
 
   panel.innerHTML = `
     <div class="space-y-3">
       <div class="flex flex-wrap items-center gap-2">
+        <span class="px-2.5 py-0.5 bg-slate-900 text-emerald-300 font-mono font-bold text-xs rounded">📅 期間：${currentPeriodId}</span>
         <span class="px-2.5 py-0.5 bg-emerald-700 text-white font-extrabold text-xs rounded">${p.brand}</span>
         ${(p.item_types || []).map(getCategoryBadgeHtml).join(' ')}
       </div>
@@ -10731,7 +10775,7 @@ function renderWordCloudDetailPanel(productId) {
 }
 
 function renderBrandComparisonCharts() {
-  const products = verifiedProductsPayload.products || [];
+  const products = getPeriodFilteredProducts();
   const brandStats = {};
   products.forEach(p => {
     const b = p.brand;
@@ -10758,7 +10802,7 @@ function renderBrandComparisonCharts() {
         { name: '跨品牌合集提及', type: 'bar', stack: 'news', data: brands.map(b => brandStats[b].roundup), itemStyle: { color: '#38bdf8' } },
         { name: 'PTT 討論篇數', type: 'bar', data: brands.map(b => brandStats[b].ptt), itemStyle: { color: '#4f46e5' } }
       ]
-    });
+    }, true);
   }
 
   const pieDom = document.getElementById('chart-category-radar');
@@ -10784,7 +10828,7 @@ function renderBrandComparisonCharts() {
           { value: othCnt, name: '🍵 常態招牌實測', itemStyle: { color: '#64748b' } }
         ]
       }]
-    });
+    }, true);
   }
 }
 
@@ -10982,29 +11026,44 @@ function renderCrosscheckCases() {
 
 function renderNewsEventsList() {
   const allEvents = newsEventsData.events || [];
-  let filtered = allEvents;
+  let filtered = allEvents.map(ev => {
+    const periodSources = currentPeriodId === "ALL"
+      ? (ev.source_records || [])
+      : (ev.source_records || []).filter(s => matchDateToPeriod(s.published_at, currentPeriodId));
+    return Object.assign({}, ev, {
+      period_sources: periodSources,
+      period_source_count: periodSources.length
+    });
+  }).filter(ev => ev.period_source_count > 0);
 
   if (currentEventCategoryFilter === "FOCUSED") {
-    filtered = allEvents.filter(e => !e.event_id.startsWith("EVT-ROUNDUP-") && !e.event_id.startsWith("EVT-INDEPENDENT-"));
+    filtered = filtered.filter(e => !e.event_id.startsWith("EVT-ROUNDUP-") && !e.event_id.startsWith("EVT-INDEPENDENT-"));
   } else if (currentEventCategoryFilter === "UNMERGED") {
-    filtered = allEvents.filter(e => e.event_id.startsWith("EVT-INDEPENDENT-"));
+    filtered = filtered.filter(e => e.event_id.startsWith("EVT-INDEPENDENT-"));
   } else if (currentEventCategoryFilter !== "ALL") {
-    filtered = allEvents.filter(e => (e.event_categories || []).includes(currentEventCategoryFilter));
+    filtered = filtered.filter(e => (e.event_categories || []).includes(currentEventCategoryFilter));
   }
 
-  const totalRecordsInFiltered = filtered.reduce((acc, e) => acc + (e.source_count || 0), 0);
+  const totalRecordsInFiltered = filtered.reduce((acc, e) => acc + (e.period_source_count || 0), 0);
   const badge = document.getElementById('event-filter-badge');
   if (badge) {
-    badge.innerText = `顯示：${filtered.length} / ${allEvents.length} 個事件（涵蓋 ${totalRecordsInFiltered} 筆紀錄）`;
+    const periodTag = currentPeriodId === "ALL" ? "全部期間" : currentPeriodId;
+    badge.innerText = `[${periodTag}] 顯示：${filtered.length} / ${allEvents.length} 個事件（涵蓋 ${totalRecordsInFiltered} 筆紀錄）`;
   }
 
   const container = document.getElementById('news-events-list');
   if (!container) return;
 
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="p-6 bg-white rounded-xl border-2 border-slate-200 text-center font-bold text-slate-600">此觀察期間（${currentPeriodId}）與分類條件下無符合之新聞事件。</div>`;
+    return;
+  }
+
   container.innerHTML = filtered.map((ev, idx) => {
     const catBadges = (ev.event_categories || []).map(getCategoryBadgeHtml).join(' ');
-    const previewSources = (ev.source_records || []).slice(0, 3);
-    const hiddenSources = (ev.source_records || []).slice(3);
+    const activeSources = ev.period_sources || ev.source_records || [];
+    const previewSources = activeSources.slice(0, 3);
+    const hiddenSources = activeSources.slice(3);
 
     const renderSourceRow = (s) => `
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-emerald-300">
@@ -11036,7 +11095,7 @@ function renderNewsEventsList() {
           </div>
           <div class="text-right shrink-0">
             <div class="px-3.5 py-1.5 bg-emerald-100 text-emerald-950 font-black text-base rounded-lg border border-emerald-300">
-              保留 ${ev.source_count} 筆新聞紀錄（${ev.unique_publisher_count} 家媒體）
+              ${currentPeriodId === "ALL" ? `保留 ${ev.source_count} 筆新聞紀錄（${ev.unique_publisher_count} 家媒體）` : `本期間 ${ev.period_source_count} 筆紀錄（全期共 ${ev.source_count} 筆）`}
             </div>
           </div>
         </div>
@@ -11062,7 +11121,20 @@ function renderNewsEventsList() {
 function renderPttSection() {
   const meta = verifiedPttData.collection_metadata || {};
   const searchLogs = meta.search_logs || [];
-  const articles = verifiedPttData.articles || [];
+  const allArticles = verifiedPttData.articles || [];
+  const periodProducts = getPeriodFilteredProducts();
+  const linkedPttIdsInPeriod = new Set();
+  periodProducts.forEach(p => {
+    (p.current_period_ptt_ids || []).forEach(id => linkedPttIdsInPeriod.add(id));
+    (p.recent_push_old_post_ids || []).forEach(id => linkedPttIdsInPeriod.add(id));
+    (p.historical_ref_ptt_ids || []).forEach(id => linkedPttIdsInPeriod.add(id));
+  });
+  const articles = currentPeriodId === "ALL"
+    ? allArticles
+    : allArticles.filter(art => {
+        const pubAt = (art.raw_original && art.raw_original.published_at) || "";
+        return matchDateToPeriod(pubAt, currentPeriodId) || linkedPttIdsInPeriod.has(art.ptt_evidence_id);
+      });
 
   const searchContainer = document.getElementById('ptt-search-log-list');
   if (searchContainer) {
@@ -11214,14 +11286,15 @@ function initRawNewsSection() {
 function renderVerifiedNewsList() {
   const records = verifiedNewsData.records || [];
   const filtered = records.filter(r => {
+    const matchPeriod = currentPeriodId === "ALL" || matchDateToPeriod(r.published_at, currentPeriodId);
     const matchBrand = currentFilterBrand === "ALL" || r.brand_detected === currentFilterBrand;
     const matchQuery = currentFilterQuery === "ALL" || r.query_id === currentFilterQuery;
-    return matchBrand && matchQuery;
+    return matchPeriod && matchBrand && matchQuery;
   });
 
   const badge = document.getElementById('filtered-count-badge');
   if (badge) {
-    badge.innerText = `顯示：${filtered.length} / ${records.length} 筆`;
+    badge.innerText = `[${currentPeriodId}] 顯示：${filtered.length} / ${records.length} 筆`;
   }
 
   const listEl = document.getElementById('verified-news-list');
