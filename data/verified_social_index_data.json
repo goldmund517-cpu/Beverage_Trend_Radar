@@ -1,0 +1,194 @@
+{
+  "collection_metadata": {
+    "source_name": "公開搜尋引擎社群索引 (DuckDuckGo HTML site:instagram.com / site:facebook.com 實測採集)",
+    "executed_at": "2026-11-13 00:09:08",
+    "total_unique_posts": 15,
+    "queries_executed": [
+      {
+        "query_id": "SOC-IG-1",
+        "platform": "Instagram 公開貼文索引",
+        "site_domain": "instagram.com",
+        "query_string": "site:instagram.com 迷客夏 新品",
+        "search_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+        "http_status": 200,
+        "items_found": 5
+      },
+      {
+        "query_id": "SOC-IG-2",
+        "platform": "Instagram 公開貼文索引",
+        "site_domain": "instagram.com",
+        "query_string": "site:instagram.com 麻古茶坊 芋泥 大茗",
+        "search_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A%20%E8%8A%8B%E6%B3%A5%20%E5%A4%A7%E8%8C%97",
+        "http_status": 200,
+        "items_found": 5
+      },
+      {
+        "query_id": "SOC-FB-1",
+        "platform": "Facebook 粉專貼文索引",
+        "site_domain": "facebook.com",
+        "query_string": "site:facebook.com 迷客夏 CoCo 麻古茶坊",
+        "search_url": "https://html.duckduckgo.com/html/?q=site%3Afacebook.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20CoCo%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A",
+        "http_status": 200,
+        "items_found": 5
+      }
+    ]
+  },
+  "posts": [
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/popular/%E8%BF%B7%E5%AE%A2%E5%A4%8F%E6%96%B0%E5%93%812026/",
+      "title": "迷客夏新品2026 - instagram.com",
+      "snippet": "Watch short videos about 迷客夏新品2026 from people around the world.",
+      "query_used": "site:instagram.com 迷客夏 新品",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+      "captured_at": "2026-11-13 00:09:02",
+      "social_evidence_id": "SOC-001",
+      "query_id": "SOC-IG-1",
+      "linked_product_ids": ["PROD-MILKSHA-WINTER-1111", "PROD-MILKSHA-SMOKE-BLACK"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/milksha_tw/",
+      "title": "迷客夏milksha (@milksha_tw) • Instagram photos and videos",
+      "snippet": "33K Followers, 103 Following, 102 Posts - 迷客夏milksha (@milksha_tw) on Instagram: \"Only The Best For You. 為了你，嚴選每一杯。 / 迷客夏官網｜線上菜單點餐｜成為小迷人\"",
+      "query_used": "site:instagram.com 迷客夏 新品",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+      "captured_at": "2026-11-13 00:09:02",
+      "social_evidence_id": "SOC-002",
+      "query_id": "SOC-IG-1",
+      "linked_product_ids": ["PROD-MILKSHA-WINTER-1111", "PROD-MILKSHA-SMOKE-BLACK"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/reel/DZE-fQuJAWJ/",
+      "title": "小陳 | 迷客夏這次夏季限定回歸的果茶四杯我都很愛，不管是茶香與酸甜蜜桃搭配的蜜桃烏龍跟蜜桃茉莉...",
+      "snippet": "迷客夏 2,463 likes 1.st_chen 迷客夏這次夏季限定回歸的果茶四杯我都很愛，不管是茶香與酸甜蜜桃搭配的蜜桃烏龍跟蜜桃茉莉，還是芒果與檸檬、香柚搭配的海鹽芒果綠跟夏嶼果茶，每一杯都非常消暑！",
+      "query_used": "site:instagram.com 迷客夏 新品",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+      "captured_at": "2026-11-13 00:09:02",
+      "social_evidence_id": "SOC-003",
+      "query_id": "SOC-IG-1",
+      "linked_product_ids": ["PROD-MILKSHA-WINTER-1111", "PROD-MILKSHA-SMOKE-BLACK"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/p/Deyt9YIiW62/",
+      "title": "迷客夏milksha | 「迷客夏全球示範店」光影、空間、現代美學與品味的全新交會",
+      "snippet": "「迷客夏全球示範店」光影、空間、現代美學與品味的全新交會。邀請國際設計團隊 Bito 操刀演繹全新識別，從看見品牌、走進門市、到拿到一杯飲品，對原料與品質的堅持，延伸至每一處空間細節。#迷客夏 #milksha #品牌全新升級",
+      "query_used": "site:instagram.com 迷客夏 新品",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+      "captured_at": "2026-11-13 00:09:02",
+      "social_evidence_id": "SOC-004",
+      "query_id": "SOC-IG-1",
+      "linked_product_ids": ["PROD-MILKSHA-SMOKE-BLACK"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/p/DSggkm5gIU3/",
+      "title": "迷客夏Milksha | 回顧大家最愛的迷客夏飲料有哪些?! 一起看年度必喝推薦",
+      "snippet": "今天就喝這杯🧋 迷客夏經典必喝都在這! 以自家牧場綠光鮮奶系列飲品深受喜愛的迷客夏可說是台灣最具人氣的一間在地手搖飲品牌，從紅茶拿鐵、柳丁綠茶到青檸綠茶、芋頭鮮奶...",
+      "query_used": "site:instagram.com 迷客夏 新品",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+      "captured_at": "2026-11-13 00:09:02",
+      "social_evidence_id": "SOC-005",
+      "query_id": "SOC-IG-1",
+      "linked_product_ids": ["PROD-MILKSHA-WINTER-1111", "PROD-MILKSHA-SMOKE-BLACK"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/reel/DST2XHqj_qb/",
+      "title": "麻古茶坊macu Tea | // 療芋系雙主角・人氣回歸 // #濃厚芋泥鮮奶 #芋泥波波鮮奶2.0",
+      "snippet": "74 likes, 0 comments - macu2008tw: \"// 療芋系雙主角・人氣回歸 // 一個極致濃厚 一個是嚼感十足 你今天會選哪一杯？ 純芋系代表｜ #濃厚芋泥鮮奶 大甲芋泥蒸到鬆香綿密 與鮮奶交疊出厚實甜香 口感系霸主｜ #芋泥波波鮮奶2.0\"",
+      "query_used": "site:instagram.com 麻古茶坊 芋泥 大茗",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A%20%E8%8A%8B%E6%B3%A5%20%E5%A4%A7%E8%8C%97",
+      "captured_at": "2026-11-13 00:09:04",
+      "social_evidence_id": "SOC-006",
+      "query_id": "SOC-IG-2",
+      "linked_product_ids": ["PROD-MACU-TARO-2026"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/reel/DS1UuQlCfcj/",
+      "title": "麻古茶坊MACU TEA | 好滋味一把抓進日常 #金絨芋泥玉米圓 - Instagram",
+      "snippet": "30 likes, 0 comments - macu2008tw: \"🕹️ 好滋味一把抓進日常 🎯 這夢幻搭配，你試過了嗎？ 夾爪直接命中 #金絨芋泥玉米圓! 金絨芝芝 × 大甲芋泥 × 玉米圓 三種靈魂配料同時到位 🧀 金絨芝芝｜加入現磨玉米汁\"",
+      "query_used": "site:instagram.com 麻古茶坊 芋泥 大茗",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A%20%E8%8A%8B%E6%B3%A5%20%E5%A4%A7%E8%8C%97",
+      "captured_at": "2026-11-13 00:09:04",
+      "social_evidence_id": "SOC-007",
+      "query_id": "SOC-IG-2",
+      "linked_product_ids": ["PROD-MACU-TARO-2026"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/macu2008tw/",
+      "title": "麻古茶坊MACU TEA (@macu2008tw) • Instagram photos and videos",
+      "snippet": "Verified 麻古茶坊MACU TEA 1,259 posts 23K followers 11 following Fresh Fruit × Drinking Dessert 果粒茶創始品牌 喝見鮮果新想像 Now in Season｜ #巨峰葡萄系列",
+      "query_used": "site:instagram.com 麻古茶坊 芋泥 大茗",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A%20%E8%8A%8B%E6%B3%A5%20%E5%A4%A7%E8%8C%97",
+      "captured_at": "2026-11-13 00:09:04",
+      "social_evidence_id": "SOC-008",
+      "query_id": "SOC-IG-2",
+      "linked_product_ids": ["PROD-MACU-GRAPE", "PROD-MACU-TARO-2026"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/p/DFCIAu4t8Hp/",
+      "title": "麻古茶坊macu Tea | 芋頭天然魔法-濃芋乳香大爆發 濃厚芋泥鮮奶",
+      "snippet": "29 likes, 0 comments - macu2008tw: \"芋頭天然魔法-濃芋乳香大爆發 ⭐純鮮奶 ⭐無奶精 ⭐無奶油 這個冬天，暖心的芋香藏在麻古的杯子裡! 濃厚芋泥鮮奶 手工壓製成滑順芋泥保留 Q 軟顆粒口感\"",
+      "query_used": "site:instagram.com 麻古茶坊 芋泥 大茗",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A%20%E8%8A%8B%E6%B3%A5%20%E5%A4%A7%E8%8C%97",
+      "captured_at": "2026-11-13 00:09:04",
+      "social_evidence_id": "SOC-009",
+      "query_id": "SOC-IG-2",
+      "linked_product_ids": ["PROD-MACU-TARO-2026"]
+    },
+    {
+      "platform": "Instagram 公開貼文索引",
+      "site_domain": "instagram.com",
+      "url": "https://www.instagram.com/p/CzIUDMvP8yI/",
+      "title": "麻古茶坊MACU TEA on Instagram: 在麻古芋見美好滋味 嚴選台中大甲新鮮芋頭",
+      "snippet": "181 likes, 1 comments - macu2008tw: \"在麻古芋見美好滋味 每一口都喝得到幸福 麻古的芋泥系列 嚴選台中大甲新鮮芋頭 💜 每一杯都富含膳食纖維 700 CC 超高飽足感，一杯就過癮!\"",
+      "query_used": "site:instagram.com 麻古茶坊 芋泥 大茗",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A%20%E8%8A%8B%E6%B3%A5%20%E5%A4%A7%E8%8C%97",
+      "captured_at": "2026-11-13 00:09:04",
+      "social_evidence_id": "SOC-010",
+      "query_id": "SOC-IG-2",
+      "linked_product_ids": ["PROD-MACU-TARO-2026"]
+    },
+    {
+      "platform": "Facebook 粉專貼文索引",
+      "site_domain": "facebook.com",
+      "url": "https://www.facebook.com/milkshatw/",
+      "title": "迷客夏milksha - 全新概念店開幕 ＆ 娜杯系列全台門市現折$10",
+      "snippet": "迷客夏全新概念店 開幕! ／ 號召全台門市一同熱烈響應🧡 10/28-11/01 現場點餐優惠 娜杯系列 全台門市現折$10 娜杯系列飲品 : 娜杯紅茶、娜杯紅茶拿鐵、娜杯糖燻奶霜 #迷客夏 #Milksha",
+      "query_used": "site:facebook.com 迷客夏 CoCo 麻古茶坊",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Afacebook.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20CoCo%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A",
+      "captured_at": "2026-11-13 00:09:05",
+      "social_evidence_id": "SOC-011",
+      "query_id": "SOC-FB-1",
+      "linked_product_ids": ["PROD-MILKSHA-SMOKE-BLACK", "PROD-MILKSHA-WINTER-1111"]
+    },
+    {
+      "platform": "Facebook 粉專貼文索引",
+      "site_domain": "facebook.com",
+      "url": "https://www.facebook.com/milkshopTanZi/",
+      "title": "迷客夏milkshop 潭子店 | Taichung - Facebook",
+      "snippet": "迷客夏milkshop 潭子店, Taichung. 580 followers · 6 talking about this · 85 were here. 潭子市區一杯即可外送，鄰近地區滿百就送",
+      "query_used": "site:facebook.com 迷客夏 CoCo 麻古茶坊",
+      "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Afacebook.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20CoCo%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A",
+      "captured_at": "2026-11-13 00:09:05",
+      "social_evidence_id": "SOC-012",
+      "query_id": "SOC-FB-1",
+      "linked_product_ids": ["PROD-MILKSHA-WINTER-1111"]
+    }
+  ]
+}

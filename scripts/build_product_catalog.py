@@ -12,6 +12,8 @@ DATA_DIR = BASE_DIR / "data"
 VERIFIED_NEWS_PATH = DATA_DIR / "verified_news_data.json"
 NEWS_EVENTS_PATH = DATA_DIR / "news_events_data.json"
 VERIFIED_PTT_PATH = DATA_DIR / "verified_ptt_data.json"
+VERIFIED_YT_PATH = DATA_DIR / "verified_youtube_data.json"
+VERIFIED_SOCIAL_PATH = DATA_DIR / "verified_social_index_data.json"
 OUTPUT_PRODUCTS_PATH = DATA_DIR / "verified_products_data.json"
 
 
@@ -22,6 +24,14 @@ def build_product_catalog():
         events_data = json.load(f)
     with open(VERIFIED_PTT_PATH, "r", encoding="utf-8") as f:
         ptt_data = json.load(f)
+    yt_videos = []
+    if VERIFIED_YT_PATH.exists():
+        with open(VERIFIED_YT_PATH, "r", encoding="utf-8") as f:
+            yt_videos = json.load(f).get("videos", [])
+    social_posts = []
+    if VERIFIED_SOCIAL_PATH.exists():
+        with open(VERIFIED_SOCIAL_PATH, "r", encoding="utf-8") as f:
+            social_posts = json.load(f).get("posts", [])
 
     news_by_id = {}
     for r in news_data.get("records", []):
@@ -477,6 +487,10 @@ def build_product_catalog():
 
         total_pushes = sum(a.get("raw_original", {}).get("total_push_entries", 0) for a in all_ptt_objs)
 
+        prod_id = p["product_id"]
+        linked_yt = [v for v in yt_videos if prod_id in (v.get("linked_product_ids") or [])]
+        linked_soc = [s for s in social_posts if prod_id in (s.get("linked_product_ids") or [])]
+
         p_copy = dict(p)
         p_copy["metrics"] = {
             "focused_news_count": len(focused_objs),
@@ -489,6 +503,8 @@ def build_product_catalog():
             "historical_ref_ptt_count": len(hist_ptt_objs),
             "total_ptt_count": len(all_ptt_objs),
             "total_ptt_pushes": total_pushes,
+            "youtube_video_count": len(linked_yt),
+            "social_index_count": len(linked_soc),
             "composite_score_status": "修訂中（暫不顯示模擬分）"
         }
         p_copy["resolved_focused_news"] = focused_objs
@@ -496,6 +512,8 @@ def build_product_catalog():
         p_copy["resolved_current_ptt"] = cur_ptt_objs
         p_copy["resolved_recent_push_ptt"] = recent_push_objs
         p_copy["resolved_historical_ptt"] = hist_ptt_objs
+        p_copy["resolved_youtube_videos"] = linked_yt
+        p_copy["resolved_social_posts"] = linked_soc
         enriched_products.append(p_copy)
 
     observation_periods = [
@@ -532,6 +550,14 @@ def build_product_catalog():
     ]
 
     crawl_batches = [
+        {
+            "batch_id": "BATCH-20261113-YT-SOCIAL",
+            "executed_at": "2026-11-13 00:09:08",
+            "source_pipeline": "線路二 YouTube 公開搜尋 (ytInitialData) + 線路三 IG/FB 搜尋引擎公開索引",
+            "query_scope": "5 組 YouTube 開箱/新聞關鍵字 + DuckDuckGo HTML site:instagram.com / site:facebook.com",
+            "records_collected": f"{len(yt_videos)} 部 YouTube 影片（含真實觀看次數）+ {len(social_posts)} 筆 IG/FB 公開貼文索引",
+            "status": "✅ YouTube 成功 / ⚠️ IG&FB 搜尋索引部分成功"
+        },
         {
             "batch_id": "BATCH-20261112-PTT",
             "executed_at": "2026-11-12 11:54:46",

@@ -1,45 +1,59 @@
 [
   {
+    "platform": "Google News RSS 台灣手搖飲新聞檢索",
+    "status": "已測試可取得（已完成端到端採集）",
+    "tested_at": "2026-11-12 11:32:12",
+    "test_method": "Python urllib 執行 Q1 (手搖飲新品/聯名/買一送一) + Q2 (13家品牌新品) RSS XML 採集與依連結去重",
+    "test_result": "HTTP 200 成功。已保存 95 筆依連結去重的新聞紀錄（涵蓋 23 家媒體）並歸納為 20 個新聞事件。"
+  },
+  {
+    "platform": "PTT 飲料板 (bbs/Drink)",
+    "status": "已測試可取得（已完成端到端採集）",
+    "tested_at": "2026-11-12 11:54:46",
+    "test_method": "Python urllib 帶 Cookie: over18=1 實測抓取列表頁、5組關鍵字搜尋頁與 14 篇單篇內文＋推噓文",
+    "test_result": "HTTP 200 成功。已實際保存 14 篇文章之網址、標題、作者、發布時間、擷取時間、完整內文與 79 則推噓文。"
+  },
+  {
+    "platform": "YouTube 公開搜尋（手搖飲新品開箱／實測影片）",
+    "status": "已測試可取得（已完成端到端採集）",
+    "tested_at": "2026-11-13 00:09:08",
+    "test_method": "Python scripts/collect_youtube_and_social.py 直接請求 YouTube 公開搜尋頁並解析 ytInitialData JSON（免 API Key）",
+    "test_result": "HTTP 200 成功。實測 5 組品牌與新品關鍵字，穩定抓回 23～24 部不重複公開影片之標題、頻道名稱、真實觀看次數（如 TVBS 7,438 次、厭世甜點店 112,442 次）、相對發布時間與影片連結。"
+  },
+  {
+    "platform": "Instagram (透過公開搜尋引擎索引反查貼文／Reels)",
+    "status": "只能取得部分（已完成搜尋索引採集）",
+    "tested_at": "2026-11-13 00:09:04",
+    "test_method": "直接爬 IG 會被登入牆攔截；改以 DuckDuckGo HTML 檢索 site:instagram.com 迷客夏 / 麻古茶坊 芋泥",
+    "test_result": "HTTP 200 部分成功。成功繞過 IG 登入牆抓回 10 筆 IG 公開貼文與 Reels 連結、標題摘要與搜尋引擎快照之按讚數（如 2,463 likes、181 likes、74 likes）；惟限制為：(1) 剛發布 1~3 天之極新貼文尚未被搜尋引擎收錄，(2) 連續密集查詢第 4 次起會觸發搜尋引擎 Rate Limit。"
+  },
+  {
+    "platform": "Facebook 粉絲專頁 (透過公開搜尋引擎索引反查貼文)",
+    "status": "只能取得部分（已完成搜尋索引採集）",
+    "tested_at": "2026-11-13 00:09:05",
+    "test_method": "透過 DuckDuckGo HTML 檢索 site:facebook.com 迷客夏 CoCo 麻古茶坊",
+    "test_result": "HTTP 200 部分成功。成功抓回迷客夏官方粉專「全新概念店開幕 ＆ 10/28-11/01 娜杯系列現折 $10」等公開貼文連結與內文摘要；惟無法免權杖直接展開貼文下方即時留言串。"
+  },
+  {
     "platform": "Google News 原始新聞內文讀取",
     "status": "只能取得部分",
     "tested_at": "2026-11-12 11:32:14",
     "test_method": "對 RSS 內 <link> (https://news.google.com/rss/articles/CBMi9wJBVV95cUxOZE...) 發送 HTTP GET",
-    "test_result": "HTTP 200，最終網址停留在 https://news.google.com/rss/articles/CBMi9wJBVV95c...（Google News 採用前端 JS/鞭炮加密跳轉頁，純 HTTP GET 僅拿到 Google 轉址殼層 HTML，無法直接取得媒體網站完整新聞內文，但人類在瀏覽器點擊該連結可正常自動跳轉開啟原新聞）。"
+    "test_result": "HTTP 200，Google News 採用前端 JS 加密跳轉頁，純 HTTP GET 僅拿到轉址殼層 HTML，但人類在瀏覽器點擊該連結可正常自動跳轉開啟原新聞。"
   },
   {
-    "platform": "PTT 飲料板 (Drink)",
-    "status": "已測試可取得（已完成端到端採集）",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "Python urllib 帶 Cookie: over18=1 實測抓取列表頁、5組關鍵字搜尋頁與 14 篇單篇內文＋推噓文",
-    "test_result": "HTTP 200 成功。已實際保存 14 篇文章之網址、標題、作者、發布時間、擷取時間、完整內文與 79 則推噓文（見分頁 1）。"
-  },
-  {
-    "platform": "Dcard (公開 API / 網頁)",
+    "platform": "Dcard (公開 API / 網頁 / 搜尋索引)",
     "status": "本次測試失敗",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "HTTP GET https://www.dcard.tw/service/api/v2/forums/food/posts?limit=5",
-    "test_result": "遭到 Cloudflare 防爬蟲攔截 (HTTP Error 403: Forbidden)，純標準 HTTP 請求無法直接取得 JSON。"
+    "tested_at": "2026-11-13 00:09:06",
+    "test_method": "直連 Dcard API 遭 Cloudflare 403 攔截；改測搜尋引擎索引時因連續查詢觸發 DuckDuckGo Rate Limit 且 Yahoo TW 回傳 HTTP 500 INKApi Error",
+    "test_result": "直連遭 Cloudflare 403 阻擋，公開搜尋索引亦受搜尋引擎頻率限制影響，需低頻率單獨查詢或無頭瀏覽器支援。"
   },
   {
     "platform": "Threads 搜尋頁",
     "status": "本次測試失敗",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "HTTP GET https://www.threads.net/search?q=%E6%89%8B%E6%90%96%E9%A3%B2",
-    "test_result": "HTTP 200（回傳 615056 bytes SPA 前端框架殼層，是否含貼文內文: False；無公開免金鑰搜尋 API，需登入或無頭瀏覽器渲染）。"
-  },
-  {
-    "platform": "Instagram (官方帳號與 Hashtag)",
-    "status": "尚未實作",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "無（本階段尚未編寫該平台採集程式）",
-    "test_result": "尚未實作爬蟲；Meta Graph API 需商業開發者權杖，直接爬取網頁受登入牆限制。"
-  },
-  {
-    "platform": "Facebook 粉絲專頁",
-    "status": "尚未實作",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "無（本階段尚未編寫該平台採集程式）",
-    "test_result": "尚未實作爬蟲；需 Graph API 權杖或手動登錄貼文網址。"
+    "tested_at": "2026-11-13 00:09:07",
+    "test_method": "HTTP GET https://www.threads.net/search?q=%E6%89%8B%E6%90%96%E9%A3%B2 及搜尋索引檢索",
+    "test_result": "直連回傳 615KB SPA 前端空殼（不含貼文內文）；公開搜尋引擎對 Threads 貼文索引極少，需登入或無頭瀏覽器渲染。"
   },
   {
     "platform": "小紅書 / 抖音 / TikTok",

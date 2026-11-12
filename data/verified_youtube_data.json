@@ -1,0 +1,464 @@
+{
+  "collection_metadata": {
+    "source_name": "YouTube 公開搜尋結果 (ytInitialData 實測採集)",
+    "executed_at": "2026-11-13 00:10:14",
+    "total_unique_videos": 23,
+    "queries_executed": [
+      {
+        "query_id": "YT-Q1",
+        "query_string": "迷客夏 新品 開箱",
+        "search_url": "https://www.youtube.com/results?search_query=%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81%20%E9%96%8B%E7%AE%B1&hl=zh-TW&gl=TW",
+        "http_status": 200,
+        "items_found": 4
+      },
+      {
+        "query_id": "YT-Q2",
+        "query_string": "大茗 榴槤 手搖飲",
+        "search_url": "https://www.youtube.com/results?search_query=%E5%A4%A7%E8%8C%97%20%E6%A6%B4%E6%A7%A4%20%E6%89%8B%E6%90%96%E9%A3%B2&hl=zh-TW&gl=TW",
+        "http_status": 200,
+        "items_found": 5
+      },
+      {
+        "query_id": "YT-Q3",
+        "query_string": "麻古茶坊 芋泥 葡萄 新品",
+        "search_url": "https://www.youtube.com/results?search_query=%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A%20%E8%8A%8B%E6%B3%A5%20%E8%91%A1%E8%90%84%20%E6%96%B0%E5%93%81&hl=zh-TW&gl=TW",
+        "http_status": 200,
+        "items_found": 5
+      },
+      {
+        "query_id": "YT-Q4",
+        "query_string": "CoCo 皮克敏 茉香凍奶綠",
+        "search_url": "https://www.youtube.com/results?search_query=CoCo%20%E7%9A%AE%E5%85%8B%E6%95%8F%20%E8%8C%89%E9%A6%99%E5%87%8D%E5%A5%B6%E7%B6%A0&hl=zh-TW&gl=TW",
+        "http_status": 200,
+        "items_found": 5
+      },
+      {
+        "query_id": "YT-Q5",
+        "query_string": "台灣 手搖飲 新品 開箱 2026",
+        "search_url": "https://www.youtube.com/results?search_query=%E5%8F%B0%E7%81%A3%20%E6%89%8B%E6%90%96%E9%A3%B2%20%E6%96%B0%E5%93%81%20%E9%96%8B%E7%AE%B1%202026&hl=zh-TW&gl=TW",
+        "http_status": 200,
+        "items_found": 5
+      }
+    ]
+  },
+  "videos": [
+    {
+      "video_id": "XibwJk5kqy4",
+      "url": "https://www.youtube.com/watch?v=XibwJk5kqy4",
+      "title": "[新品開箱] 迷客夏新品開箱！巨峰葡萄特輯🍇又！給我踩雷了😃✋🏼｜帕妃試毒Ep2｜DearPuffyShen",
+      "channel_name": "DearPuffyShen",
+      "published_time_text": "4 年前",
+      "view_count_text": "觀看次數：1,036次",
+      "view_count_numeric": 1036,
+      "duration_text": "6:43",
+      "query_used": "迷客夏 新品 開箱",
+      "captured_at": "2026-11-13 00:10:01",
+      "yt_evidence_id": "YT-001",
+      "query_id": "YT-Q1",
+      "linked_product_ids": [
+        "PROD-MILKSHA-WINTER-1111",
+        "PROD-MILKSHA-SMOKE-BLACK"
+      ]
+    },
+    {
+      "video_id": "L_MAIlrHmS4",
+      "url": "https://www.youtube.com/watch?v=L_MAIlrHmS4",
+      "title": "【開箱小記】迷客夏新品SHA樂冰開箱－愛上夏天的滋味！🐚貝殼趣生活",
+      "channel_name": "貝殼趣生活",
+      "published_time_text": "4 年前",
+      "view_count_text": "觀看次數：1,261次",
+      "view_count_numeric": 1261,
+      "duration_text": "6:56",
+      "query_used": "迷客夏 新品 開箱",
+      "captured_at": "2026-11-13 00:10:01",
+      "yt_evidence_id": "YT-002",
+      "query_id": "YT-Q1",
+      "linked_product_ids": [
+        "PROD-MILKSHA-WINTER-1111",
+        "PROD-MILKSHA-SMOKE-BLACK"
+      ]
+    },
+    {
+      "video_id": "P0bC74pSkks",
+      "url": "https://www.youtube.com/watch?v=P0bC74pSkks",
+      "title": "迷客夏新品？！香草夾心拿鐵好喝嗎？",
+      "channel_name": "蘿伊",
+      "published_time_text": "3 個月前",
+      "view_count_text": "觀看次數：82次",
+      "view_count_numeric": 82,
+      "duration_text": "2:22",
+      "query_used": "迷客夏 新品 開箱",
+      "captured_at": "2026-11-13 00:10:01",
+      "yt_evidence_id": "YT-003",
+      "query_id": "YT-Q1",
+      "linked_product_ids": [
+        "PROD-MILKSHA-WINTER-1111",
+        "PROD-MILKSHA-SMOKE-BLACK"
+      ]
+    },
+    {
+      "video_id": "v84C2G_kBZo",
+      "url": "https://www.youtube.com/watch?v=v84C2G_kBZo",
+      "title": "【Whoga開箱迷客夏】草莓庫莉系列開箱！聽說這次有新品唷～～",
+      "channel_name": "Whoga TV",
+      "published_time_text": "5 年前",
+      "view_count_text": "觀看次數：972次",
+      "view_count_numeric": 972,
+      "duration_text": "6:22",
+      "query_used": "迷客夏 新品 開箱",
+      "captured_at": "2026-11-13 00:10:01",
+      "yt_evidence_id": "YT-004",
+      "query_id": "YT-Q1",
+      "linked_product_ids": [
+        "PROD-MILKSHA-WINTER-1111",
+        "PROD-MILKSHA-SMOKE-BLACK"
+      ]
+    },
+    {
+      "video_id": "vpfyHDHGb-Q",
+      "url": "https://www.youtube.com/watch?v=vpfyHDHGb-Q",
+      "title": "手搖新品!再睡５分鐘攜手哈利波特 迷客夏飲品升級.大茗萬聖限定｜TVBS新聞 @TVBSNEWS01",
+      "channel_name": "TVBS NEWS",
+      "published_time_text": "2 週前",
+      "view_count_text": "觀看次數：7,438次",
+      "view_count_numeric": 7438,
+      "duration_text": "1:30",
+      "query_used": "大茗 榴槤 手搖飲",
+      "captured_at": "2026-11-13 00:10:02",
+      "yt_evidence_id": "YT-005",
+      "query_id": "YT-Q2",
+      "linked_product_ids": [
+        "PROD-DAMING-DURIAN",
+        "PROD-DAMING-AVOCADO"
+      ]
+    },
+    {
+      "video_id": "aYr3nm9GI0w",
+      "url": "https://www.youtube.com/watch?v=aYr3nm9GI0w",
+      "title": "2026手搖新品大亂鬥！7大品牌15款實測，這杯根本就是甜點吧！",
+      "channel_name": "厭世甜點店",
+      "published_time_text": "7 天前",
+      "view_count_text": "觀看次數：329,533次",
+      "view_count_numeric": 329533,
+      "duration_text": "22:59",
+      "query_used": "大茗 榴槤 手搖飲",
+      "captured_at": "2026-11-13 00:10:02",
+      "yt_evidence_id": "YT-006",
+      "query_id": "YT-Q2",
+      "linked_product_ids": [
+        "PROD-DAMING-DURIAN",
+        "PROD-DAMING-AVOCADO"
+      ]
+    },
+    {
+      "video_id": "ChNFZlI2ljM",
+      "url": "https://www.youtube.com/watch?v=ChNFZlI2ljM",
+      "title": "這杯是今年最好喝的果茶！大茗開箱",
+      "channel_name": "厭世甜點店",
+      "published_time_text": "2 年前",
+      "view_count_text": "觀看次數：112,442次",
+      "view_count_numeric": 112442,
+      "duration_text": "19:46",
+      "query_used": "大茗 榴槤 手搖飲",
+      "captured_at": "2026-11-13 00:10:02",
+      "yt_evidence_id": "YT-007",
+      "query_id": "YT-Q2",
+      "linked_product_ids": [
+        "PROD-DAMING-DURIAN",
+        "PROD-DAMING-AVOCADO"
+      ]
+    },
+    {
+      "video_id": "_OBpDlo6kkk",
+      "url": "https://www.youtube.com/watch?v=_OBpDlo6kkk",
+      "title": "手搖新品!再睡５分鐘攜手哈利波特 迷客夏飲品升級.大茗萬聖限定｜TVBS新聞 @TVBSNEWS02",
+      "channel_name": "TVBS選新聞",
+      "published_time_text": "2 週前",
+      "view_count_text": "觀看次數：559次",
+      "view_count_numeric": 559,
+      "duration_text": "1:30",
+      "query_used": "大茗 榴槤 手搖飲",
+      "captured_at": "2026-11-13 00:10:02",
+      "yt_evidence_id": "YT-008",
+      "query_id": "YT-Q2",
+      "linked_product_ids": [
+        "PROD-DAMING-DURIAN",
+        "PROD-DAMING-AVOCADO"
+      ]
+    },
+    {
+      "video_id": "aGA1eZRkTRU",
+      "url": "https://www.youtube.com/watch?v=aGA1eZRkTRU",
+      "title": "近期超紅🔥大茗哪些必喝？酪梨奶蓋、烤糖蕎麥凍、老奶奶鳳梨田開箱",
+      "channel_name": "吃吧!Dana & Una",
+      "published_time_text": "3 年前",
+      "view_count_text": "觀看次數：21,440次",
+      "view_count_numeric": 21440,
+      "duration_text": "9:48",
+      "query_used": "大茗 榴槤 手搖飲",
+      "captured_at": "2026-11-13 00:10:02",
+      "yt_evidence_id": "YT-009",
+      "query_id": "YT-Q2",
+      "linked_product_ids": [
+        "PROD-DAMING-DURIAN",
+        "PROD-DAMING-AVOCADO"
+      ]
+    },
+    {
+      "video_id": "aVEpOMZ57xE",
+      "url": "https://www.youtube.com/watch?v=aVEpOMZ57xE",
+      "title": "麻古茶坊新推「芋泥波波布蕾」!♥(´∀` )人 「大甲芋泥＋滑嫩布蕾」這組合太邪惡～",
+      "channel_name": "Foody吃貨",
+      "published_time_text": "5 年前",
+      "view_count_text": "觀看次數：1,971次",
+      "view_count_numeric": 1971,
+      "duration_text": "0:42",
+      "query_used": "麻古茶坊 芋泥 葡萄 新品",
+      "captured_at": "2026-11-13 00:10:03",
+      "yt_evidence_id": "YT-010",
+      "query_id": "YT-Q3",
+      "linked_product_ids": [
+        "PROD-MACU-TARO-2026",
+        "PROD-MACU-GRAPE"
+      ]
+    },
+    {
+      "video_id": "iDpqq9LOpVA",
+      "url": "https://www.youtube.com/watch?v=iDpqq9LOpVA",
+      "title": "2022巨峰葡萄系列",
+      "channel_name": "MACU麻古茶坊",
+      "published_time_text": "4 年前",
+      "view_count_text": "觀看次數：1,549次",
+      "view_count_numeric": 1549,
+      "duration_text": "0:30",
+      "query_used": "麻古茶坊 芋泥 葡萄 新品",
+      "captured_at": "2026-11-13 00:10:03",
+      "yt_evidence_id": "YT-011",
+      "query_id": "YT-Q3",
+      "linked_product_ids": [
+        "PROD-MACU-TARO-2026",
+        "PROD-MACU-GRAPE"
+      ]
+    },
+    {
+      "video_id": "p9nO3rf7kCo",
+      "url": "https://www.youtube.com/watch?v=p9nO3rf7kCo",
+      "title": "2023麻古鮮摘葡萄季",
+      "channel_name": "MACU麻古茶坊",
+      "published_time_text": "3 年前",
+      "view_count_text": "觀看次數：418,807次",
+      "view_count_numeric": 418807,
+      "duration_text": "0:31",
+      "query_used": "麻古茶坊 芋泥 葡萄 新品",
+      "captured_at": "2026-11-13 00:10:03",
+      "yt_evidence_id": "YT-012",
+      "query_id": "YT-Q3",
+      "linked_product_ids": [
+        "PROD-MACU-TARO-2026",
+        "PROD-MACU-GRAPE"
+      ]
+    },
+    {
+      "video_id": "hx1RMyzBV_A",
+      "url": "https://www.youtube.com/watch?v=hx1RMyzBV_A",
+      "title": "麻古茶坊「芋泥波波鮮奶」香濃開賣！(σ′▽‵)′▽‵)σ 大甲芋泥+芋圓珍珠有夠滿足～",
+      "channel_name": "Foody吃貨",
+      "published_time_text": "5 年前",
+      "view_count_text": "觀看次數：1,679次",
+      "view_count_numeric": 1679,
+      "duration_text": "0:49",
+      "query_used": "麻古茶坊 芋泥 葡萄 新品",
+      "captured_at": "2026-11-13 00:10:03",
+      "yt_evidence_id": "YT-013",
+      "query_id": "YT-Q3",
+      "linked_product_ids": [
+        "PROD-MACU-TARO-2026",
+        "PROD-MACU-GRAPE"
+      ]
+    },
+    {
+      "video_id": "GpVIgzZ2CXk",
+      "url": "https://www.youtube.com/watch?v=GpVIgzZ2CXk",
+      "title": "麻古茶坊推漸層紫「芝芝葡萄果粒」(´▽`ʃ♡ƪ)",
+      "channel_name": "Foody吃貨",
+      "published_time_text": "7 年前",
+      "view_count_text": "觀看次數：9,108次",
+      "view_count_numeric": 9108,
+      "duration_text": "0:41",
+      "query_used": "麻古茶坊 芋泥 葡萄 新品",
+      "captured_at": "2026-11-13 00:10:03",
+      "yt_evidence_id": "YT-014",
+      "query_id": "YT-Q3",
+      "linked_product_ids": [
+        "PROD-MACU-TARO-2026",
+        "PROD-MACU-GRAPE"
+      ]
+    },
+    {
+      "video_id": "7Q_jRNOufrQ",
+      "url": "https://www.youtube.com/watch?v=7Q_jRNOufrQ",
+      "title": "【皮克敏 11月懶人包】倉庫快爆了！五週年玩具珠寶、週年復刻＋台灣限定 CoCo 合作全攻略！我的 11 月每日必刷行程規劃｜Pikmin Bloom",
+      "channel_name": "Q之口袋",
+      "published_time_text": "9 天前",
+      "view_count_text": "觀看次數：5,728次",
+      "view_count_numeric": 5728,
+      "duration_text": "2:53",
+      "query_used": "CoCo 皮克敏 茉香凍奶綠",
+      "captured_at": "2026-11-13 00:10:04",
+      "yt_evidence_id": "YT-015",
+      "query_id": "YT-Q4",
+      "linked_product_ids": [
+        "PROD-COCO-PIKMIN-MOLI",
+        "PROD-COCO-CHOCO"
+      ]
+    },
+    {
+      "video_id": "Q_kzuuvNveo",
+      "url": "https://www.youtube.com/watch?v=Q_kzuuvNveo",
+      "title": "【皮克敏Bloom】5週年慶典全攻略✨！玩具珠寶皮克敏登場、CoCo聯名、全新玩法一次看🔥！",
+      "channel_name": "阿韋ahwei",
+      "published_time_text": "3 天前",
+      "view_count_text": "觀看次數：2,184次",
+      "view_count_numeric": 2184,
+      "duration_text": "3:59",
+      "query_used": "CoCo 皮克敏 茉香凍奶綠",
+      "captured_at": "2026-11-13 00:10:04",
+      "yt_evidence_id": "YT-016",
+      "query_id": "YT-Q4",
+      "linked_product_ids": [
+        "PROD-COCO-PIKMIN-MOLI",
+        "PROD-COCO-CHOCO"
+      ]
+    },
+    {
+      "video_id": "v2yO_A7mGhw",
+      "url": "https://www.youtube.com/watch?v=v2yO_A7mGhw",
+      "title": "2026年11月Pikmin皮克敏飛人COCO咖啡杯皮克敏取得",
+      "channel_name": "YUYU 專賣寶可夢刷機手機 PaC PaG 暴力攻 ipogo pgsharp安裝&vip贊助",
+      "published_time_text": "5 天前",
+      "view_count_text": "觀看次數：314次",
+      "view_count_numeric": 314,
+      "duration_text": "15:32",
+      "query_used": "CoCo 皮克敏 茉香凍奶綠",
+      "captured_at": "2026-11-13 00:10:04",
+      "yt_evidence_id": "YT-017",
+      "query_id": "YT-Q4",
+      "linked_product_ids": [
+        "PROD-COCO-PIKMIN-MOLI",
+        "PROD-COCO-CHOCO"
+      ]
+    },
+    {
+      "video_id": "PbP_uT997Uc",
+      "url": "https://www.youtube.com/watch?v=PbP_uT997Uc",
+      "title": "阿悠皮克敏 COCO都可 咖啡盆活動隨意拍",
+      "channel_name": "樹懶先生叫懶大",
+      "published_time_text": "3 天前",
+      "view_count_text": "觀看次數：189次",
+      "view_count_numeric": 189,
+      "duration_text": "4:22",
+      "query_used": "CoCo 皮克敏 茉香凍奶綠",
+      "captured_at": "2026-11-13 00:10:04",
+      "yt_evidence_id": "YT-018",
+      "query_id": "YT-Q4",
+      "linked_product_ids": [
+        "PROD-COCO-PIKMIN-MOLI",
+        "PROD-COCO-CHOCO"
+      ]
+    },
+    {
+      "video_id": "WB-OeKOSQNo",
+      "url": "https://www.youtube.com/watch?v=WB-OeKOSQNo",
+      "title": "【Pikmin Bloom】【皮克敏】五週年紀念玩具珠寶特別實測，6個大花苗都市傳說，希望一起開可以湊滿飾品，先開了兩個，一次開六個好像走了六萬步😂。#皮克敏 #pikmin ",
+      "channel_name": "Gary ",
+      "published_time_text": "15 小時前",
+      "view_count_text": "觀看次數：11次",
+      "view_count_numeric": 11,
+      "duration_text": "1:01",
+      "query_used": "CoCo 皮克敏 茉香凍奶綠",
+      "captured_at": "2026-11-13 00:10:04",
+      "yt_evidence_id": "YT-019",
+      "query_id": "YT-Q4",
+      "linked_product_ids": [
+        "PROD-COCO-PIKMIN-MOLI",
+        "PROD-COCO-CHOCO"
+      ]
+    },
+    {
+      "video_id": "fxq9QeoS5Kw",
+      "url": "https://www.youtube.com/watch?v=fxq9QeoS5Kw",
+      "title": "【2026全台手搖飲排行榜TOP10】第一名居然不是五十嵐？台灣人最愛的國民飲料揭曉！",
+      "channel_name": "FORMOSA PROUD 寶島驕傲",
+      "published_time_text": "9 個月前",
+      "view_count_text": "觀看次數：319次",
+      "view_count_numeric": 319,
+      "duration_text": "8:34",
+      "query_used": "台灣 手搖飲 新品 開箱 2026",
+      "captured_at": "2026-11-13 00:10:06",
+      "yt_evidence_id": "YT-020",
+      "query_id": "YT-Q5",
+      "linked_product_ids": [
+        "PROD-ROUNDUP-1111",
+        "PROD-GUIJI-OATLY",
+        "PROD-TRUEDAN-BUCKWHEAT"
+      ]
+    },
+    {
+      "video_id": "StqDOgbl7X8",
+      "url": "https://www.youtube.com/watch?v=StqDOgbl7X8",
+      "title": "挑戰手搖飲價格新高度！精品奶茶插旗高雄 唯一氣候正效益認證.獨家使用傳奇莊園茶源｜非凡財經新聞｜20260321",
+      "channel_name": "USTV 非凡電視",
+      "published_time_text": "7 個月前",
+      "view_count_text": "觀看次數：4,089次",
+      "view_count_numeric": 4089,
+      "duration_text": "1:45",
+      "query_used": "台灣 手搖飲 新品 開箱 2026",
+      "captured_at": "2026-11-13 00:10:06",
+      "yt_evidence_id": "YT-021",
+      "query_id": "YT-Q5",
+      "linked_product_ids": [
+        "PROD-ROUNDUP-1111",
+        "PROD-GUIJI-OATLY",
+        "PROD-TRUEDAN-BUCKWHEAT"
+      ]
+    },
+    {
+      "video_id": "SY1d6sc91TU",
+      "url": "https://www.youtube.com/watch?v=SY1d6sc91TU",
+      "title": "2026網友熱推手搖飲，蓮霧也能做飲料？女神員瑛大推的絕頂奶蓋！",
+      "channel_name": "厭世甜點店",
+      "published_time_text": "8 個月前",
+      "view_count_text": "觀看次數：137,457次",
+      "view_count_numeric": 137457,
+      "duration_text": "13:40",
+      "query_used": "台灣 手搖飲 新品 開箱 2026",
+      "captured_at": "2026-11-13 00:10:06",
+      "yt_evidence_id": "YT-022",
+      "query_id": "YT-Q5",
+      "linked_product_ids": [
+        "PROD-ROUNDUP-1111",
+        "PROD-GUIJI-OATLY",
+        "PROD-TRUEDAN-BUCKWHEAT"
+      ]
+    },
+    {
+      "video_id": "Mm8-aVvqPsI",
+      "url": "https://www.youtube.com/watch?v=Mm8-aVvqPsI",
+      "title": "手搖進化!「3秒封蓋」變易開罐 PK冒煙茶壺飲｜TVBS新聞 @TVBSNEWS01",
+      "channel_name": "TVBS NEWS",
+      "published_time_text": "4 個月前",
+      "view_count_text": "觀看次數：107,376次",
+      "view_count_numeric": 107376,
+      "duration_text": "2:01",
+      "query_used": "台灣 手搖飲 新品 開箱 2026",
+      "captured_at": "2026-11-13 00:10:06",
+      "yt_evidence_id": "YT-023",
+      "query_id": "YT-Q5",
+      "linked_product_ids": [
+        "PROD-ROUNDUP-1111",
+        "PROD-GUIJI-OATLY",
+        "PROD-TRUEDAN-BUCKWHEAT"
+      ]
+    }
+  ]
+}

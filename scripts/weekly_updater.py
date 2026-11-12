@@ -411,6 +411,7 @@ function renderProductCardList(filteredProducts) {
                 <div>🍵 <strong class="text-slate-900">風味與品類：</strong>${p.flavor_category} ｜ <strong class="text-slate-900">歸屬期間：</strong><span class="font-mono font-bold text-emerald-800">${(p.observation_weeks || []).join(', ')}</span></div>
                 <div>📰 <strong class="text-slate-900">新聞曝光證據：</strong>共 <strong class="text-emerald-700 text-lg">${p.metrics.total_news_count}</strong> 筆紀錄（單品專文 <strong>${p.metrics.focused_news_count}</strong> 筆 ＋ 跨品牌合集提及 <strong>${p.metrics.roundup_news_count}</strong> 筆，涵蓋 ${p.metrics.unique_publisher_count} 家媒體）</div>
                 <div>💬 <strong class="text-slate-900">PTT 飲料板討論：</strong><span class="font-bold text-indigo-800">${pttBadgeText}</span></div>
+                <div>🎬 <strong class="text-slate-900">延伸影音／社群索引：</strong>YouTube 開箱/報導 <strong class="text-rose-700">${p.metrics.youtube_video_count || 0}</strong> 部 ｜ IG/FB 公開貼文索引 <strong class="text-sky-700">${p.metrics.social_index_count || 0}</strong> 筆</div>
               </div>
             </div>
 
@@ -441,7 +442,7 @@ function renderProductCardList(filteredProducts) {
               </span>
               <button onclick="openProductDetailModal('${p.product_id}')"
                 class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm sm:text-base rounded-lg shadow-sm transition flex items-center gap-1.5">
-                <span>🔍 查看關聯證據明細（${p.metrics.total_news_count} 則新聞 ＋ ${p.metrics.total_ptt_count} 篇 PTT）</span>
+                <span>🔍 查看關聯證據明細（${p.metrics.total_news_count} 新聞 ＋ ${p.metrics.total_ptt_count} PTT ＋ ${(p.metrics.youtube_video_count || 0) + (p.metrics.social_index_count || 0)} 影音/IG/FB）</span>
               </button>
             </div>
           </div>
@@ -570,6 +571,53 @@ function openProductDetailModal(productId) {
         💬 關聯 PTT 飲料板 (bbs/Drink) 原文與推噓文核對（共 ${p.metrics.total_ptt_count} 篇）
       </h4>
       ${allPttHtml || `<div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-slate-600 font-bold">本次 PTT 飲料板採集範圍內未找到此商品之討論文章。</div>`}
+    </div>
+
+    <!-- 線路二：YouTube 開箱與報導影片明細 -->
+    <div class="space-y-3 pt-2">
+      <h4 class="text-lg font-black text-slate-900 border-b-2 border-rose-200 pb-2">
+        🎬 線路二：YouTube 公開搜尋開箱／新聞影片（共 ${(p.resolved_youtube_videos || []).length} 部，含真實觀看數）
+      </h4>
+      ${(p.resolved_youtube_videos || []).length > 0 ? `<div class="grid grid-cols-1 md:grid-cols-2 gap-3">` + (p.resolved_youtube_videos || []).map(v => `
+        <div class="p-3.5 bg-rose-50/40 rounded-xl border border-rose-200 flex flex-col justify-between gap-2">
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center justify-between gap-1 text-xs">
+              <span class="px-2 py-0.5 bg-rose-700 text-white font-mono font-bold rounded">${v.yt_evidence_id}</span>
+              <span class="font-extrabold text-rose-900">👁️ ${v.view_count_text} ｜ ⏱️ ${v.duration_text}</span>
+            </div>
+            <a href="${v.url}" target="_blank" rel="noopener noreferrer" class="text-base font-extrabold text-slate-900 hover:text-rose-700 underline decoration-rose-400 block">
+              ${v.title} ↗
+            </a>
+          </div>
+          <div class="text-xs font-bold text-slate-600 flex justify-between">
+            <span>📺 頻道：${v.channel_name}</span>
+            <span>📅 發布：${v.published_time_text}</span>
+          </div>
+        </div>
+      `).join('') + `</div>` : `<div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-500">本次 YouTube 關鍵字採集無直接對應影片。</div>`}
+    </div>
+
+    <!-- 線路三：IG / FB 公開搜尋引擎索引貼文明細 -->
+    <div class="space-y-3 pt-2">
+      <h4 class="text-lg font-black text-slate-900 border-b-2 border-sky-200 pb-2">
+        📸 線路三：Instagram ／ Facebook 搜尋引擎公開索引貼文（共 ${(p.resolved_social_posts || []).length} 筆）
+      </h4>
+      ${(p.resolved_social_posts || []).length > 0 ? `<div class="space-y-2.5">` + (p.resolved_social_posts || []).map(s => `
+        <div class="p-3.5 bg-sky-50/40 rounded-xl border border-sky-200 space-y-1.5">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-sky-800 text-white font-mono font-bold rounded">${s.social_evidence_id}</span>
+              <span class="font-extrabold text-sky-900">${s.platform}</span>
+              <span class="font-mono text-slate-500">查詢：${s.query_used}</span>
+            </div>
+            <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="font-extrabold text-sky-700 hover:underline">🔗 開啟原始貼文 ↗</a>
+          </div>
+          <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="text-base font-extrabold text-slate-900 hover:text-sky-800 underline block">
+            ${s.title}
+          </a>
+          <p class="text-sm text-slate-700 leading-relaxed">${s.snippet}</p>
+        </div>
+      `).join('') + `</div>` : `<div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-500">本次搜尋引擎公開索引採集無直接對應貼文。</div>`}
     </div>
   `;
 

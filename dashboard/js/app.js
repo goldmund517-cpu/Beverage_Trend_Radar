@@ -43,6 +43,14 @@ const verifiedProductsPayload = {
   ],
   "crawl_batches": [
     {
+      "batch_id": "BATCH-20261113-YT-SOCIAL",
+      "executed_at": "2026-11-13 00:09:08",
+      "source_pipeline": "線路二 YouTube 公開搜尋 (ytInitialData) + 線路三 IG/FB 搜尋引擎公開索引",
+      "query_scope": "5 組 YouTube 開箱/新聞關鍵字 + DuckDuckGo HTML site:instagram.com / site:facebook.com",
+      "records_collected": "23 部 YouTube 影片（含真實觀看次數）+ 12 筆 IG/FB 公開貼文索引",
+      "status": "✅ YouTube 成功 / ⚠️ IG&FB 搜尋索引部分成功"
+    },
+    {
       "batch_id": "BATCH-20261112-PTT",
       "executed_at": "2026-11-12 11:54:46",
       "source_pipeline": "PTT 飲料板 (bbs/Drink) 端到端採集 + 20個新聞事件歸納",
@@ -147,6 +155,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 2,
         "total_ptt_count": 2,
         "total_ptt_pushes": 3,
+        "youtube_video_count": 4,
+        "social_index_count": 6,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -805,6 +815,177 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "1",
           "list_date_short": "4/29"
         }
+      ],
+      "resolved_youtube_videos": [
+        {
+          "video_id": "XibwJk5kqy4",
+          "url": "https://www.youtube.com/watch?v=XibwJk5kqy4",
+          "title": "[新品開箱] 迷客夏新品開箱！巨峰葡萄特輯🍇又！給我踩雷了😃✋🏼｜帕妃試毒Ep2｜DearPuffyShen",
+          "channel_name": "DearPuffyShen",
+          "published_time_text": "4 年前",
+          "view_count_text": "觀看次數：1,036次",
+          "view_count_numeric": 1036,
+          "duration_text": "6:43",
+          "query_used": "迷客夏 新品 開箱",
+          "captured_at": "2026-11-13 00:10:01",
+          "yt_evidence_id": "YT-001",
+          "query_id": "YT-Q1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111",
+            "PROD-MILKSHA-SMOKE-BLACK"
+          ]
+        },
+        {
+          "video_id": "L_MAIlrHmS4",
+          "url": "https://www.youtube.com/watch?v=L_MAIlrHmS4",
+          "title": "【開箱小記】迷客夏新品SHA樂冰開箱－愛上夏天的滋味！🐚貝殼趣生活",
+          "channel_name": "貝殼趣生活",
+          "published_time_text": "4 年前",
+          "view_count_text": "觀看次數：1,261次",
+          "view_count_numeric": 1261,
+          "duration_text": "6:56",
+          "query_used": "迷客夏 新品 開箱",
+          "captured_at": "2026-11-13 00:10:01",
+          "yt_evidence_id": "YT-002",
+          "query_id": "YT-Q1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111",
+            "PROD-MILKSHA-SMOKE-BLACK"
+          ]
+        },
+        {
+          "video_id": "P0bC74pSkks",
+          "url": "https://www.youtube.com/watch?v=P0bC74pSkks",
+          "title": "迷客夏新品？！香草夾心拿鐵好喝嗎？",
+          "channel_name": "蘿伊",
+          "published_time_text": "3 個月前",
+          "view_count_text": "觀看次數：82次",
+          "view_count_numeric": 82,
+          "duration_text": "2:22",
+          "query_used": "迷客夏 新品 開箱",
+          "captured_at": "2026-11-13 00:10:01",
+          "yt_evidence_id": "YT-003",
+          "query_id": "YT-Q1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111",
+            "PROD-MILKSHA-SMOKE-BLACK"
+          ]
+        },
+        {
+          "video_id": "v84C2G_kBZo",
+          "url": "https://www.youtube.com/watch?v=v84C2G_kBZo",
+          "title": "【Whoga開箱迷客夏】草莓庫莉系列開箱！聽說這次有新品唷～～",
+          "channel_name": "Whoga TV",
+          "published_time_text": "5 年前",
+          "view_count_text": "觀看次數：972次",
+          "view_count_numeric": 972,
+          "duration_text": "6:22",
+          "query_used": "迷客夏 新品 開箱",
+          "captured_at": "2026-11-13 00:10:01",
+          "yt_evidence_id": "YT-004",
+          "query_id": "YT-Q1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111",
+            "PROD-MILKSHA-SMOKE-BLACK"
+          ]
+        }
+      ],
+      "resolved_social_posts": [
+        {
+          "platform": "Instagram 公開貼文索引",
+          "site_domain": "instagram.com",
+          "url": "https://www.instagram.com/popular/%E8%BF%B7%E5%AE%A2%E5%A4%8F%E6%96%B0%E5%93%812026/",
+          "title": "迷客夏新品2026 - instagram.com",
+          "snippet": "Watch short videos about 迷客夏新品2026 from people around the world.",
+          "query_used": "site:instagram.com 迷客夏 新品",
+          "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+          "captured_at": "2026-11-13 00:09:02",
+          "social_evidence_id": "SOC-001",
+          "query_id": "SOC-IG-1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111",
+            "PROD-MILKSHA-SMOKE-BLACK"
+          ]
+        },
+        {
+          "platform": "Instagram 公開貼文索引",
+          "site_domain": "instagram.com",
+          "url": "https://www.instagram.com/milksha_tw/",
+          "title": "迷客夏milksha (@milksha_tw) • Instagram photos and videos",
+          "snippet": "33K Followers, 103 Following, 102 Posts - 迷客夏milksha (@milksha_tw) on Instagram: \"Only The Best For You. 為了你，嚴選每一杯。 / 迷客夏官網｜線上菜單點餐｜成為小迷人\"",
+          "query_used": "site:instagram.com 迷客夏 新品",
+          "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+          "captured_at": "2026-11-13 00:09:02",
+          "social_evidence_id": "SOC-002",
+          "query_id": "SOC-IG-1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111",
+            "PROD-MILKSHA-SMOKE-BLACK"
+          ]
+        },
+        {
+          "platform": "Instagram 公開貼文索引",
+          "site_domain": "instagram.com",
+          "url": "https://www.instagram.com/reel/DZE-fQuJAWJ/",
+          "title": "小陳 | 迷客夏這次夏季限定回歸的果茶四杯我都很愛，不管是茶香與酸甜蜜桃搭配的蜜桃烏龍跟蜜桃茉莉...",
+          "snippet": "迷客夏 2,463 likes 1.st_chen 迷客夏這次夏季限定回歸的果茶四杯我都很愛，不管是茶香與酸甜蜜桃搭配的蜜桃烏龍跟蜜桃茉莉，還是芒果與檸檬、香柚搭配的海鹽芒果綠跟夏嶼果茶，每一杯都非常消暑！",
+          "query_used": "site:instagram.com 迷客夏 新品",
+          "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+          "captured_at": "2026-11-13 00:09:02",
+          "social_evidence_id": "SOC-003",
+          "query_id": "SOC-IG-1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111",
+            "PROD-MILKSHA-SMOKE-BLACK"
+          ]
+        },
+        {
+          "platform": "Instagram 公開貼文索引",
+          "site_domain": "instagram.com",
+          "url": "https://www.instagram.com/p/DSggkm5gIU3/",
+          "title": "迷客夏Milksha | 回顧大家最愛的迷客夏飲料有哪些?! 一起看年度必喝推薦",
+          "snippet": "今天就喝這杯🧋 迷客夏經典必喝都在這! 以自家牧場綠光鮮奶系列飲品深受喜愛的迷客夏可說是台灣最具人氣的一間在地手搖飲品牌，從紅茶拿鐵、柳丁綠茶到青檸綠茶、芋頭鮮奶...",
+          "query_used": "site:instagram.com 迷客夏 新品",
+          "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20%E6%96%B0%E5%93%81",
+          "captured_at": "2026-11-13 00:09:02",
+          "social_evidence_id": "SOC-005",
+          "query_id": "SOC-IG-1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111",
+            "PROD-MILKSHA-SMOKE-BLACK"
+          ]
+        },
+        {
+          "platform": "Facebook 粉專貼文索引",
+          "site_domain": "facebook.com",
+          "url": "https://www.facebook.com/milkshatw/",
+          "title": "迷客夏milksha - 全新概念店開幕 ＆ 娜杯系列全台門市現折$10",
+          "snippet": "迷客夏全新概念店 開幕! ／ 號召全台門市一同熱烈響應🧡 10/28-11/01 現場點餐優惠 娜杯系列 全台門市現折$10 娜杯系列飲品 : 娜杯紅茶、娜杯紅茶拿鐵、娜杯糖燻奶霜 #迷客夏 #Milksha",
+          "query_used": "site:facebook.com 迷客夏 CoCo 麻古茶坊",
+          "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Afacebook.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20CoCo%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A",
+          "captured_at": "2026-11-13 00:09:05",
+          "social_evidence_id": "SOC-011",
+          "query_id": "SOC-FB-1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-SMOKE-BLACK",
+            "PROD-MILKSHA-WINTER-1111"
+          ]
+        },
+        {
+          "platform": "Facebook 粉專貼文索引",
+          "site_domain": "facebook.com",
+          "url": "https://www.facebook.com/milkshopTanZi/",
+          "title": "迷客夏milkshop 潭子店 | Taichung - Facebook",
+          "snippet": "迷客夏milkshop 潭子店, Taichung. 580 followers · 6 talking about this · 85 were here. 潭子市區一杯即可外送，鄰近地區滿百就送",
+          "query_used": "site:facebook.com 迷客夏 CoCo 麻古茶坊",
+          "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Afacebook.com%20%E8%BF%B7%E5%AE%A2%E5%A4%8F%20CoCo%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A",
+          "captured_at": "2026-11-13 00:09:05",
+          "social_evidence_id": "SOC-012",
+          "query_id": "SOC-FB-1",
+          "linked_product_ids": [
+            "PROD-MILKSHA-WINTER-1111"
+          ]
+        }
       ]
     },
     {
@@ -889,6 +1070,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 1,
         "total_ptt_count": 1,
         "total_ptt_pushes": 4,
+        "youtube_video_count": 5,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -1494,7 +1677,100 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "2",
           "list_date_short": "7/20"
         }
-      ]
+      ],
+      "resolved_youtube_videos": [
+        {
+          "video_id": "7Q_jRNOufrQ",
+          "url": "https://www.youtube.com/watch?v=7Q_jRNOufrQ",
+          "title": "【皮克敏 11月懶人包】倉庫快爆了！五週年玩具珠寶、週年復刻＋台灣限定 CoCo 合作全攻略！我的 11 月每日必刷行程規劃｜Pikmin Bloom",
+          "channel_name": "Q之口袋",
+          "published_time_text": "9 天前",
+          "view_count_text": "觀看次數：5,728次",
+          "view_count_numeric": 5728,
+          "duration_text": "2:53",
+          "query_used": "CoCo 皮克敏 茉香凍奶綠",
+          "captured_at": "2026-11-13 00:10:04",
+          "yt_evidence_id": "YT-015",
+          "query_id": "YT-Q4",
+          "linked_product_ids": [
+            "PROD-COCO-PIKMIN-MOLI",
+            "PROD-COCO-CHOCO"
+          ]
+        },
+        {
+          "video_id": "Q_kzuuvNveo",
+          "url": "https://www.youtube.com/watch?v=Q_kzuuvNveo",
+          "title": "【皮克敏Bloom】5週年慶典全攻略✨！玩具珠寶皮克敏登場、CoCo聯名、全新玩法一次看🔥！",
+          "channel_name": "阿韋ahwei",
+          "published_time_text": "3 天前",
+          "view_count_text": "觀看次數：2,184次",
+          "view_count_numeric": 2184,
+          "duration_text": "3:59",
+          "query_used": "CoCo 皮克敏 茉香凍奶綠",
+          "captured_at": "2026-11-13 00:10:04",
+          "yt_evidence_id": "YT-016",
+          "query_id": "YT-Q4",
+          "linked_product_ids": [
+            "PROD-COCO-PIKMIN-MOLI",
+            "PROD-COCO-CHOCO"
+          ]
+        },
+        {
+          "video_id": "v2yO_A7mGhw",
+          "url": "https://www.youtube.com/watch?v=v2yO_A7mGhw",
+          "title": "2026年11月Pikmin皮克敏飛人COCO咖啡杯皮克敏取得",
+          "channel_name": "YUYU 專賣寶可夢刷機手機 PaC PaG 暴力攻 ipogo pgsharp安裝&vip贊助",
+          "published_time_text": "5 天前",
+          "view_count_text": "觀看次數：314次",
+          "view_count_numeric": 314,
+          "duration_text": "15:32",
+          "query_used": "CoCo 皮克敏 茉香凍奶綠",
+          "captured_at": "2026-11-13 00:10:04",
+          "yt_evidence_id": "YT-017",
+          "query_id": "YT-Q4",
+          "linked_product_ids": [
+            "PROD-COCO-PIKMIN-MOLI",
+            "PROD-COCO-CHOCO"
+          ]
+        },
+        {
+          "video_id": "PbP_uT997Uc",
+          "url": "https://www.youtube.com/watch?v=PbP_uT997Uc",
+          "title": "阿悠皮克敏 COCO都可 咖啡盆活動隨意拍",
+          "channel_name": "樹懶先生叫懶大",
+          "published_time_text": "3 天前",
+          "view_count_text": "觀看次數：189次",
+          "view_count_numeric": 189,
+          "duration_text": "4:22",
+          "query_used": "CoCo 皮克敏 茉香凍奶綠",
+          "captured_at": "2026-11-13 00:10:04",
+          "yt_evidence_id": "YT-018",
+          "query_id": "YT-Q4",
+          "linked_product_ids": [
+            "PROD-COCO-PIKMIN-MOLI",
+            "PROD-COCO-CHOCO"
+          ]
+        },
+        {
+          "video_id": "WB-OeKOSQNo",
+          "url": "https://www.youtube.com/watch?v=WB-OeKOSQNo",
+          "title": "【Pikmin Bloom】【皮克敏】五週年紀念玩具珠寶特別實測，6個大花苗都市傳說，希望一起開可以湊滿飾品，先開了兩個，一次開六個好像走了六萬步😂。#皮克敏 #pikmin ",
+          "channel_name": "Gary ",
+          "published_time_text": "15 小時前",
+          "view_count_text": "觀看次數：11次",
+          "view_count_numeric": 11,
+          "duration_text": "1:01",
+          "query_used": "CoCo 皮克敏 茉香凍奶綠",
+          "captured_at": "2026-11-13 00:10:04",
+          "yt_evidence_id": "YT-019",
+          "query_id": "YT-Q4",
+          "linked_product_ids": [
+            "PROD-COCO-PIKMIN-MOLI",
+            "PROD-COCO-CHOCO"
+          ]
+        }
+      ],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-COCO-COCOSWEET",
@@ -1555,6 +1831,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 2,
         "total_ptt_count": 2,
         "total_ptt_pushes": 4,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -1814,7 +2092,9 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "0",
           "list_date_short": "12/09"
         }
-      ]
+      ],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-MILKSHA-SMOKED-CREAM",
@@ -1870,6 +2150,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 1,
         "total_ptt_count": 1,
         "total_ptt_pushes": 1,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -2025,7 +2307,9 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "1",
           "list_date_short": "8/05"
         }
-      ]
+      ],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-MILKSHA-DOLLY",
@@ -2079,6 +2363,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 0,
         "total_ptt_count": 0,
         "total_ptt_pushes": 0,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -2195,7 +2481,9 @@ const verifiedProductsPayload = {
       ],
       "resolved_current_ptt": [],
       "resolved_recent_push_ptt": [],
-      "resolved_historical_ptt": []
+      "resolved_historical_ptt": [],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-DAMING-DURIAN",
@@ -2255,6 +2543,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 1,
         "total_ptt_count": 2,
         "total_ptt_pushes": 32,
+        "youtube_video_count": 5,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -2634,7 +2924,100 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "4",
           "list_date_short": "1/08"
         }
-      ]
+      ],
+      "resolved_youtube_videos": [
+        {
+          "video_id": "vpfyHDHGb-Q",
+          "url": "https://www.youtube.com/watch?v=vpfyHDHGb-Q",
+          "title": "手搖新品!再睡５分鐘攜手哈利波特 迷客夏飲品升級.大茗萬聖限定｜TVBS新聞 @TVBSNEWS01",
+          "channel_name": "TVBS NEWS",
+          "published_time_text": "2 週前",
+          "view_count_text": "觀看次數：7,438次",
+          "view_count_numeric": 7438,
+          "duration_text": "1:30",
+          "query_used": "大茗 榴槤 手搖飲",
+          "captured_at": "2026-11-13 00:10:02",
+          "yt_evidence_id": "YT-005",
+          "query_id": "YT-Q2",
+          "linked_product_ids": [
+            "PROD-DAMING-DURIAN",
+            "PROD-DAMING-AVOCADO"
+          ]
+        },
+        {
+          "video_id": "aYr3nm9GI0w",
+          "url": "https://www.youtube.com/watch?v=aYr3nm9GI0w",
+          "title": "2026手搖新品大亂鬥！7大品牌15款實測，這杯根本就是甜點吧！",
+          "channel_name": "厭世甜點店",
+          "published_time_text": "7 天前",
+          "view_count_text": "觀看次數：329,533次",
+          "view_count_numeric": 329533,
+          "duration_text": "22:59",
+          "query_used": "大茗 榴槤 手搖飲",
+          "captured_at": "2026-11-13 00:10:02",
+          "yt_evidence_id": "YT-006",
+          "query_id": "YT-Q2",
+          "linked_product_ids": [
+            "PROD-DAMING-DURIAN",
+            "PROD-DAMING-AVOCADO"
+          ]
+        },
+        {
+          "video_id": "ChNFZlI2ljM",
+          "url": "https://www.youtube.com/watch?v=ChNFZlI2ljM",
+          "title": "這杯是今年最好喝的果茶！大茗開箱",
+          "channel_name": "厭世甜點店",
+          "published_time_text": "2 年前",
+          "view_count_text": "觀看次數：112,442次",
+          "view_count_numeric": 112442,
+          "duration_text": "19:46",
+          "query_used": "大茗 榴槤 手搖飲",
+          "captured_at": "2026-11-13 00:10:02",
+          "yt_evidence_id": "YT-007",
+          "query_id": "YT-Q2",
+          "linked_product_ids": [
+            "PROD-DAMING-DURIAN",
+            "PROD-DAMING-AVOCADO"
+          ]
+        },
+        {
+          "video_id": "_OBpDlo6kkk",
+          "url": "https://www.youtube.com/watch?v=_OBpDlo6kkk",
+          "title": "手搖新品!再睡５分鐘攜手哈利波特 迷客夏飲品升級.大茗萬聖限定｜TVBS新聞 @TVBSNEWS02",
+          "channel_name": "TVBS選新聞",
+          "published_time_text": "2 週前",
+          "view_count_text": "觀看次數：559次",
+          "view_count_numeric": 559,
+          "duration_text": "1:30",
+          "query_used": "大茗 榴槤 手搖飲",
+          "captured_at": "2026-11-13 00:10:02",
+          "yt_evidence_id": "YT-008",
+          "query_id": "YT-Q2",
+          "linked_product_ids": [
+            "PROD-DAMING-DURIAN",
+            "PROD-DAMING-AVOCADO"
+          ]
+        },
+        {
+          "video_id": "aGA1eZRkTRU",
+          "url": "https://www.youtube.com/watch?v=aGA1eZRkTRU",
+          "title": "近期超紅🔥大茗哪些必喝？酪梨奶蓋、烤糖蕎麥凍、老奶奶鳳梨田開箱",
+          "channel_name": "吃吧!Dana & Una",
+          "published_time_text": "3 年前",
+          "view_count_text": "觀看次數：21,440次",
+          "view_count_numeric": 21440,
+          "duration_text": "9:48",
+          "query_used": "大茗 榴槤 手搖飲",
+          "captured_at": "2026-11-13 00:10:02",
+          "yt_evidence_id": "YT-009",
+          "query_id": "YT-Q2",
+          "linked_product_ids": [
+            "PROD-DAMING-DURIAN",
+            "PROD-DAMING-AVOCADO"
+          ]
+        }
+      ],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-GUIJI-OATLY-MATCHA",
@@ -2686,6 +3069,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 2,
         "total_ptt_count": 2,
         "total_ptt_pushes": 21,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -2940,7 +3325,9 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "8",
           "list_date_short": "4/20"
         }
-      ]
+      ],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-MACU-TARO-RETURN",
@@ -2994,6 +3381,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 1,
         "total_ptt_count": 2,
         "total_ptt_pushes": 24,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -3271,7 +3660,9 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "0",
           "list_date_short": "12/09"
         }
-      ]
+      ],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-MACU-GRAPE",
@@ -3326,6 +3717,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 1,
         "total_ptt_count": 1,
         "total_ptt_pushes": 24,
+        "youtube_video_count": 5,
+        "social_index_count": 1,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [],
@@ -3623,6 +4016,116 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "17",
           "list_date_short": "8/20"
         }
+      ],
+      "resolved_youtube_videos": [
+        {
+          "video_id": "aVEpOMZ57xE",
+          "url": "https://www.youtube.com/watch?v=aVEpOMZ57xE",
+          "title": "麻古茶坊新推「芋泥波波布蕾」!♥(´∀` )人 「大甲芋泥＋滑嫩布蕾」這組合太邪惡～",
+          "channel_name": "Foody吃貨",
+          "published_time_text": "5 年前",
+          "view_count_text": "觀看次數：1,971次",
+          "view_count_numeric": 1971,
+          "duration_text": "0:42",
+          "query_used": "麻古茶坊 芋泥 葡萄 新品",
+          "captured_at": "2026-11-13 00:10:03",
+          "yt_evidence_id": "YT-010",
+          "query_id": "YT-Q3",
+          "linked_product_ids": [
+            "PROD-MACU-TARO-2026",
+            "PROD-MACU-GRAPE"
+          ]
+        },
+        {
+          "video_id": "iDpqq9LOpVA",
+          "url": "https://www.youtube.com/watch?v=iDpqq9LOpVA",
+          "title": "2022巨峰葡萄系列",
+          "channel_name": "MACU麻古茶坊",
+          "published_time_text": "4 年前",
+          "view_count_text": "觀看次數：1,549次",
+          "view_count_numeric": 1549,
+          "duration_text": "0:30",
+          "query_used": "麻古茶坊 芋泥 葡萄 新品",
+          "captured_at": "2026-11-13 00:10:03",
+          "yt_evidence_id": "YT-011",
+          "query_id": "YT-Q3",
+          "linked_product_ids": [
+            "PROD-MACU-TARO-2026",
+            "PROD-MACU-GRAPE"
+          ]
+        },
+        {
+          "video_id": "p9nO3rf7kCo",
+          "url": "https://www.youtube.com/watch?v=p9nO3rf7kCo",
+          "title": "2023麻古鮮摘葡萄季",
+          "channel_name": "MACU麻古茶坊",
+          "published_time_text": "3 年前",
+          "view_count_text": "觀看次數：418,807次",
+          "view_count_numeric": 418807,
+          "duration_text": "0:31",
+          "query_used": "麻古茶坊 芋泥 葡萄 新品",
+          "captured_at": "2026-11-13 00:10:03",
+          "yt_evidence_id": "YT-012",
+          "query_id": "YT-Q3",
+          "linked_product_ids": [
+            "PROD-MACU-TARO-2026",
+            "PROD-MACU-GRAPE"
+          ]
+        },
+        {
+          "video_id": "hx1RMyzBV_A",
+          "url": "https://www.youtube.com/watch?v=hx1RMyzBV_A",
+          "title": "麻古茶坊「芋泥波波鮮奶」香濃開賣！(σ′▽‵)′▽‵)σ 大甲芋泥+芋圓珍珠有夠滿足～",
+          "channel_name": "Foody吃貨",
+          "published_time_text": "5 年前",
+          "view_count_text": "觀看次數：1,679次",
+          "view_count_numeric": 1679,
+          "duration_text": "0:49",
+          "query_used": "麻古茶坊 芋泥 葡萄 新品",
+          "captured_at": "2026-11-13 00:10:03",
+          "yt_evidence_id": "YT-013",
+          "query_id": "YT-Q3",
+          "linked_product_ids": [
+            "PROD-MACU-TARO-2026",
+            "PROD-MACU-GRAPE"
+          ]
+        },
+        {
+          "video_id": "GpVIgzZ2CXk",
+          "url": "https://www.youtube.com/watch?v=GpVIgzZ2CXk",
+          "title": "麻古茶坊推漸層紫「芝芝葡萄果粒」(´▽`ʃ♡ƪ)",
+          "channel_name": "Foody吃貨",
+          "published_time_text": "7 年前",
+          "view_count_text": "觀看次數：9,108次",
+          "view_count_numeric": 9108,
+          "duration_text": "0:41",
+          "query_used": "麻古茶坊 芋泥 葡萄 新品",
+          "captured_at": "2026-11-13 00:10:03",
+          "yt_evidence_id": "YT-014",
+          "query_id": "YT-Q3",
+          "linked_product_ids": [
+            "PROD-MACU-TARO-2026",
+            "PROD-MACU-GRAPE"
+          ]
+        }
+      ],
+      "resolved_social_posts": [
+        {
+          "platform": "Instagram 公開貼文索引",
+          "site_domain": "instagram.com",
+          "url": "https://www.instagram.com/macu2008tw/",
+          "title": "麻古茶坊MACU TEA (@macu2008tw) • Instagram photos and videos",
+          "snippet": "Verified 麻古茶坊MACU TEA 1,259 posts 23K followers 11 following Fresh Fruit × Drinking Dessert 果粒茶創始品牌 喝見鮮果新想像 Now in Season｜ #巨峰葡萄系列",
+          "query_used": "site:instagram.com 麻古茶坊 芋泥 大茗",
+          "search_engine_url": "https://html.duckduckgo.com/html/?q=site%3Ainstagram.com%20%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A%20%E8%8A%8B%E6%B3%A5%20%E5%A4%A7%E8%8C%97",
+          "captured_at": "2026-11-13 00:09:04",
+          "social_evidence_id": "SOC-008",
+          "query_id": "SOC-IG-2",
+          "linked_product_ids": [
+            "PROD-MACU-GRAPE",
+            "PROD-MACU-TARO-2026"
+          ]
+        }
       ]
     },
     {
@@ -3677,6 +4180,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 0,
         "total_ptt_count": 0,
         "total_ptt_pushes": 0,
+        "youtube_video_count": 4,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [],
@@ -3792,7 +4297,86 @@ const verifiedProductsPayload = {
       ],
       "resolved_current_ptt": [],
       "resolved_recent_push_ptt": [],
-      "resolved_historical_ptt": []
+      "resolved_historical_ptt": [],
+      "resolved_youtube_videos": [
+        {
+          "video_id": "fxq9QeoS5Kw",
+          "url": "https://www.youtube.com/watch?v=fxq9QeoS5Kw",
+          "title": "【2026全台手搖飲排行榜TOP10】第一名居然不是五十嵐？台灣人最愛的國民飲料揭曉！",
+          "channel_name": "FORMOSA PROUD 寶島驕傲",
+          "published_time_text": "9 個月前",
+          "view_count_text": "觀看次數：319次",
+          "view_count_numeric": 319,
+          "duration_text": "8:34",
+          "query_used": "台灣 手搖飲 新品 開箱 2026",
+          "captured_at": "2026-11-13 00:10:06",
+          "yt_evidence_id": "YT-020",
+          "query_id": "YT-Q5",
+          "linked_product_ids": [
+            "PROD-ROUNDUP-1111",
+            "PROD-GUIJI-OATLY",
+            "PROD-TRUEDAN-BUCKWHEAT"
+          ]
+        },
+        {
+          "video_id": "StqDOgbl7X8",
+          "url": "https://www.youtube.com/watch?v=StqDOgbl7X8",
+          "title": "挑戰手搖飲價格新高度！精品奶茶插旗高雄 唯一氣候正效益認證.獨家使用傳奇莊園茶源｜非凡財經新聞｜20260321",
+          "channel_name": "USTV 非凡電視",
+          "published_time_text": "7 個月前",
+          "view_count_text": "觀看次數：4,089次",
+          "view_count_numeric": 4089,
+          "duration_text": "1:45",
+          "query_used": "台灣 手搖飲 新品 開箱 2026",
+          "captured_at": "2026-11-13 00:10:06",
+          "yt_evidence_id": "YT-021",
+          "query_id": "YT-Q5",
+          "linked_product_ids": [
+            "PROD-ROUNDUP-1111",
+            "PROD-GUIJI-OATLY",
+            "PROD-TRUEDAN-BUCKWHEAT"
+          ]
+        },
+        {
+          "video_id": "SY1d6sc91TU",
+          "url": "https://www.youtube.com/watch?v=SY1d6sc91TU",
+          "title": "2026網友熱推手搖飲，蓮霧也能做飲料？女神員瑛大推的絕頂奶蓋！",
+          "channel_name": "厭世甜點店",
+          "published_time_text": "8 個月前",
+          "view_count_text": "觀看次數：137,457次",
+          "view_count_numeric": 137457,
+          "duration_text": "13:40",
+          "query_used": "台灣 手搖飲 新品 開箱 2026",
+          "captured_at": "2026-11-13 00:10:06",
+          "yt_evidence_id": "YT-022",
+          "query_id": "YT-Q5",
+          "linked_product_ids": [
+            "PROD-ROUNDUP-1111",
+            "PROD-GUIJI-OATLY",
+            "PROD-TRUEDAN-BUCKWHEAT"
+          ]
+        },
+        {
+          "video_id": "Mm8-aVvqPsI",
+          "url": "https://www.youtube.com/watch?v=Mm8-aVvqPsI",
+          "title": "手搖進化!「3秒封蓋」變易開罐 PK冒煙茶壺飲｜TVBS新聞 @TVBSNEWS01",
+          "channel_name": "TVBS NEWS",
+          "published_time_text": "4 個月前",
+          "view_count_text": "觀看次數：107,376次",
+          "view_count_numeric": 107376,
+          "duration_text": "2:01",
+          "query_used": "台灣 手搖飲 新品 開箱 2026",
+          "captured_at": "2026-11-13 00:10:06",
+          "yt_evidence_id": "YT-023",
+          "query_id": "YT-Q5",
+          "linked_product_ids": [
+            "PROD-ROUNDUP-1111",
+            "PROD-GUIJI-OATLY",
+            "PROD-TRUEDAN-BUCKWHEAT"
+          ]
+        }
+      ],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-TPTEA-COCOA",
@@ -3843,6 +4427,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 0,
         "total_ptt_count": 0,
         "total_ptt_pushes": 0,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [],
@@ -3931,7 +4517,9 @@ const verifiedProductsPayload = {
       ],
       "resolved_current_ptt": [],
       "resolved_recent_push_ptt": [],
-      "resolved_historical_ptt": []
+      "resolved_historical_ptt": [],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-KEBUKE-WOOTEA-AUTUMN",
@@ -3983,6 +4571,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 1,
         "total_ptt_count": 1,
         "total_ptt_pushes": 3,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [],
@@ -4093,7 +4683,9 @@ const verifiedProductsPayload = {
           "list_nrec_badge": "1",
           "list_date_short": "9/20"
         }
-      ]
+      ],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-JINCHAWU-APPLE",
@@ -4138,6 +4730,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 0,
         "total_ptt_count": 1,
         "total_ptt_pushes": 10,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [],
@@ -4235,7 +4829,9 @@ const verifiedProductsPayload = {
           "list_date_short": "8/23"
         }
       ],
-      "resolved_historical_ptt": []
+      "resolved_historical_ptt": [],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-LEEJI-BLACKTEA",
@@ -4279,6 +4875,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 0,
         "total_ptt_count": 1,
         "total_ptt_pushes": 0,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [],
@@ -4315,7 +4913,9 @@ const verifiedProductsPayload = {
         }
       ],
       "resolved_recent_push_ptt": [],
-      "resolved_historical_ptt": []
+      "resolved_historical_ptt": [],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-CHICHA-KING-BUBBLE",
@@ -4359,6 +4959,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 0,
         "total_ptt_count": 1,
         "total_ptt_pushes": 0,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [],
@@ -4395,7 +4997,9 @@ const verifiedProductsPayload = {
         }
       ],
       "resolved_recent_push_ptt": [],
-      "resolved_historical_ptt": []
+      "resolved_historical_ptt": [],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     },
     {
       "product_id": "PROD-JIYUAN-GRAPE",
@@ -4443,6 +5047,8 @@ const verifiedProductsPayload = {
         "historical_ref_ptt_count": 0,
         "total_ptt_count": 0,
         "total_ptt_pushes": 0,
+        "youtube_video_count": 0,
+        "social_index_count": 0,
         "composite_score_status": "修訂中（暫不顯示模擬分）"
       },
       "resolved_focused_news": [
@@ -4477,7 +5083,9 @@ const verifiedProductsPayload = {
       "resolved_roundup_news": [],
       "resolved_current_ptt": [],
       "resolved_recent_push_ptt": [],
-      "resolved_historical_ptt": []
+      "resolved_historical_ptt": [],
+      "resolved_youtube_videos": [],
+      "resolved_social_posts": []
     }
   ]
 };
@@ -9958,46 +10566,60 @@ const verifiedPttData = {
 };
 const platformCapabilities = [
   {
+    "platform": "Google News RSS 台灣手搖飲新聞檢索",
+    "status": "已測試可取得（已完成端到端採集）",
+    "tested_at": "2026-11-12 11:32:12",
+    "test_method": "Python urllib 執行 Q1 (手搖飲新品/聯名/買一送一) + Q2 (13家品牌新品) RSS XML 採集與依連結去重",
+    "test_result": "HTTP 200 成功。已保存 95 筆依連結去重的新聞紀錄（涵蓋 23 家媒體）並歸納為 20 個新聞事件。"
+  },
+  {
+    "platform": "PTT 飲料板 (bbs/Drink)",
+    "status": "已測試可取得（已完成端到端採集）",
+    "tested_at": "2026-11-12 11:54:46",
+    "test_method": "Python urllib 帶 Cookie: over18=1 實測抓取列表頁、5組關鍵字搜尋頁與 14 篇單篇內文＋推噓文",
+    "test_result": "HTTP 200 成功。已實際保存 14 篇文章之網址、標題、作者、發布時間、擷取時間、完整內文與 79 則推噓文。"
+  },
+  {
+    "platform": "YouTube 公開搜尋（手搖飲新品開箱／實測影片）",
+    "status": "已測試可取得（已完成端到端採集）",
+    "tested_at": "2026-11-13 00:09:08",
+    "test_method": "Python scripts/collect_youtube_and_social.py 直接請求 YouTube 公開搜尋頁並解析 ytInitialData JSON（免 API Key）",
+    "test_result": "HTTP 200 成功。實測 5 組品牌與新品關鍵字，穩定抓回 23～24 部不重複公開影片之標題、頻道名稱、真實觀看次數（如 TVBS 7,438 次、厭世甜點店 112,442 次）、相對發布時間與影片連結。"
+  },
+  {
+    "platform": "Instagram (透過公開搜尋引擎索引反查貼文／Reels)",
+    "status": "只能取得部分（已完成搜尋索引採集）",
+    "tested_at": "2026-11-13 00:09:04",
+    "test_method": "直接爬 IG 會被登入牆攔截；改以 DuckDuckGo HTML 檢索 site:instagram.com 迷客夏 / 麻古茶坊 芋泥",
+    "test_result": "HTTP 200 部分成功。成功繞過 IG 登入牆抓回 10 筆 IG 公開貼文與 Reels 連結、標題摘要與搜尋引擎快照之按讚數（如 2,463 likes、181 likes、74 likes）；惟限制為：(1) 剛發布 1~3 天之極新貼文尚未被搜尋引擎收錄，(2) 連續密集查詢第 4 次起會觸發搜尋引擎 Rate Limit。"
+  },
+  {
+    "platform": "Facebook 粉絲專頁 (透過公開搜尋引擎索引反查貼文)",
+    "status": "只能取得部分（已完成搜尋索引採集）",
+    "tested_at": "2026-11-13 00:09:05",
+    "test_method": "透過 DuckDuckGo HTML 檢索 site:facebook.com 迷客夏 CoCo 麻古茶坊",
+    "test_result": "HTTP 200 部分成功。成功抓回迷客夏官方粉專「全新概念店開幕 ＆ 10/28-11/01 娜杯系列現折 $10」等公開貼文連結與內文摘要；惟無法免權杖直接展開貼文下方即時留言串。"
+  },
+  {
     "platform": "Google News 原始新聞內文讀取",
     "status": "只能取得部分",
     "tested_at": "2026-11-12 11:32:14",
     "test_method": "對 RSS 內 <link> (https://news.google.com/rss/articles/CBMi9wJBVV95cUxOZE...) 發送 HTTP GET",
-    "test_result": "HTTP 200，最終網址停留在 https://news.google.com/rss/articles/CBMi9wJBVV95c...（Google News 採用前端 JS/鞭炮加密跳轉頁，純 HTTP GET 僅拿到 Google 轉址殼層 HTML，無法直接取得媒體網站完整新聞內文，但人類在瀏覽器點擊該連結可正常自動跳轉開啟原新聞）。"
+    "test_result": "HTTP 200，Google News 採用前端 JS 加密跳轉頁，純 HTTP GET 僅拿到轉址殼層 HTML，但人類在瀏覽器點擊該連結可正常自動跳轉開啟原新聞。"
   },
   {
-    "platform": "PTT 飲料板 (Drink)",
-    "status": "已測試可取得（已完成端到端採集）",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "Python urllib 帶 Cookie: over18=1 實測抓取列表頁、5組關鍵字搜尋頁與 14 篇單篇內文＋推噓文",
-    "test_result": "HTTP 200 成功。已實際保存 14 篇文章之網址、標題、作者、發布時間、擷取時間、完整內文與 79 則推噓文（見分頁 1）。"
-  },
-  {
-    "platform": "Dcard (公開 API / 網頁)",
+    "platform": "Dcard (公開 API / 網頁 / 搜尋索引)",
     "status": "本次測試失敗",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "HTTP GET https://www.dcard.tw/service/api/v2/forums/food/posts?limit=5",
-    "test_result": "遭到 Cloudflare 防爬蟲攔截 (HTTP Error 403: Forbidden)，純標準 HTTP 請求無法直接取得 JSON。"
+    "tested_at": "2026-11-13 00:09:06",
+    "test_method": "直連 Dcard API 遭 Cloudflare 403 攔截；改測搜尋引擎索引時因連續查詢觸發 DuckDuckGo Rate Limit 且 Yahoo TW 回傳 HTTP 500 INKApi Error",
+    "test_result": "直連遭 Cloudflare 403 阻擋，公開搜尋索引亦受搜尋引擎頻率限制影響，需低頻率單獨查詢或無頭瀏覽器支援。"
   },
   {
     "platform": "Threads 搜尋頁",
     "status": "本次測試失敗",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "HTTP GET https://www.threads.net/search?q=%E6%89%8B%E6%90%96%E9%A3%B2",
-    "test_result": "HTTP 200（回傳 615056 bytes SPA 前端框架殼層，是否含貼文內文: False；無公開免金鑰搜尋 API，需登入或無頭瀏覽器渲染）。"
-  },
-  {
-    "platform": "Instagram (官方帳號與 Hashtag)",
-    "status": "尚未實作",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "無（本階段尚未編寫該平台採集程式）",
-    "test_result": "尚未實作爬蟲；Meta Graph API 需商業開發者權杖，直接爬取網頁受登入牆限制。"
-  },
-  {
-    "platform": "Facebook 粉絲專頁",
-    "status": "尚未實作",
-    "tested_at": "2026-11-12 11:32:14",
-    "test_method": "無（本階段尚未編寫該平台採集程式）",
-    "test_result": "尚未實作爬蟲；需 Graph API 權杖或手動登錄貼文網址。"
+    "tested_at": "2026-11-13 00:09:07",
+    "test_method": "HTTP GET https://www.threads.net/search?q=%E6%89%8B%E6%90%96%E9%A3%B2 及搜尋索引檢索",
+    "test_result": "直連回傳 615KB SPA 前端空殼（不含貼文內文）；公開搜尋引擎對 Threads 貼文索引極少，需登入或無頭瀏覽器渲染。"
   },
   {
     "platform": "小紅書 / 抖音 / TikTok",
@@ -10483,6 +11105,7 @@ function renderProductCardList(filteredProducts) {
                 <div>🍵 <strong class="text-slate-900">風味與品類：</strong>${p.flavor_category} ｜ <strong class="text-slate-900">歸屬期間：</strong><span class="font-mono font-bold text-emerald-800">${(p.observation_weeks || []).join(', ')}</span></div>
                 <div>📰 <strong class="text-slate-900">新聞曝光證據：</strong>共 <strong class="text-emerald-700 text-lg">${p.metrics.total_news_count}</strong> 筆紀錄（單品專文 <strong>${p.metrics.focused_news_count}</strong> 筆 ＋ 跨品牌合集提及 <strong>${p.metrics.roundup_news_count}</strong> 筆，涵蓋 ${p.metrics.unique_publisher_count} 家媒體）</div>
                 <div>💬 <strong class="text-slate-900">PTT 飲料板討論：</strong><span class="font-bold text-indigo-800">${pttBadgeText}</span></div>
+                <div>🎬 <strong class="text-slate-900">延伸影音／社群索引：</strong>YouTube 開箱/報導 <strong class="text-rose-700">${p.metrics.youtube_video_count || 0}</strong> 部 ｜ IG/FB 公開貼文索引 <strong class="text-sky-700">${p.metrics.social_index_count || 0}</strong> 筆</div>
               </div>
             </div>
 
@@ -10513,7 +11136,7 @@ function renderProductCardList(filteredProducts) {
               </span>
               <button onclick="openProductDetailModal('${p.product_id}')"
                 class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm sm:text-base rounded-lg shadow-sm transition flex items-center gap-1.5">
-                <span>🔍 查看關聯證據明細（${p.metrics.total_news_count} 則新聞 ＋ ${p.metrics.total_ptt_count} 篇 PTT）</span>
+                <span>🔍 查看關聯證據明細（${p.metrics.total_news_count} 新聞 ＋ ${p.metrics.total_ptt_count} PTT ＋ ${(p.metrics.youtube_video_count || 0) + (p.metrics.social_index_count || 0)} 影音/IG/FB）</span>
               </button>
             </div>
           </div>
@@ -10642,6 +11265,53 @@ function openProductDetailModal(productId) {
         💬 關聯 PTT 飲料板 (bbs/Drink) 原文與推噓文核對（共 ${p.metrics.total_ptt_count} 篇）
       </h4>
       ${allPttHtml || `<div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-slate-600 font-bold">本次 PTT 飲料板採集範圍內未找到此商品之討論文章。</div>`}
+    </div>
+
+    <!-- 線路二：YouTube 開箱與報導影片明細 -->
+    <div class="space-y-3 pt-2">
+      <h4 class="text-lg font-black text-slate-900 border-b-2 border-rose-200 pb-2">
+        🎬 線路二：YouTube 公開搜尋開箱／新聞影片（共 ${(p.resolved_youtube_videos || []).length} 部，含真實觀看數）
+      </h4>
+      ${(p.resolved_youtube_videos || []).length > 0 ? `<div class="grid grid-cols-1 md:grid-cols-2 gap-3">` + (p.resolved_youtube_videos || []).map(v => `
+        <div class="p-3.5 bg-rose-50/40 rounded-xl border border-rose-200 flex flex-col justify-between gap-2">
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center justify-between gap-1 text-xs">
+              <span class="px-2 py-0.5 bg-rose-700 text-white font-mono font-bold rounded">${v.yt_evidence_id}</span>
+              <span class="font-extrabold text-rose-900">👁️ ${v.view_count_text} ｜ ⏱️ ${v.duration_text}</span>
+            </div>
+            <a href="${v.url}" target="_blank" rel="noopener noreferrer" class="text-base font-extrabold text-slate-900 hover:text-rose-700 underline decoration-rose-400 block">
+              ${v.title} ↗
+            </a>
+          </div>
+          <div class="text-xs font-bold text-slate-600 flex justify-between">
+            <span>📺 頻道：${v.channel_name}</span>
+            <span>📅 發布：${v.published_time_text}</span>
+          </div>
+        </div>
+      `).join('') + `</div>` : `<div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-500">本次 YouTube 關鍵字採集無直接對應影片。</div>`}
+    </div>
+
+    <!-- 線路三：IG / FB 公開搜尋引擎索引貼文明細 -->
+    <div class="space-y-3 pt-2">
+      <h4 class="text-lg font-black text-slate-900 border-b-2 border-sky-200 pb-2">
+        📸 線路三：Instagram ／ Facebook 搜尋引擎公開索引貼文（共 ${(p.resolved_social_posts || []).length} 筆）
+      </h4>
+      ${(p.resolved_social_posts || []).length > 0 ? `<div class="space-y-2.5">` + (p.resolved_social_posts || []).map(s => `
+        <div class="p-3.5 bg-sky-50/40 rounded-xl border border-sky-200 space-y-1.5">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-sky-800 text-white font-mono font-bold rounded">${s.social_evidence_id}</span>
+              <span class="font-extrabold text-sky-900">${s.platform}</span>
+              <span class="font-mono text-slate-500">查詢：${s.query_used}</span>
+            </div>
+            <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="font-extrabold text-sky-700 hover:underline">🔗 開啟原始貼文 ↗</a>
+          </div>
+          <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="text-base font-extrabold text-slate-900 hover:text-sky-800 underline block">
+            ${s.title}
+          </a>
+          <p class="text-sm text-slate-700 leading-relaxed">${s.snippet}</p>
+        </div>
+      `).join('') + `</div>` : `<div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-500">本次搜尋引擎公開索引採集無直接對應貼文。</div>`}
     </div>
   `;
 
