@@ -23,7 +23,13 @@ def build_product_catalog():
     with open(VERIFIED_PTT_PATH, "r", encoding="utf-8") as f:
         ptt_data = json.load(f)
 
-    news_by_id = {r["evidence_id"]: r for r in news_data.get("records", [])}
+    news_by_id = {}
+    for r in news_data.get("records", []):
+        r_norm = dict(r)
+        r_norm["publisher_name"] = r.get("publisher_name") or r.get("source_media") or "未知媒體"
+        r_norm["title_clean"] = r.get("title_clean") or r.get("clean_title") or r.get("rss_title") or ""
+        news_by_id[r_norm["evidence_id"]] = r_norm
+
     events_by_id = {e["event_id"]: e for e in events_data.get("events", [])}
     ptt_by_id = {p["ptt_evidence_id"]: p for p in ptt_data.get("articles", [])}
 
@@ -53,7 +59,7 @@ def build_product_catalog():
             "recent_push_old_post_ids": [],
             "historical_ref_ptt_ids": ["PTT-DRINK-007", "PTT-DRINK-008"],
             "media_summary": "14 筆單品專文＋7 筆跨品牌合集（共 21 筆紀錄）密集於 11/09～11/11 報導：迷客夏推出冬季限定「太妃序曲」與全新咀嚼配料「太妃奶Q」、日本森半抹茶與焙茶升級，同場回歸「法芙娜可可」，並祭出雙11線上買11送11與11元加購娜杯紅茶。",
-            "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】上市初期雖有高達 21 筆媒體報導（部分標題稱「未開賣就爆紅」），但 PTT Drink 板最新搜尋僅有 8/05 折價券贈送文与 4/29 九折優惠討論，尚無 11 月冬季新品試喝心得。",
+            "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】上市初期雖有高達 21 筆媒體報導（部分標題稱「未開賣就爆紅」），但 PTT Drink 板最新搜尋僅有 8/05 折價券贈送文與 4/29 九折優惠討論，尚無 11 月冬季新品試喝心得。",
             "unknowns": [
                 "消費者對新配料「太妃奶Q」與「森半抹茶」升級版的實際甜度、口感評價目前未知。",
                 "雙11線上買11送11與門市11元加購紅茶之實際兌換率與門市排隊狀況無公開量化數據。",
@@ -186,7 +192,7 @@ def build_product_catalog():
             "recent_push_old_post_ids": ["PTT-DRINK-013"],
             "historical_ref_ptt_ids": ["PTT-DRINK-014"],
             "media_summary": "2 筆單品專文＋2 筆跨品牌合集（共 4 筆紀錄）報導大茗於萬聖節推出獵奇限定「榴槤冰淇淋手搖飲（榴槤奶茶、紅玉紅茶）」只賣 3 天享 79 折，並同步上市「芒果美式」。",
-            "consumer_summary": "【榴槤新品 PTT 討論：本次採集範圍內未找到】但舊文 `PTT-DRINK-013`（大茗/麻古酪梨評比，24則推文）於當期 11/07 新增 2 則推文，板友 `pkmu8426` 盛讚「大茗的玉露青 終於找到順口有喉韻的口感了，根本就是一沐日沒換茶葉時的水準」；另 `PTT-DRINK-014` 討論大茗草莓優格飲與翡翠莓香好喝但偏貴。",
+            "consumer_summary": "【榴槤新品 PTT 討論：本次採集範圍內未找到】但舊文 PTT-DRINK-013（大茗/麻古酪梨評比，24則推文）於當期 11/07 新增 2 則推文，板友 pkmu8426 盛讚「大茗的玉露青 終於找到順口有喉韻的口感了，根本就是一沐日沒換茶葉時的水準」；另 PTT-DRINK-014 討論大茗草莓優格飲與翡翠莓香好喝但偏貴。",
             "unknowns": [
                 "萬聖節 3 天限定「榴槤冰淇淋茶飲」與常態新品「芒果美式」的消費者實際試喝評價未知。",
                 "注意區分：11/07 新增之 2 則 PTT 推文為針對大茗常態基底「玉露青」與「酪梨奶蓋」之回饋，已嚴格標示為「舊文近期新增推文」，不混算為榴槤新品討論。"
@@ -213,7 +219,7 @@ def build_product_catalog():
             "recent_push_old_post_ids": [],
             "historical_ref_ptt_ids": ["PTT-DRINK-011", "PTT-DRINK-012"],
             "media_summary": "2 筆單品專文（卡優新聞網、COOL-STYLE）於 11/02 預告龜記將推出 3 款抹茶系列新品，並聯手 Oatly 推出「抹茶燕麥乳」，預計 11/16 正式開賣。",
-            "consumer_summary": "【當期新品 PTT 討論：11/16 才開賣，本次採集範圍內未找到】同品牌歷史 PTT 討論呈現兩極：7/08 `PTT-DRINK-011` 推薦「雷夢蘆薈蜜」不另加糖酸甜解膩；但 4/20 `PTT-DRINK-012`（20 則推文）針對「紅柚翡翠」改用調合果汁罐且未標示含糖引發板友強烈負評。",
+            "consumer_summary": "【當期新品 PTT 討論：11/16 才開賣，本次採集範圍內未找到】同品牌歷史 PTT 討論呈現兩極：7/08 PTT-DRINK-011 推薦「雷夢蘆薈蜜」不另加糖酸甜解膩；但 4/20 PTT-DRINK-012（20 則推文）針對「紅柚翡翠」改用調合果汁罐且未標示含糖引發板友強烈負評。",
             "unknowns": [
                 "商品於 11/16 才正式開賣，目前尚無任何消費者試喝體驗。",
                 "3 款抹茶新品的完整品名與售價區間需開啟新聞內文或待官方公布菜單確認。"
@@ -239,8 +245,8 @@ def build_product_catalog():
             "current_period_ptt_ids": [],
             "recent_push_old_post_ids": ["PTT-DRINK-013"],
             "historical_ref_ptt_ids": ["PTT-DRINK-010"],
-            "media_summary": "1 筆單品專文（卡優新聞網 `GNEWS-014`）＋1 筆雙11合集（`GNEWS-004`）報導麻古茶坊於 11/10 宣布冬季人氣「濃厚芋泥系列」三款飲品正式回歸。",
-            "consumer_summary": "【本波 11/10 剛開賣未見新文｜已採集前一波同款「麻古芋泥奶茶」實測心得】`PTT-DRINK-010` 作者實測「麻古茶坊芋泥奶茶 $75：能喝得到芋泥&吃到細小芋頭顆粒，芋頭味夠，想試米麻糬芋泥奶茶」；另 `PTT-DRINK-013` 多位板友推文肯定麻古季節限定「料多、飽到天靈蓋」。",
+            "media_summary": "1 筆單品專文（卡優新聞網 GNEWS-014）＋1 筆雙11合集（GNEWS-004）報導麻古茶坊於 11/10 宣布冬季人氣「濃厚芋泥系列」三款飲品正式回歸。",
+            "consumer_summary": "【本波 11/10 剛開賣未見新文｜已採集前一波同款「麻古芋泥奶茶」實測心得】PTT-DRINK-010 作者實測「麻古茶坊芋泥奶茶 $75：能喝得到芋泥&吃到細小芋頭顆粒，芋頭味夠，想試米麻糬芋泥奶茶」；另 PTT-DRINK-013 多位板友推文肯定麻古季節限定「料多、飽到天靈蓋」。",
             "unknowns": [
                 "2026/11 本波回歸的三款飲品具體品名與是否調漲價格（相較 2025/12 的 $75）尚待確認。",
                 "本波回歸後的當期消費者新試喝心得尚待開賣後追蹤。"
@@ -293,7 +299,7 @@ def build_product_catalog():
             "recent_push_old_post_ids": [],
             "historical_ref_ptt_ids": [],
             "media_summary": "4 筆跨品牌合集報導（ETtoday、Yahoo、玩咖Playing、NOWnews）於 10/20～11/11 提及珍煮丹開賣秋季「蕎麥系列」3 款新品，並參與雙11優惠。",
-            "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見珍煮丹蕎麥系列討論（但同期間 `PTT-DRINK-010` 板友提及全家金焙蕎麥醇奶茶好喝，顯示蕎麥茶底具討論熱度）。",
+            "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見珍煮丹蕎麥系列討論（但同期間 PTT-DRINK-010 板友提及全家金焙蕎麥醇奶茶好喝，顯示蕎麥茶底具討論熱度）。",
             "unknowns": [
                 "珍煮丹 3 款蕎麥新品的完整品名、配料與價格待進入內文確認。"
             ]
@@ -344,8 +350,8 @@ def build_product_catalog():
             "current_period_ptt_ids": [],
             "recent_push_old_post_ids": [],
             "historical_ref_ptt_ids": ["PTT-DRINK-003"],
-            "media_summary": "妞新聞秋季手搖新品懶人包（`GNEWS-075`）推薦五桐號「泰奶雪沙」與可不可「紅烏龍茶王」為秋季必喝新品；NOWnews（`GNEWS-020`）報導五桐號雙11買一送一。",
-            "consumer_summary": "【已採集 PTT 強烈負評實測 1 篇】針對可不可紅烏龍延伸品項「檸檬冷露紅烏龍」，PTT Drink 板最新列表 `PTT-DRINK-003`（作者 `wild2012`，3則推文）給予強烈負評：「一杯還65，微冰微糖紅烏龍沒有味道，檸檬味更是一點也沒有，只剩下甜味」；推文板友 `PHXD` 亦吐槽「裡面有檸檬凍（完全沒檸檬味），還配細吸管的操作不能理解」。完美示範將「媒體推薦曝光」與「消費者真實負評」分開呈現。",
+            "media_summary": "妞新聞秋季手搖新品懶人包（GNEWS-075）推薦五桐號「泰奶雪沙」與可不可「紅烏龍茶王」為秋季必喝新品；NOWnews（GNEWS-020）報導五桐號雙11買一送一。",
+            "consumer_summary": "【已採集 PTT 強烈負評實測 1 篇】針對可不可紅烏龍延伸品項「檸檬冷露紅烏龍」，PTT Drink 板最新列表 PTT-DRINK-003（作者 wild2012，3則推文）給予強烈負評：「一杯還65，微冰微糖紅烏龍沒有味道，檸檬味更是一點也沒有，只剩下甜味」；推文板友 PHXD 亦吐槽「裡面有檸檬凍（完全沒檸檬味），還配細吸管的操作不能理解」。完美示範將「媒體推薦曝光」與「消費者真實負評」分開呈現。",
             "unknowns": [
                 "純茶款「紅烏龍茶王」無糖表現是否優於檸檬冷露特調，以及五桐號「泰奶雪沙」的實際消費者評價待查。"
             ]
@@ -371,9 +377,9 @@ def build_product_catalog():
             "recent_push_old_post_ids": ["PTT-DRINK-002"],
             "historical_ref_ptt_ids": [],
             "media_summary": "【新聞曝光 0 筆】本次 Google News RSS 採集範圍內無媒體公關報導，完全由 PTT 飲料板真實消費者自發開箱發掘。",
-            "consumer_summary": "【PTT 實測心得 1 篇＋10 則推文（含 11/08、11/12 當期新增 2 則推文）】`PTT-DRINK-002` 作者 `goodapple807` 盛讚店員直接榨兩顆蘋果，無糖仍帶富士蘋果香甜加茶王茶香「近期喝過最頂」；11/08 板友 `harebell2011` 新推文回饋「兩家（金茶伍與樂法）在今天都解鎖了，覺得還是樂法比較好喝」，11/12 板友 `kittymay79` 推文「愛蘋果系列茶飲 想試試」。",
+            "consumer_summary": "【PTT 實測心得 1 篇＋10 則推文（含 11/08、11/12 當期新增 2 則推文）】PTT-DRINK-002 作者 goodapple807 盛讚店員直接榨兩顆蘋果，無糖仍帶富士蘋果香甜加茶王茶香「近期喝過最頂」；11/08 板友 harebell2011 新推文回饋「兩家（金茶伍與樂法）在今天都解鎖了，覺得還是樂法比較好喝」，11/12 板友 kittymay79 推文「愛蘋果系列茶飲 想試試」。",
             "unknowns": [
-                "單杯確切售價（推文板友 `LisaPrincess` 詢問價錢尚未獲回）以及全台各分店供應狀況待查。"
+                "單杯確切售價（推文板友 LisaPrincess 詢問價錢尚未獲回）以及全台各分店供應狀況待查。"
             ]
         },
         {
@@ -397,7 +403,7 @@ def build_product_catalog():
             "recent_push_old_post_ids": [],
             "historical_ref_ptt_ids": [],
             "media_summary": "【新聞曝光 0 筆】無主流商業新聞公關稿，屬在地傳統茶飲店實測。",
-            "consumer_summary": "【當期 11/03 PTT 新發實測文 1 篇】`PTT-DRINK-006` 作者 `LoveFood` 實測新北三重集美店（原中正南店遷址）：特大杯 XL 僅 35 元，遵循古法熬煮紅茶加入焙炒決明子與小碎冰，正常冰甜依然溫和不膩口、回甘生津。",
+            "consumer_summary": "【當期 11/03 PTT 新發實測文 1 篇】PTT-DRINK-006 作者 LoveFood 實測新北三重集美店（原中正南店遷址）：特大杯 XL 僅 35 元，遵循古法熬煮紅茶加入焙炒決明子與小碎冰，正常冰甜依然溫和不膩口、回甘生津。",
             "unknowns": [
                 "該篇食記目前推噓文數為 0，尚待更多板友回報其他特調品項（如甘蔗青、紅心芭樂檸檬）評價。"
             ]
@@ -423,7 +429,7 @@ def build_product_catalog():
             "recent_push_old_post_ids": [],
             "historical_ref_ptt_ids": [],
             "media_summary": "【新聞曝光 0 筆】台灣台中精品茶飲品牌出海門市實測。",
-            "consumer_summary": "【當期 10/26 PTT 新發實測文 1 篇】`PTT-DRINK-005` 實測澳門新八佰伴百貨 1 樓專櫃：主打專利高溫高壓現萃茶機（松針綠茶、水仙桂花蜜、玉露青茶、凍頂烏龍），冠軍飲品「國王珍珠奶茶」以焙火鳳眉紅茶搭皇家厚牛奶與慢火國王珍珠，店內並設苔蘚綠植內用區。",
+            "consumer_summary": "【當期 10/26 PTT 新發實測文 1 篇】PTT-DRINK-005 實測澳門新八佰伴百貨 1 樓專櫃：主打專利高溫高壓現萃茶機（松針綠茶、水仙桂花蜜、玉露青茶、凍頂烏龍），冠軍飲品「國王珍珠奶茶」以焙火鳳眉紅茶搭皇家厚牛奶與慢火國王珍珠，店內並設苔蘚綠植內用區。",
             "unknowns": [
                 "單杯折合台幣約 190 元屬高價位精品茶飲，一般日常回購率與台灣門市價差討論待更多推文回饋。"
             ]
@@ -448,7 +454,7 @@ def build_product_catalog():
             "current_period_ptt_ids": [],
             "recent_push_old_post_ids": [],
             "historical_ref_ptt_ids": [],
-            "media_summary": "1 筆單篇新聞（NOWnews `GNEWS-076`）報導手搖品牌「季緣」推出秋季果茶新品「葡萄青韻」，並於 10/27 起祭出連 4 天買一送一優惠。",
+            "media_summary": "1 筆單篇新聞（NOWnews GNEWS-076）報導手搖品牌「季緣」推出秋季果茶新品「葡萄青韻」，並於 10/27 起祭出連 4 天買一送一優惠。",
             "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見季緣「葡萄青韻」之試喝心得。",
             "unknowns": [
                 "葡萄青韻之單杯定價、果肉含量與消費者實際評價目前未知。"
@@ -545,7 +551,7 @@ def build_product_catalog():
     ]
 
     output_payload = {
-        "generated_at": "2026-11-12T22:30:00+08:00",
+        "generated_at": "2026-11-12T23:25:00+08:00",
         "total_products": len(enriched_products),
         "observation_periods": observation_periods,
         "crawl_batches": crawl_batches,

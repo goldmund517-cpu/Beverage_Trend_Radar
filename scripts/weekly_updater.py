@@ -31,6 +31,11 @@ def sync_verified_to_frontend():
 
     with open(VERIFIED_JSON_PATH, "r", encoding="utf-8") as f:
         verified_data = json.load(f)
+    for r in verified_data.get("records", []):
+        if not r.get("publisher_name"):
+            r["publisher_name"] = r.get("source_media") or "未知媒體"
+        if not r.get("title_clean"):
+            r["title_clean"] = r.get("clean_title") or r.get("rss_title") or ""
     with open(NEWS_EVENTS_PATH, "r", encoding="utf-8") as f:
         news_events_data = json.load(f)
     with open(VERIFIED_PTT_PATH, "r", encoding="utf-8") as f:
@@ -483,7 +488,7 @@ function openProductDetailModal(productId) {
     <!-- 關聯 PTT 飲料板討論明細 -->
     <div class="space-y-4 pt-2">
       <h4 class="text-lg font-black text-slate-900 border-b-2 border-indigo-200 pb-2">
-        💬 關聯 PTT 飲料板 (`bbs/Drink`) 原文與推噓文核對（共 ${p.metrics.total_ptt_count} 篇）
+        💬 關聯 PTT 飲料板 (bbs/Drink) 原文與推噓文核對（共 ${p.metrics.total_ptt_count} 篇）
       </h4>
       ${allPttHtml || `<div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-slate-600 font-bold">本次 PTT 飲料板採集範圍內未找到此商品之討論文章。</div>`}
     </div>

@@ -7,7 +7,7 @@
 // ============================================================================
 
 const verifiedProductsPayload = {
-  "generated_at": "2026-11-12T22:30:00+08:00",
+  "generated_at": "2026-11-12T23:25:00+08:00",
   "total_products": 16,
   "observation_periods": [
     {
@@ -113,7 +113,7 @@ const verifiedProductsPayload = {
         "PTT-DRINK-008"
       ],
       "media_summary": "14 筆單品專文＋7 筆跨品牌合集（共 21 筆紀錄）密集於 11/09～11/11 報導：迷客夏推出冬季限定「太妃序曲」與全新咀嚼配料「太妃奶Q」、日本森半抹茶與焙茶升級，同場回歸「法芙娜可可」，並祭出雙11線上買11送11與11元加購娜杯紅茶。",
-      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】上市初期雖有高達 21 筆媒體報導（部分標題稱「未開賣就爆紅」），但 PTT Drink 板最新搜尋僅有 8/05 折價券贈送文与 4/29 九折優惠討論，尚無 11 月冬季新品試喝心得。",
+      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】上市初期雖有高達 21 筆媒體報導（部分標題稱「未開賣就爆紅」），但 PTT Drink 板最新搜尋僅有 8/05 折價券贈送文與 4/29 九折優惠討論，尚無 11 月冬季新品試喝心得。",
       "unknowns": [
         "消費者對新配料「太妃奶Q」與「森半抹茶」升級版的實際甜度、口感評價目前未知。",
         "雙11線上買11送11與門市11元加購紅茶之實際兌換率與門市排隊狀況無公開量化數據。",
@@ -123,9 +123,24 @@ const verifiedProductsPayload = {
         "focused_news_count": 14,
         "roundup_news_count": 7,
         "total_news_count": 21,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 16,
         "unique_publishers": [
-          "未知媒體"
+          "BEAUTY美人圈",
+          "COOL-STYLE 潮流生活網",
+          "ETtoday旅遊雲",
+          "JUKSY 街星",
+          "NOWnews今日新聞",
+          "Niusnews妞新聞",
+          "TVBS新聞網",
+          "WalkerLand 窩客島",
+          "Zeek玩家誌",
+          "udn",
+          "三立新聞網SETN.com",
+          "上報Up Media",
+          "卡優新聞網",
+          "工商時報",
+          "鏡週刊Mirror Media",
+          "食尚玩家"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -158,7 +173,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "JUKSY 街星",
+          "title_clean": "迷客夏新品抹茶好喝嗎？最新菜單、價格、飲品推薦一次看！"
         },
         {
           "evidence_id": "GNEWS-005",
@@ -183,7 +200,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "udn",
+          "title_clean": "迷客夏「11元娜杯紅茶」！雙11「線上買11送11」 冬季新品「太妃序曲」開賣、「法芙娜可可」回歸"
         },
         {
           "evidence_id": "GNEWS-006",
@@ -208,7 +227,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "迷客夏新品抹茶、太妃今開賣爆紅！雙11優惠菜單價格　眾店員求饒"
         },
         {
           "evidence_id": "GNEWS-009",
@@ -233,7 +254,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "Zeek玩家誌",
+          "title_clean": "迷客夏冬季限定「太妃序曲」系列開賣！限時免費加料「太妃奶Q」、加11元再多一杯"
         },
         {
           "evidence_id": "GNEWS-012",
@@ -258,7 +281,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "Niusnews妞新聞",
+          "title_clean": "迷客夏冬季「太妃序曲」新品登場！10款必喝推薦懶人包，法芙娜可可回歸、靜岡焙焙鮮奶激推"
         },
         {
           "evidence_id": "GNEWS-025",
@@ -283,7 +308,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "BEAUTY美人圈",
+          "title_clean": "迷客夏冬季新品「太妃序曲」上市！日本抹茶、焙茶及法芙娜可可同步登場，再推雙11優惠"
         },
         {
           "evidence_id": "GNEWS-028",
@@ -308,7 +335,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "WalkerLand 窩客島",
+          "title_clean": "迷客夏買11送11寄杯喝！抹茶、焙茶、娜杯太妃、可可9大新品，未開賣就爆紅|美食"
         },
         {
           "evidence_id": "GNEWS-030",
@@ -333,7 +362,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "上報Up Media",
+          "title_clean": "【完整菜單】迷客夏買11 送 11、太妃奶Q 免費加！太妃糖、抹茶、焙茶三大系列冬季飲品新推薦法芙娜可可同步回歸"
         },
         {
           "evidence_id": "GNEWS-031",
@@ -358,7 +389,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "卡優新聞網",
+          "title_clean": "迷客夏太妃冬季新品11/11開賣！全新配料太妃奶Q必吃"
         },
         {
           "evidence_id": "GNEWS-032",
@@ -383,7 +416,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "迷客夏太妃奶Q免費加料！森半抹茶、法芙娜可可　雙11開賣優惠曝"
         },
         {
           "evidence_id": "GNEWS-033",
@@ -408,7 +443,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "COOL-STYLE 潮流生活網",
+          "title_clean": "迷客夏也加入「抹茶」戰局！同場加碼法芙娜可可系列回歸，焙茶、太妃飲品冬季新菜單登場！"
         },
         {
           "evidence_id": "GNEWS-034",
@@ -433,7 +470,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "工商時報",
+          "title_clean": "迷客夏冬季新品「太妃序曲」11月11日香甜上市 雙11限定「買11贈11」！"
         },
         {
           "evidence_id": "GNEWS-035",
@@ -458,7 +497,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "ETtoday旅遊雲",
+          "title_clean": "迷客夏「太妃序曲」後天上市　買新品免費加料、11元加購紅茶"
         },
         {
           "evidence_id": "GNEWS-036",
@@ -483,7 +524,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "食尚玩家",
+          "title_clean": "迷客夏11款冬季菜單！太妃奶Q飲登場，抹茶升級、焙茶可可回歸，雙11買11送11"
         }
       ],
       "resolved_roundup_news": [
@@ -510,7 +553,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝"
         },
         {
           "evidence_id": "GNEWS-007",
@@ -535,7 +580,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "ETtoday旅遊雲",
+          "title_clean": "手搖飲雙11優惠　日出茶太買1送1、迷客夏娜杯紅茶11元"
         },
         {
           "evidence_id": "GNEWS-008",
@@ -560,7 +607,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "TVBS新聞網",
+          "title_clean": "雙11手搖優惠！CoCo雙響炮買1送1 迷客夏買11送11"
         },
         {
           "evidence_id": "GNEWS-010",
@@ -585,7 +634,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "食尚玩家",
+          "title_clean": "CoCo買一送一、迷客夏紅茶11元！雙11「手搖飲優惠」11間，鶴茶樓第２杯半價"
         },
         {
           "evidence_id": "GNEWS-019",
@@ -610,7 +661,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "食尚玩家",
+          "title_clean": "買飲料竟能抽演唱會門票！UG告五人限定杯登場，迷客夏11元加購紅茶"
         },
         {
           "evidence_id": "GNEWS-026",
@@ -635,7 +688,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "鏡週刊Mirror Media",
+          "title_clean": "UG一撕免費看告五人演唱會　迷客夏新品曝"
         },
         {
           "evidence_id": "GNEWS-027",
@@ -660,7 +715,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "三立新聞網SETN.com",
+          "title_clean": "雙11開喝！翰林、日出茶太、迷客夏優惠一次看　UG一撕開看告五人演唱會"
         }
       ],
       "resolved_current_ptt": [],
@@ -809,9 +866,23 @@ const verifiedProductsPayload = {
         "focused_news_count": 17,
         "roundup_news_count": 3,
         "total_news_count": 20,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 15,
         "unique_publishers": [
-          "未知媒體"
+          "4Gamers",
+          "Cosmopolitan",
+          "ELLE",
+          "ETtoday旅遊雲",
+          "Marie Claire 美麗佳人",
+          "NOWnews今日新聞",
+          "TVBS新聞網",
+          "UDN",
+          "WalkerLand 窩客島",
+          "中天新聞網",
+          "中時新聞網",
+          "今周刊",
+          "壹蘋新聞網",
+          "玩咖Playing",
+          "食尚玩家"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -844,7 +915,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "皮克敏全家、CoCo金色花苗不要囤！遊戲隱藏機制曝光：會影響任務"
         },
         {
           "evidence_id": "GNEWS-011",
@@ -869,7 +942,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "今周刊",
+          "title_clean": "皮克敏11月活動！CoCo聯名活動開跑，飾品皮克敏怎麼拿？新玩法「神秘洞窟」將上線…社群日、巨菇時間先筆記"
         },
         {
           "evidence_id": "GNEWS-017",
@@ -894,7 +969,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "TVBS新聞網",
+          "title_clean": "皮克敏11月活動懶人包》全家與CoCo聯名、天竺葵社群日與5週年飾品"
         },
         {
           "evidence_id": "GNEWS-021",
@@ -919,7 +996,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "WalkerLand 窩客島",
+          "title_clean": "Pikmin Bloom皮克敏迷快衝全家！7款五週年限定造型開放收集，CoCo都可再推8款咖啡杯皮克敏"
         },
         {
           "evidence_id": "GNEWS-038",
@@ -944,7 +1023,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "ELLE",
+          "title_clean": "皮克敏×CoCo都可聯名活動開跑！咖啡杯飾品免費拿，走2000步再送特殊金色花苗"
         },
         {
           "evidence_id": "GNEWS-039",
@@ -969,7 +1050,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "Marie Claire 美麗佳人",
+          "title_clean": "皮克敏ＸCoCo都可聯名登場！搶拿咖啡杯皮克敏，再享雙11買1送1好康優惠"
         },
         {
           "evidence_id": "GNEWS-040",
@@ -994,7 +1077,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "Cosmopolitan",
+          "title_clean": "皮克敏CoCo聯名今開跑！免費拿咖啡杯皮克敏，解鎖隱藏任務多拿限定花苗"
         },
         {
           "evidence_id": "GNEWS-043",
@@ -1019,7 +1104,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "皮克敏CoCo聯名今天開跑！8款咖啡杯金色花苗免費拿、攻略一次看"
         },
         {
           "evidence_id": "GNEWS-044",
@@ -1044,7 +1131,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "CoCo茉香凍奶綠買一送一！奶茶三兄弟45元喝整個11月　皮克敏聯名"
         },
         {
           "evidence_id": "GNEWS-048",
@@ -1069,7 +1158,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "UDN",
+          "title_clean": "CoCo都可超強聯名「皮克敏」！8款咖啡杯造型限定飾品登場 11／5起全台門市開收"
         },
         {
           "evidence_id": "GNEWS-049",
@@ -1094,7 +1185,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "CoCo聯手皮克敏《Pikmin Bloom》！金盆拿法攻略　全台門市一次看"
         },
         {
           "evidence_id": "GNEWS-052",
@@ -1119,7 +1212,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "玩咖Playing",
+          "title_clean": "皮克敏CoCo聯名金盆&明信片免費送！手搖飲、咖啡買一送一接力喝"
         },
         {
           "evidence_id": "GNEWS-053",
@@ -1144,7 +1239,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "ETtoday旅遊雲",
+          "title_clean": "CoCo聯名皮克敏11/5開跑　來店領咖啡杯飾品金色花苗、明信片"
         },
         {
           "evidence_id": "GNEWS-054",
@@ -1169,7 +1266,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "食尚玩家",
+          "title_clean": "CoCo聯名皮克敏！８款咖啡杯造型免費收集，皮克敏路跑早鳥送超萌周邊"
         },
         {
           "evidence_id": "GNEWS-055",
@@ -1194,7 +1293,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "4Gamers",
+          "title_clean": "《Pikmin Bloom》CoCo都可聯名11/5開跑 蒐集兩款金色花苗與特殊明信片"
         },
         {
           "evidence_id": "GNEWS-056",
@@ -1219,7 +1320,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "皮克敏CoCo聯名11/5開跑！2款金色花苗、明信片全台門市免費送"
         },
         {
           "evidence_id": "GNEWS-057",
@@ -1244,7 +1347,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "TVBS新聞網",
+          "title_clean": "玩家注意！CoCo聯名皮克敏 金色花苗、明信片免費送"
         }
       ],
       "resolved_roundup_news": [
@@ -1271,7 +1376,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "壹蘋新聞網",
+          "title_clean": "今起飆高溫！手搖飲推買1送1、珍奶40元 皮克敏限定花苗開搶"
         },
         {
           "evidence_id": "GNEWS-047",
@@ -1296,7 +1403,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "中時新聞網",
+          "title_clean": "手搖飲買1送1來了！茉香凍奶綠2杯60元 優惠一次看"
         },
         {
           "evidence_id": "GNEWS-051",
@@ -1321,7 +1430,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "中天新聞網",
+          "title_clean": "「胖妃」殺進手搖飲！甄嬛傳聯名大苑子、CoCo迎皮克敏"
         }
       ],
       "resolved_current_ptt": [],
@@ -1430,9 +1541,14 @@ const verifiedProductsPayload = {
         "focused_news_count": 3,
         "roundup_news_count": 3,
         "total_news_count": 6,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 6,
         "unique_publishers": [
-          "未知媒體"
+          "NOWnews今日新聞",
+          "UDN",
+          "WalkerLand 窩客島",
+          "網路溫度計 DailyView",
+          "風傳媒",
+          "食尚玩家"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -1465,7 +1581,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "風傳媒",
+          "title_clean": "CoCo可可甜心11月登場 珍奶蕎麥雙口味暖心開喝 | 程霽玥 | 地方新聞"
         },
         {
           "evidence_id": "GNEWS-063",
@@ -1490,7 +1608,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "WalkerLand 窩客島",
+          "title_clean": "CoCo開賣巧克力手搖！可可珍奶、蕎麥可可任選2杯才85元，45元奶茶三兄弟加碼喝|美食"
         },
         {
           "evidence_id": "GNEWS-069",
@@ -1515,7 +1635,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "CoCo日焙珍珠奶茶買一送一！大杯才32.5元　可可甜心新品11/1開賣"
         }
       ],
       "resolved_roundup_news": [
@@ -1542,7 +1664,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "網路溫度計 DailyView",
+          "title_clean": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題"
         },
         {
           "evidence_id": "GNEWS-064",
@@ -1567,7 +1691,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "食尚玩家",
+          "title_clean": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠"
         },
         {
           "evidence_id": "GNEWS-065",
@@ -1592,7 +1718,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "UDN",
+          "title_clean": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一"
         }
       ],
       "resolved_current_ptt": [],
@@ -1730,9 +1858,12 @@ const verifiedProductsPayload = {
         "focused_news_count": 3,
         "roundup_news_count": 1,
         "total_news_count": 4,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 4,
         "unique_publishers": [
-          "未知媒體"
+          "NOWnews今日新聞",
+          "WalkerLand 窩客島",
+          "Yahoo新聞",
+          "食尚玩家"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -1765,7 +1896,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "WalkerLand 窩客島",
+          "title_clean": "迷客夏3.0升級亮點！新品「娜杯糖燻奶霜」折10元、鮮奶茶2杯99元，極簡風、試聞茶瓶要踩點|美食"
         },
         {
           "evidence_id": "GNEWS-073",
@@ -1790,7 +1923,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "迷客夏3.0新店開幕！娜杯糖燻奶霜開賣送托特包　全台折10元優惠"
         },
         {
           "evidence_id": "GNEWS-074",
@@ -1815,7 +1950,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "食尚玩家",
+          "title_clean": "「全台最大迷客夏」開在這！10坪新門市亮相，「娜杯糖燻奶霜」乳牛斑點萌翻"
         }
       ],
       "resolved_roundup_news": [
@@ -1842,7 +1979,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "Yahoo新聞",
+          "title_clean": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場"
         }
       ],
       "resolved_current_ptt": [],
@@ -1928,9 +2067,12 @@ const verifiedProductsPayload = {
         "focused_news_count": 3,
         "roundup_news_count": 1,
         "total_news_count": 4,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 4,
         "unique_publishers": [
-          "未知媒體"
+          "CARTURE 車勢文化",
+          "中時新聞網",
+          "壹蘋新聞網",
+          "玩咖Playing"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -1963,7 +2105,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "壹蘋新聞網",
+          "title_clean": "金馬入圍動畫跨界手搖飲！迷客夏聯名《朵莉之家》"
         },
         {
           "evidence_id": "GNEWS-077",
@@ -1988,7 +2132,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "CARTURE 車勢文化",
+          "title_clean": "迷客夏聯名《歡迎來到朵莉之家》 獨家推「75折限定套組」搶攻動漫商機"
         },
         {
           "evidence_id": "GNEWS-078",
@@ -2013,7 +2159,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "玩咖Playing",
+          "title_clean": "迷客夏聯名《歡迎來到朵莉之家》！優惠套組75折應援台灣原創金獎動畫"
         }
       ],
       "resolved_roundup_news": [
@@ -2040,7 +2188,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "中時新聞網",
+          "title_clean": "金馬聯名手搖飲周邊商品吸睛- 時尚消費- 中國時報"
         }
       ],
       "resolved_current_ptt": [],
@@ -2084,7 +2234,7 @@ const verifiedProductsPayload = {
         "PTT-DRINK-014"
       ],
       "media_summary": "2 筆單品專文＋2 筆跨品牌合集（共 4 筆紀錄）報導大茗於萬聖節推出獵奇限定「榴槤冰淇淋手搖飲（榴槤奶茶、紅玉紅茶）」只賣 3 天享 79 折，並同步上市「芒果美式」。",
-      "consumer_summary": "【榴槤新品 PTT 討論：本次採集範圍內未找到】但舊文 `PTT-DRINK-013`（大茗/麻古酪梨評比，24則推文）於當期 11/07 新增 2 則推文，板友 `pkmu8426` 盛讚「大茗的玉露青 終於找到順口有喉韻的口感了，根本就是一沐日沒換茶葉時的水準」；另 `PTT-DRINK-014` 討論大茗草莓優格飲與翡翠莓香好喝但偏貴。",
+      "consumer_summary": "【榴槤新品 PTT 討論：本次採集範圍內未找到】但舊文 PTT-DRINK-013（大茗/麻古酪梨評比，24則推文）於當期 11/07 新增 2 則推文，板友 pkmu8426 盛讚「大茗的玉露青 終於找到順口有喉韻的口感了，根本就是一沐日沒換茶葉時的水準」；另 PTT-DRINK-014 討論大茗草莓優格飲與翡翠莓香好喝但偏貴。",
       "unknowns": [
         "萬聖節 3 天限定「榴槤冰淇淋茶飲」與常態新品「芒果美式」的消費者實際試喝評價未知。",
         "注意區分：11/07 新增之 2 則 PTT 推文為針對大茗常態基底「玉露青」與「酪梨奶蓋」之回饋，已嚴格標示為「舊文近期新增推文」，不混算為榴槤新品討論。"
@@ -2093,9 +2243,12 @@ const verifiedProductsPayload = {
         "focused_news_count": 2,
         "roundup_news_count": 2,
         "total_news_count": 4,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 4,
         "unique_publishers": [
-          "未知媒體"
+          "BEAUTY美人圈",
+          "ETtoday旅遊雲",
+          "UDN",
+          "食尚玩家"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 1,
@@ -2128,7 +2281,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "食尚玩家",
+          "title_clean": "大茗推「榴槤冰淇淋手搖飲」！２款萬聖飲限定喝，榴槤奶茶、紅玉紅茶來挑戰"
         },
         {
           "evidence_id": "GNEWS-084",
@@ -2153,7 +2308,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "ETtoday旅遊雲",
+          "title_clean": "大茗「榴槤冰淇淋茶飲」只賣3天　芒果美式明起上市"
         }
       ],
       "resolved_roundup_news": [
@@ -2180,7 +2337,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "UDN",
+          "title_clean": "大茗萬聖節推「榴槤冰淇淋」新品限時79折 CoCo「葡萄柚果粒茶」買1送1"
         },
         {
           "evidence_id": "GNEWS-089",
@@ -2205,7 +2364,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "BEAUTY美人圈",
+          "title_clean": "買一送一！10月最新手搖優惠：50嵐、大茗、UG、大苑子、鶴茶樓都有，再睡五分鐘推新品"
         }
       ],
       "resolved_current_ptt": [],
@@ -2506,7 +2667,7 @@ const verifiedProductsPayload = {
         "PTT-DRINK-012"
       ],
       "media_summary": "2 筆單品專文（卡優新聞網、COOL-STYLE）於 11/02 預告龜記將推出 3 款抹茶系列新品，並聯手 Oatly 推出「抹茶燕麥乳」，預計 11/16 正式開賣。",
-      "consumer_summary": "【當期新品 PTT 討論：11/16 才開賣，本次採集範圍內未找到】同品牌歷史 PTT 討論呈現兩極：7/08 `PTT-DRINK-011` 推薦「雷夢蘆薈蜜」不另加糖酸甜解膩；但 4/20 `PTT-DRINK-012`（20 則推文）針對「紅柚翡翠」改用調合果汁罐且未標示含糖引發板友強烈負評。",
+      "consumer_summary": "【當期新品 PTT 討論：11/16 才開賣，本次採集範圍內未找到】同品牌歷史 PTT 討論呈現兩極：7/08 PTT-DRINK-011 推薦「雷夢蘆薈蜜」不另加糖酸甜解膩；但 4/20 PTT-DRINK-012（20 則推文）針對「紅柚翡翠」改用調合果汁罐且未標示含糖引發板友強烈負評。",
       "unknowns": [
         "商品於 11/16 才正式開賣，目前尚無任何消費者試喝體驗。",
         "3 款抹茶新品的完整品名與售價區間需開啟新聞內文或待官方公布菜單確認。"
@@ -2515,9 +2676,10 @@ const verifiedProductsPayload = {
         "focused_news_count": 2,
         "roundup_news_count": 0,
         "total_news_count": 2,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 2,
         "unique_publishers": [
-          "未知媒體"
+          "COOL-STYLE 潮流生活網",
+          "卡優新聞網"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -2550,7 +2712,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "卡優新聞網",
+          "title_clean": "龜記推3款抹茶手搖新品！Oatly聯名抹茶燕麥乳11/16開賣"
         },
         {
           "evidence_id": "GNEWS-058",
@@ -2575,7 +2739,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "COOL-STYLE 潮流生活網",
+          "title_clean": "抹茶熱潮燒進手搖飲！龜記抹茶系列3款新品登場，聯手 Oatly 燕麥奶乳糖不耐也能喝！"
         }
       ],
       "resolved_roundup_news": [],
@@ -2808,8 +2974,8 @@ const verifiedProductsPayload = {
       "historical_ref_ptt_ids": [
         "PTT-DRINK-010"
       ],
-      "media_summary": "1 筆單品專文（卡優新聞網 `GNEWS-014`）＋1 筆雙11合集（`GNEWS-004`）報導麻古茶坊於 11/10 宣布冬季人氣「濃厚芋泥系列」三款飲品正式回歸。",
-      "consumer_summary": "【本波 11/10 剛開賣未見新文｜已採集前一波同款「麻古芋泥奶茶」實測心得】`PTT-DRINK-010` 作者實測「麻古茶坊芋泥奶茶 $75：能喝得到芋泥&吃到細小芋頭顆粒，芋頭味夠，想試米麻糬芋泥奶茶」；另 `PTT-DRINK-013` 多位板友推文肯定麻古季節限定「料多、飽到天靈蓋」。",
+      "media_summary": "1 筆單品專文（卡優新聞網 GNEWS-014）＋1 筆雙11合集（GNEWS-004）報導麻古茶坊於 11/10 宣布冬季人氣「濃厚芋泥系列」三款飲品正式回歸。",
+      "consumer_summary": "【本波 11/10 剛開賣未見新文｜已採集前一波同款「麻古芋泥奶茶」實測心得】PTT-DRINK-010 作者實測「麻古茶坊芋泥奶茶 $75：能喝得到芋泥&吃到細小芋頭顆粒，芋頭味夠，想試米麻糬芋泥奶茶」；另 PTT-DRINK-013 多位板友推文肯定麻古季節限定「料多、飽到天靈蓋」。",
       "unknowns": [
         "2026/11 本波回歸的三款飲品具體品名與是否調漲價格（相較 2025/12 的 $75）尚待確認。",
         "本波回歸後的當期消費者新試喝心得尚待開賣後追蹤。"
@@ -2818,9 +2984,10 @@ const verifiedProductsPayload = {
         "focused_news_count": 1,
         "roundup_news_count": 1,
         "total_news_count": 2,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 2,
         "unique_publishers": [
-          "未知媒體"
+          "NOWnews今日新聞",
+          "卡優新聞網"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 1,
@@ -2853,7 +3020,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "卡優新聞網",
+          "title_clean": "麻古茶坊芋泥系列回歸開賣 三款人氣飲品一次喝"
         }
       ],
       "resolved_roundup_news": [
@@ -2880,7 +3049,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝"
         }
       ],
       "resolved_current_ptt": [],
@@ -3143,9 +3314,12 @@ const verifiedProductsPayload = {
         "focused_news_count": 0,
         "roundup_news_count": 4,
         "total_news_count": 4,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 4,
         "unique_publishers": [
-          "未知媒體"
+          "NOWnews今日新聞",
+          "中天新聞網",
+          "玩咖Playing",
+          "造咖"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -3179,7 +3353,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "玩咖Playing",
+          "title_clean": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品"
         },
         {
           "evidence_id": "GNEWS-092",
@@ -3204,7 +3380,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "CoCo買一送一！粉角奶茶30元　麻古「巨峰葡萄」萬聖節紙杯明開賣"
         },
         {
           "evidence_id": "GNEWS-094",
@@ -3229,7 +3407,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "中天新聞網",
+          "title_clean": "秋天涼涼喝新品！麻古、鶴茶樓攜新品登場 CoCo都可買1送1"
         },
         {
           "evidence_id": "GNEWS-095",
@@ -3254,7 +3434,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "造咖",
+          "title_clean": "9大手搖新品！麻古茶坊「巨峰葡萄系列」、UG「檸檬冰奶」"
         }
       ],
       "resolved_current_ptt": [],
@@ -3475,7 +3657,7 @@ const verifiedProductsPayload = {
       "recent_push_old_post_ids": [],
       "historical_ref_ptt_ids": [],
       "media_summary": "4 筆跨品牌合集報導（ETtoday、Yahoo、玩咖Playing、NOWnews）於 10/20～11/11 提及珍煮丹開賣秋季「蕎麥系列」3 款新品，並參與雙11優惠。",
-      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見珍煮丹蕎麥系列討論（但同期間 `PTT-DRINK-010` 板友提及全家金焙蕎麥醇奶茶好喝，顯示蕎麥茶底具討論熱度）。",
+      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見珍煮丹蕎麥系列討論（但同期間 PTT-DRINK-010 板友提及全家金焙蕎麥醇奶茶好喝，顯示蕎麥茶底具討論熱度）。",
       "unknowns": [
         "珍煮丹 3 款蕎麥新品的完整品名、配料與價格待進入內文確認。"
       ],
@@ -3483,9 +3665,12 @@ const verifiedProductsPayload = {
         "focused_news_count": 0,
         "roundup_news_count": 4,
         "total_news_count": 4,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 4,
         "unique_publishers": [
-          "未知媒體"
+          "ETtoday旅遊雲",
+          "NOWnews今日新聞",
+          "Yahoo新聞",
+          "玩咖Playing"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -3519,7 +3704,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝"
         },
         {
           "evidence_id": "GNEWS-072",
@@ -3544,7 +3731,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "Yahoo新聞",
+          "title_clean": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場"
         },
         {
           "evidence_id": "GNEWS-080",
@@ -3569,7 +3758,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "玩咖Playing",
+          "title_clean": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品"
         },
         {
           "evidence_id": "GNEWS-081",
@@ -3594,7 +3785,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "ETtoday旅遊雲",
+          "title_clean": "珍煮丹開賣「蕎麥系列」3新品　CoCo葡萄柚果粒茶明買1送1"
         }
       ],
       "resolved_current_ptt": [],
@@ -3639,9 +3832,11 @@ const verifiedProductsPayload = {
         "focused_news_count": 0,
         "roundup_news_count": 3,
         "total_news_count": 3,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 3,
         "unique_publishers": [
-          "未知媒體"
+          "UDN",
+          "網路溫度計 DailyView",
+          "食尚玩家"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -3675,7 +3870,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "網路溫度計 DailyView",
+          "title_clean": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題"
         },
         {
           "evidence_id": "GNEWS-064",
@@ -3700,7 +3897,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "食尚玩家",
+          "title_clean": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠"
         },
         {
           "evidence_id": "GNEWS-065",
@@ -3725,7 +3924,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "UDN",
+          "title_clean": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一"
         }
       ],
       "resolved_current_ptt": [],
@@ -3763,8 +3964,8 @@ const verifiedProductsPayload = {
       "historical_ref_ptt_ids": [
         "PTT-DRINK-003"
       ],
-      "media_summary": "妞新聞秋季手搖新品懶人包（`GNEWS-075`）推薦五桐號「泰奶雪沙」與可不可「紅烏龍茶王」為秋季必喝新品；NOWnews（`GNEWS-020`）報導五桐號雙11買一送一。",
-      "consumer_summary": "【已採集 PTT 強烈負評實測 1 篇】針對可不可紅烏龍延伸品項「檸檬冷露紅烏龍」，PTT Drink 板最新列表 `PTT-DRINK-003`（作者 `wild2012`，3則推文）給予強烈負評：「一杯還65，微冰微糖紅烏龍沒有味道，檸檬味更是一點也沒有，只剩下甜味」；推文板友 `PHXD` 亦吐槽「裡面有檸檬凍（完全沒檸檬味），還配細吸管的操作不能理解」。完美示範將「媒體推薦曝光」與「消費者真實負評」分開呈現。",
+      "media_summary": "妞新聞秋季手搖新品懶人包（GNEWS-075）推薦五桐號「泰奶雪沙」與可不可「紅烏龍茶王」為秋季必喝新品；NOWnews（GNEWS-020）報導五桐號雙11買一送一。",
+      "consumer_summary": "【已採集 PTT 強烈負評實測 1 篇】針對可不可紅烏龍延伸品項「檸檬冷露紅烏龍」，PTT Drink 板最新列表 PTT-DRINK-003（作者 wild2012，3則推文）給予強烈負評：「一杯還65，微冰微糖紅烏龍沒有味道，檸檬味更是一點也沒有，只剩下甜味」；推文板友 PHXD 亦吐槽「裡面有檸檬凍（完全沒檸檬味），還配細吸管的操作不能理解」。完美示範將「媒體推薦曝光」與「消費者真實負評」分開呈現。",
       "unknowns": [
         "純茶款「紅烏龍茶王」無糖表現是否優於檸檬冷露特調，以及五桐號「泰奶雪沙」的實際消費者評價待查。"
       ],
@@ -3772,9 +3973,10 @@ const verifiedProductsPayload = {
         "focused_news_count": 0,
         "roundup_news_count": 2,
         "total_news_count": 2,
-        "unique_publisher_count": 1,
+        "unique_publisher_count": 2,
         "unique_publishers": [
-          "未知媒體"
+          "NOWnews今日新聞",
+          "Niusnews妞新聞"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -3808,7 +4010,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "雙11飲料優惠！CoCo、日出茶太、五桐號買一送一　翰林珍奶40元"
         },
         {
           "evidence_id": "GNEWS-075",
@@ -3833,7 +4037,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "Niusnews妞新聞",
+          "title_clean": "2026秋季手搖新品懶人包！五桐號泰奶雪沙、可不可紅烏龍茶王，11家必喝推薦一次看"
         }
       ],
       "resolved_current_ptt": [],
@@ -3917,9 +4123,9 @@ const verifiedProductsPayload = {
       ],
       "historical_ref_ptt_ids": [],
       "media_summary": "【新聞曝光 0 筆】本次 Google News RSS 採集範圍內無媒體公關報導，完全由 PTT 飲料板真實消費者自發開箱發掘。",
-      "consumer_summary": "【PTT 實測心得 1 篇＋10 則推文（含 11/08、11/12 當期新增 2 則推文）】`PTT-DRINK-002` 作者 `goodapple807` 盛讚店員直接榨兩顆蘋果，無糖仍帶富士蘋果香甜加茶王茶香「近期喝過最頂」；11/08 板友 `harebell2011` 新推文回饋「兩家（金茶伍與樂法）在今天都解鎖了，覺得還是樂法比較好喝」，11/12 板友 `kittymay79` 推文「愛蘋果系列茶飲 想試試」。",
+      "consumer_summary": "【PTT 實測心得 1 篇＋10 則推文（含 11/08、11/12 當期新增 2 則推文）】PTT-DRINK-002 作者 goodapple807 盛讚店員直接榨兩顆蘋果，無糖仍帶富士蘋果香甜加茶王茶香「近期喝過最頂」；11/08 板友 harebell2011 新推文回饋「兩家（金茶伍與樂法）在今天都解鎖了，覺得還是樂法比較好喝」，11/12 板友 kittymay79 推文「愛蘋果系列茶飲 想試試」。",
       "unknowns": [
-        "單杯確切售價（推文板友 `LisaPrincess` 詢問價錢尚未獲回）以及全台各分店供應狀況待查。"
+        "單杯確切售價（推文板友 LisaPrincess 詢問價錢尚未獲回）以及全台各分店供應狀況待查。"
       ],
       "metrics": {
         "focused_news_count": 0,
@@ -4058,7 +4264,7 @@ const verifiedProductsPayload = {
       "recent_push_old_post_ids": [],
       "historical_ref_ptt_ids": [],
       "media_summary": "【新聞曝光 0 筆】無主流商業新聞公關稿，屬在地傳統茶飲店實測。",
-      "consumer_summary": "【當期 11/03 PTT 新發實測文 1 篇】`PTT-DRINK-006` 作者 `LoveFood` 實測新北三重集美店（原中正南店遷址）：特大杯 XL 僅 35 元，遵循古法熬煮紅茶加入焙炒決明子與小碎冰，正常冰甜依然溫和不膩口、回甘生津。",
+      "consumer_summary": "【當期 11/03 PTT 新發實測文 1 篇】PTT-DRINK-006 作者 LoveFood 實測新北三重集美店（原中正南店遷址）：特大杯 XL 僅 35 元，遵循古法熬煮紅茶加入焙炒決明子與小碎冰，正常冰甜依然溫和不膩口、回甘生津。",
       "unknowns": [
         "該篇食記目前推噓文數為 0，尚待更多板友回報其他特調品項（如甘蔗青、紅心芭樂檸檬）評價。"
       ],
@@ -4138,7 +4344,7 @@ const verifiedProductsPayload = {
       "recent_push_old_post_ids": [],
       "historical_ref_ptt_ids": [],
       "media_summary": "【新聞曝光 0 筆】台灣台中精品茶飲品牌出海門市實測。",
-      "consumer_summary": "【當期 10/26 PTT 新發實測文 1 篇】`PTT-DRINK-005` 實測澳門新八佰伴百貨 1 樓專櫃：主打專利高溫高壓現萃茶機（松針綠茶、水仙桂花蜜、玉露青茶、凍頂烏龍），冠軍飲品「國王珍珠奶茶」以焙火鳳眉紅茶搭皇家厚牛奶與慢火國王珍珠，店內並設苔蘚綠植內用區。",
+      "consumer_summary": "【當期 10/26 PTT 新發實測文 1 篇】PTT-DRINK-005 實測澳門新八佰伴百貨 1 樓專櫃：主打專利高溫高壓現萃茶機（松針綠茶、水仙桂花蜜、玉露青茶、凍頂烏龍），冠軍飲品「國王珍珠奶茶」以焙火鳳眉紅茶搭皇家厚牛奶與慢火國王珍珠，店內並設苔蘚綠植內用區。",
       "unknowns": [
         "單杯折合台幣約 190 元屬高價位精品茶飲，一般日常回購率與台灣門市價差討論待更多推文回饋。"
       ],
@@ -4219,7 +4425,7 @@ const verifiedProductsPayload = {
       "current_period_ptt_ids": [],
       "recent_push_old_post_ids": [],
       "historical_ref_ptt_ids": [],
-      "media_summary": "1 筆單篇新聞（NOWnews `GNEWS-076`）報導手搖品牌「季緣」推出秋季果茶新品「葡萄青韻」，並於 10/27 起祭出連 4 天買一送一優惠。",
+      "media_summary": "1 筆單篇新聞（NOWnews GNEWS-076）報導手搖品牌「季緣」推出秋季果茶新品「葡萄青韻」，並於 10/27 起祭出連 4 天買一送一優惠。",
       "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見季緣「葡萄青韻」之試喝心得。",
       "unknowns": [
         "葡萄青韻之單杯定價、果肉含量與消費者實際評價目前未知。"
@@ -4230,7 +4436,7 @@ const verifiedProductsPayload = {
         "total_news_count": 1,
         "unique_publisher_count": 1,
         "unique_publishers": [
-          "未知媒體"
+          "NOWnews今日新聞"
         ],
         "current_period_ptt_count": 0,
         "recent_push_old_post_count": 0,
@@ -4263,7 +4469,9 @@ const verifiedProductsPayload = {
           "price_from_article": "未取得（RSS 不含內文價格）",
           "social_engagement": "未取得（新聞來源無社群互動數）",
           "sentiment_and_intent": "未取得（未爬取消費者留言）",
-          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+          "publisher_name": "NOWnews今日新聞",
+          "title_clean": "季緣買一送一！10/27起連喝4天手搖飲料優惠　葡萄青韻新品開喝"
         }
       ],
       "resolved_roundup_news": [],
@@ -4322,7 +4530,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Marie Claire 美麗佳人",
+      "title_clean": "2026雙11優惠懶人包！手搖飲買1送1、飯店餐券6折與11元家電開搶"
     },
     {
       "evidence_id": "GNEWS-002",
@@ -4347,7 +4557,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "皮克敏全家、CoCo金色花苗不要囤！遊戲隱藏機制曝光：會影響任務"
     },
     {
       "evidence_id": "GNEWS-003",
@@ -4372,7 +4584,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "JUKSY 街星",
+      "title_clean": "迷客夏新品抹茶好喝嗎？最新菜單、價格、飲品推薦一次看！"
     },
     {
       "evidence_id": "GNEWS-004",
@@ -4397,7 +4611,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝"
     },
     {
       "evidence_id": "GNEWS-005",
@@ -4422,7 +4638,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "udn",
+      "title_clean": "迷客夏「11元娜杯紅茶」！雙11「線上買11送11」 冬季新品「太妃序曲」開賣、「法芙娜可可」回歸"
     },
     {
       "evidence_id": "GNEWS-006",
@@ -4447,7 +4665,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "迷客夏新品抹茶、太妃今開賣爆紅！雙11優惠菜單價格　眾店員求饒"
     },
     {
       "evidence_id": "GNEWS-007",
@@ -4472,7 +4692,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "ETtoday旅遊雲",
+      "title_clean": "手搖飲雙11優惠　日出茶太買1送1、迷客夏娜杯紅茶11元"
     },
     {
       "evidence_id": "GNEWS-008",
@@ -4497,7 +4719,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "TVBS新聞網",
+      "title_clean": "雙11手搖優惠！CoCo雙響炮買1送1 迷客夏買11送11"
     },
     {
       "evidence_id": "GNEWS-009",
@@ -4522,7 +4746,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Zeek玩家誌",
+      "title_clean": "迷客夏冬季限定「太妃序曲」系列開賣！限時免費加料「太妃奶Q」、加11元再多一杯"
     },
     {
       "evidence_id": "GNEWS-010",
@@ -4547,7 +4773,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "CoCo買一送一、迷客夏紅茶11元！雙11「手搖飲優惠」11間，鶴茶樓第２杯半價"
     },
     {
       "evidence_id": "GNEWS-011",
@@ -4572,7 +4800,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "今周刊",
+      "title_clean": "皮克敏11月活動！CoCo聯名活動開跑，飾品皮克敏怎麼拿？新玩法「神秘洞窟」將上線…社群日、巨菇時間先筆記"
     },
     {
       "evidence_id": "GNEWS-012",
@@ -4597,7 +4827,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Niusnews妞新聞",
+      "title_clean": "迷客夏冬季「太妃序曲」新品登場！10款必喝推薦懶人包，法芙娜可可回歸、靜岡焙焙鮮奶激推"
     },
     {
       "evidence_id": "GNEWS-013",
@@ -4622,7 +4854,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Cosmopolitan",
+      "title_clean": "「雙11優惠」11/11限定，手搖飲買1送1、好市多現折600元、繼光香香雞可樂餅免費送！"
     },
     {
       "evidence_id": "GNEWS-014",
@@ -4647,7 +4881,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "卡優新聞網",
+      "title_clean": "麻古茶坊芋泥系列回歸開賣 三款人氣飲品一次喝"
     },
     {
       "evidence_id": "GNEWS-015",
@@ -4672,7 +4908,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "上報Up Media",
+      "title_clean": "【雙11優惠】咖啡、手搖飲買一送一！四大超商、全聯、星巴克、CoCo、大苑子等14 家飲品優惠懶人包"
     },
     {
       "evidence_id": "GNEWS-016",
@@ -4697,7 +4935,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "TVBS新聞網",
+      "title_clean": "全家皮克敏聯名開跑！7款「零食皮克敏」金色花苗、特殊地點與加碼攻略"
     },
     {
       "evidence_id": "GNEWS-017",
@@ -4722,7 +4962,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "TVBS新聞網",
+      "title_clean": "皮克敏11月活動懶人包》全家與CoCo聯名、天竺葵社群日與5週年飾品"
     },
     {
       "evidence_id": "GNEWS-018",
@@ -4747,7 +4989,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "udn",
+      "title_clean": "2026「雙11美食優惠」懶人包！咖啡、手搖飲、麥當勞買1送1 肯德基蛋撻11元 摩斯加11元多1件"
     },
     {
       "evidence_id": "GNEWS-019",
@@ -4772,7 +5016,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "買飲料竟能抽演唱會門票！UG告五人限定杯登場，迷客夏11元加購紅茶"
     },
     {
       "evidence_id": "GNEWS-020",
@@ -4797,7 +5043,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "雙11飲料優惠！CoCo、日出茶太、五桐號買一送一　翰林珍奶40元"
     },
     {
       "evidence_id": "GNEWS-021",
@@ -4822,7 +5070,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "WalkerLand 窩客島",
+      "title_clean": "Pikmin Bloom皮克敏迷快衝全家！7款五週年限定造型開放收集，CoCo都可再推8款咖啡杯皮克敏"
     },
     {
       "evidence_id": "GNEWS-022",
@@ -4847,7 +5097,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "城市學",
+      "title_clean": "皮克敏全家聯名11/10登場！7款五週年零食飾品怎麼拿？3個「特殊地點」藏限時驚喜"
     },
     {
       "evidence_id": "GNEWS-023",
@@ -4872,7 +5124,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "COOL-STYLE 潮流生活網",
+      "title_clean": "小資族這篇快收藏！雙11手搖、速食優惠懶人包：大比薩199元、多款手搖飲買一送一"
     },
     {
       "evidence_id": "GNEWS-024",
@@ -4897,7 +5151,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "中天新聞網",
+      "title_clean": "手搖優惠大戰！迷客夏11元開喝、拾汣茶屋祭99元殺紅眼"
     },
     {
       "evidence_id": "GNEWS-025",
@@ -4922,7 +5178,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "BEAUTY美人圈",
+      "title_clean": "迷客夏冬季新品「太妃序曲」上市！日本抹茶、焙茶及法芙娜可可同步登場，再推雙11優惠"
     },
     {
       "evidence_id": "GNEWS-026",
@@ -4947,7 +5205,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "鏡週刊Mirror Media",
+      "title_clean": "UG一撕免費看告五人演唱會　迷客夏新品曝"
     },
     {
       "evidence_id": "GNEWS-027",
@@ -4972,7 +5232,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "三立新聞網SETN.com",
+      "title_clean": "雙11開喝！翰林、日出茶太、迷客夏優惠一次看　UG一撕開看告五人演唱會"
     },
     {
       "evidence_id": "GNEWS-028",
@@ -4997,7 +5259,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "WalkerLand 窩客島",
+      "title_clean": "迷客夏買11送11寄杯喝！抹茶、焙茶、娜杯太妃、可可9大新品，未開賣就爆紅|美食"
     },
     {
       "evidence_id": "GNEWS-029",
@@ -5022,7 +5286,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Cosmopolitan",
+      "title_clean": "皮克敏聯名全家便利商店！「5週年紀念零食飾品皮克敏」限時登場，送金色花苗＋明信片，領取限制一次看"
     },
     {
       "evidence_id": "GNEWS-030",
@@ -5047,7 +5313,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "上報Up Media",
+      "title_clean": "【完整菜單】迷客夏買11 送 11、太妃奶Q 免費加！太妃糖、抹茶、焙茶三大系列冬季飲品新推薦法芙娜可可同步回歸"
     },
     {
       "evidence_id": "GNEWS-031",
@@ -5072,7 +5340,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "卡優新聞網",
+      "title_clean": "迷客夏太妃冬季新品11/11開賣！全新配料太妃奶Q必吃"
     },
     {
       "evidence_id": "GNEWS-032",
@@ -5097,7 +5367,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "迷客夏太妃奶Q免費加料！森半抹茶、法芙娜可可　雙11開賣優惠曝"
     },
     {
       "evidence_id": "GNEWS-033",
@@ -5122,7 +5394,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "COOL-STYLE 潮流生活網",
+      "title_clean": "迷客夏也加入「抹茶」戰局！同場加碼法芙娜可可系列回歸，焙茶、太妃飲品冬季新菜單登場！"
     },
     {
       "evidence_id": "GNEWS-034",
@@ -5147,7 +5421,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "工商時報",
+      "title_clean": "迷客夏冬季新品「太妃序曲」11月11日香甜上市 雙11限定「買11贈11」！"
     },
     {
       "evidence_id": "GNEWS-035",
@@ -5172,7 +5448,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "ETtoday旅遊雲",
+      "title_clean": "迷客夏「太妃序曲」後天上市　買新品免費加料、11元加購紅茶"
     },
     {
       "evidence_id": "GNEWS-036",
@@ -5197,7 +5475,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "迷客夏11款冬季菜單！太妃奶Q飲登場，抹茶升級、焙茶可可回歸，雙11買11送11"
     },
     {
       "evidence_id": "GNEWS-037",
@@ -5222,7 +5502,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "WalkerLand 窩客島",
+      "title_clean": "連3天喝買一送一！CoCo「咖啡特調、百香雙響炮」0元多一杯，雙11優惠飲料先喝|美食"
     },
     {
       "evidence_id": "GNEWS-038",
@@ -5247,7 +5529,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "ELLE",
+      "title_clean": "皮克敏×CoCo都可聯名活動開跑！咖啡杯飾品免費拿，走2000步再送特殊金色花苗"
     },
     {
       "evidence_id": "GNEWS-039",
@@ -5272,7 +5556,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Marie Claire 美麗佳人",
+      "title_clean": "皮克敏ＸCoCo都可聯名登場！搶拿咖啡杯皮克敏，再享雙11買1送1好康優惠"
     },
     {
       "evidence_id": "GNEWS-040",
@@ -5297,7 +5583,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Cosmopolitan",
+      "title_clean": "皮克敏CoCo聯名今開跑！免費拿咖啡杯皮克敏，解鎖隱藏任務多拿限定花苗"
     },
     {
       "evidence_id": "GNEWS-041",
@@ -5322,7 +5610,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Marie Claire 美麗佳人",
+      "title_clean": "【Threads上紅什麼】龜記手搖飲竟然變沐浴乳！沙威隆聯名「蘋果紅萱、三十三茶王」，連洗澡都能聞到熟悉茶香"
     },
     {
       "evidence_id": "GNEWS-042",
@@ -5347,7 +5637,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Yahoo新聞",
+      "title_clean": "手搖飲新品！阿檸推琥珀珍珠鮮乳茶、清心福全攜咖波推限量周邊"
     },
     {
       "evidence_id": "GNEWS-043",
@@ -5372,7 +5664,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "皮克敏CoCo聯名今天開跑！8款咖啡杯金色花苗免費拿、攻略一次看"
     },
     {
       "evidence_id": "GNEWS-044",
@@ -5397,7 +5691,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "CoCo茉香凍奶綠買一送一！奶茶三兄弟45元喝整個11月　皮克敏聯名"
     },
     {
       "evidence_id": "GNEWS-045",
@@ -5422,7 +5718,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "壹蘋新聞網",
+      "title_clean": "今起飆高溫！手搖飲推買1送1、珍奶40元 皮克敏限定花苗開搶"
     },
     {
       "evidence_id": "GNEWS-046",
@@ -5447,7 +5745,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "清心福全、CoCo買一送一！11月「手搖飲優惠」６間，麻古現折80元"
     },
     {
       "evidence_id": "GNEWS-047",
@@ -5472,7 +5772,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "中時新聞網",
+      "title_clean": "手搖飲買1送1來了！茉香凍奶綠2杯60元 優惠一次看"
     },
     {
       "evidence_id": "GNEWS-048",
@@ -5497,7 +5799,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "UDN",
+      "title_clean": "CoCo都可超強聯名「皮克敏」！8款咖啡杯造型限定飾品登場 11／5起全台門市開收"
     },
     {
       "evidence_id": "GNEWS-049",
@@ -5522,7 +5826,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "CoCo聯手皮克敏《Pikmin Bloom》！金盆拿法攻略　全台門市一次看"
     },
     {
       "evidence_id": "GNEWS-050",
@@ -5547,7 +5853,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "卡優新聞網",
+      "title_clean": "龜記推3款抹茶手搖新品！Oatly聯名抹茶燕麥乳11/16開賣"
     },
     {
       "evidence_id": "GNEWS-051",
@@ -5572,7 +5880,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "中天新聞網",
+      "title_clean": "「胖妃」殺進手搖飲！甄嬛傳聯名大苑子、CoCo迎皮克敏"
     },
     {
       "evidence_id": "GNEWS-052",
@@ -5597,7 +5907,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "玩咖Playing",
+      "title_clean": "皮克敏CoCo聯名金盆&明信片免費送！手搖飲、咖啡買一送一接力喝"
     },
     {
       "evidence_id": "GNEWS-053",
@@ -5622,7 +5934,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "ETtoday旅遊雲",
+      "title_clean": "CoCo聯名皮克敏11/5開跑　來店領咖啡杯飾品金色花苗、明信片"
     },
     {
       "evidence_id": "GNEWS-054",
@@ -5647,7 +5961,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "CoCo聯名皮克敏！８款咖啡杯造型免費收集，皮克敏路跑早鳥送超萌周邊"
     },
     {
       "evidence_id": "GNEWS-055",
@@ -5672,7 +5988,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "4Gamers",
+      "title_clean": "《Pikmin Bloom》CoCo都可聯名11/5開跑 蒐集兩款金色花苗與特殊明信片"
     },
     {
       "evidence_id": "GNEWS-056",
@@ -5697,7 +6015,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "皮克敏CoCo聯名11/5開跑！2款金色花苗、明信片全台門市免費送"
     },
     {
       "evidence_id": "GNEWS-057",
@@ -5722,7 +6042,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "TVBS新聞網",
+      "title_clean": "玩家注意！CoCo聯名皮克敏 金色花苗、明信片免費送"
     },
     {
       "evidence_id": "GNEWS-058",
@@ -5747,7 +6069,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "COOL-STYLE 潮流生活網",
+      "title_clean": "抹茶熱潮燒進手搖飲！龜記抹茶系列3款新品登場，聯手 Oatly 燕麥奶乳糖不耐也能喝！"
     },
     {
       "evidence_id": "GNEWS-059",
@@ -5772,7 +6096,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "ETtoday旅遊雲",
+      "title_clean": "手搖飲萬聖節優惠　TEA TOP免費加料、CoCo買1送1"
     },
     {
       "evidence_id": "GNEWS-060",
@@ -5797,7 +6123,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "網路溫度計 DailyView",
+      "title_clean": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題"
     },
     {
       "evidence_id": "GNEWS-061",
@@ -5822,7 +6150,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "BEAUTY美人圈",
+      "title_clean": "2026 CoCo 都可菜單推薦！網評必喝Top10、最新菜單＆價格一次看"
     },
     {
       "evidence_id": "GNEWS-062",
@@ -5847,7 +6177,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "風傳媒",
+      "title_clean": "CoCo可可甜心11月登場 珍奶蕎麥雙口味暖心開喝 | 程霽玥 | 地方新聞"
     },
     {
       "evidence_id": "GNEWS-063",
@@ -5872,7 +6204,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "WalkerLand 窩客島",
+      "title_clean": "CoCo開賣巧克力手搖！可可珍奶、蕎麥可可任選2杯才85元，45元奶茶三兄弟加碼喝|美食"
     },
     {
       "evidence_id": "GNEWS-064",
@@ -5897,7 +6231,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠"
     },
     {
       "evidence_id": "GNEWS-065",
@@ -5922,7 +6258,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "UDN",
+      "title_clean": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一"
     },
     {
       "evidence_id": "GNEWS-066",
@@ -5947,7 +6285,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "中時新聞網",
+      "title_clean": "佳釀玩聯名名車手搖飲碰撞新意- 時尚消費- 中國時報"
     },
     {
       "evidence_id": "GNEWS-067",
@@ -5972,7 +6312,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "玩咖Playing",
+      "title_clean": "手搖飲買一送一爽喝CoCo！春水堂滿額免費喝珍奶、金馬聯名周邊登場"
     },
     {
       "evidence_id": "GNEWS-068",
@@ -5997,7 +6339,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "中時新聞網",
+      "title_clean": "金馬聯名手搖飲周邊商品吸睛- 時尚消費- 中國時報"
     },
     {
       "evidence_id": "GNEWS-069",
@@ -6022,7 +6366,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "CoCo日焙珍珠奶茶買一送一！大杯才32.5元　可可甜心新品11/1開賣"
     },
     {
       "evidence_id": "GNEWS-070",
@@ -6047,7 +6393,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "WalkerLand 窩客島",
+      "title_clean": "迷客夏3.0升級亮點！新品「娜杯糖燻奶霜」折10元、鮮奶茶2杯99元，極簡風、試聞茶瓶要踩點|美食"
     },
     {
       "evidence_id": "GNEWS-071",
@@ -6072,7 +6420,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "壹蘋新聞網",
+      "title_clean": "金馬入圍動畫跨界手搖飲！迷客夏聯名《朵莉之家》"
     },
     {
       "evidence_id": "GNEWS-072",
@@ -6097,7 +6447,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Yahoo新聞",
+      "title_clean": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場"
     },
     {
       "evidence_id": "GNEWS-073",
@@ -6122,7 +6474,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "迷客夏3.0新店開幕！娜杯糖燻奶霜開賣送托特包　全台折10元優惠"
     },
     {
       "evidence_id": "GNEWS-074",
@@ -6147,7 +6501,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "「全台最大迷客夏」開在這！10坪新門市亮相，「娜杯糖燻奶霜」乳牛斑點萌翻"
     },
     {
       "evidence_id": "GNEWS-075",
@@ -6172,7 +6528,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Niusnews妞新聞",
+      "title_clean": "2026秋季手搖新品懶人包！五桐號泰奶雪沙、可不可紅烏龍茶王，11家必喝推薦一次看"
     },
     {
       "evidence_id": "GNEWS-076",
@@ -6197,7 +6555,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "季緣買一送一！10/27起連喝4天手搖飲料優惠　葡萄青韻新品開喝"
     },
     {
       "evidence_id": "GNEWS-077",
@@ -6222,7 +6582,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "CARTURE 車勢文化",
+      "title_clean": "迷客夏聯名《歡迎來到朵莉之家》 獨家推「75折限定套組」搶攻動漫商機"
     },
     {
       "evidence_id": "GNEWS-078",
@@ -6247,7 +6609,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "玩咖Playing",
+      "title_clean": "迷客夏聯名《歡迎來到朵莉之家》！優惠套組75折應援台灣原創金獎動畫"
     },
     {
       "evidence_id": "GNEWS-079",
@@ -6272,7 +6636,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "UDN",
+      "title_clean": "大茗萬聖節推「榴槤冰淇淋」新品限時79折 CoCo「葡萄柚果粒茶」買1送1"
     },
     {
       "evidence_id": "GNEWS-080",
@@ -6297,7 +6663,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "玩咖Playing",
+      "title_clean": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品"
     },
     {
       "evidence_id": "GNEWS-081",
@@ -6322,7 +6690,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "ETtoday旅遊雲",
+      "title_clean": "珍煮丹開賣「蕎麥系列」3新品　CoCo葡萄柚果粒茶明買1送1"
     },
     {
       "evidence_id": "GNEWS-082",
@@ -6347,7 +6717,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "本週手搖３大優惠！CoCo買一送一、鶴茶樓免費喝，大苑子送府城鑰匙圈"
     },
     {
       "evidence_id": "GNEWS-083",
@@ -6372,7 +6744,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "大茗推「榴槤冰淇淋手搖飲」！２款萬聖飲限定喝，榴槤奶茶、紅玉紅茶來挑戰"
     },
     {
       "evidence_id": "GNEWS-084",
@@ -6397,7 +6771,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "ETtoday旅遊雲",
+      "title_clean": "大茗「榴槤冰淇淋茶飲」只賣3天　芒果美式明起上市"
     },
     {
       "evidence_id": "GNEWS-085",
@@ -6422,7 +6798,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Cosmopolitan",
+      "title_clean": "【10/12-10/18本週全台優惠】超商咖啡優惠、手搖飲、天丼買1送1一次看"
     },
     {
       "evidence_id": "GNEWS-086",
@@ -6447,7 +6825,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "TVBS新聞網",
+      "title_clean": "鶴茶樓、CoCo買一送一！大苑子2新品台南限定 手搖優惠快看"
     },
     {
       "evidence_id": "GNEWS-087",
@@ -6472,7 +6852,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "風傳媒",
+      "title_clean": "不只鶴茶樓、COCO！手搖飲週末買一送一優惠來了， 最新十月新品總整理一次看"
     },
     {
       "evidence_id": "GNEWS-088",
@@ -6497,7 +6879,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "Yahoo新聞",
+      "title_clean": "鶴茶樓、CoCo都可「買1送1、免費喝」！ 大苑子2新品台南才喝得到"
     },
     {
       "evidence_id": "GNEWS-089",
@@ -6522,7 +6906,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "BEAUTY美人圈",
+      "title_clean": "買一送一！10月最新手搖優惠：50嵐、大茗、UG、大苑子、鶴茶樓都有，再睡五分鐘推新品"
     },
     {
       "evidence_id": "GNEWS-090",
@@ -6547,7 +6933,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "風傳媒",
+      "title_clean": "限時買一送一來了！CoCo/星巴克/85℃/麻古10 月優惠一次看"
     },
     {
       "evidence_id": "GNEWS-091",
@@ -6572,7 +6960,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "壹蘋新聞網",
+      "title_clean": "手搖飲買1送1！萬聖節新品開賣 1招可現折20元"
     },
     {
       "evidence_id": "GNEWS-092",
@@ -6597,7 +6987,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "NOWnews今日新聞",
+      "title_clean": "CoCo買一送一！粉角奶茶30元　麻古「巨峰葡萄」萬聖節紙杯明開賣"
     },
     {
       "evidence_id": "GNEWS-093",
@@ -6622,7 +7014,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "食尚玩家",
+      "title_clean": "手搖店竟然賣茶葉蛋！ 鶴茶樓限定門市開賣、烏龍茶買一送一，CoCo優惠跟上"
     },
     {
       "evidence_id": "GNEWS-094",
@@ -6647,7 +7041,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "中天新聞網",
+      "title_clean": "秋天涼涼喝新品！麻古、鶴茶樓攜新品登場 CoCo都可買1送1"
     },
     {
       "evidence_id": "GNEWS-095",
@@ -6672,7 +7068,9 @@ const verifiedNewsData = {
       "price_from_article": "未取得（RSS 不含內文價格）",
       "social_engagement": "未取得（新聞來源無社群互動數）",
       "sentiment_and_intent": "未取得（未爬取消費者留言）",
-      "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+      "commercial_signals": "未取得（無排隊/售罄/銷量實證）",
+      "publisher_name": "造咖",
+      "title_clean": "9大手搖新品！麻古茶坊「巨峰葡萄系列」、UG「檸檬冰奶」"
     }
   ]
 };
@@ -10162,7 +10560,7 @@ function openProductDetailModal(productId) {
     <!-- 關聯 PTT 飲料板討論明細 -->
     <div class="space-y-4 pt-2">
       <h4 class="text-lg font-black text-slate-900 border-b-2 border-indigo-200 pb-2">
-        💬 關聯 PTT 飲料板 (`bbs/Drink`) 原文與推噓文核對（共 ${p.metrics.total_ptt_count} 篇）
+        💬 關聯 PTT 飲料板 (bbs/Drink) 原文與推噓文核對（共 ${p.metrics.total_ptt_count} 篇）
       </h4>
       ${allPttHtml || `<div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-slate-600 font-bold">本次 PTT 飲料板採集範圍內未找到此商品之討論文章。</div>`}
     </div>
