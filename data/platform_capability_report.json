@@ -1,0 +1,58 @@
+[
+  {
+    "platform": "Google News 原始新聞內文讀取",
+    "status": "只能取得部分",
+    "tested_at": "2026-11-12 11:32:14",
+    "test_method": "對 RSS 內 <link> (https://news.google.com/rss/articles/CBMi9wJBVV95cUxOZE...) 發送 HTTP GET",
+    "test_result": "HTTP 200，最終網址停留在 https://news.google.com/rss/articles/CBMi9wJBVV95c...（Google News 採用前端 JS/鞭炮加密跳轉頁，純 HTTP GET 僅拿到 Google 轉址殼層 HTML，無法直接取得媒體網站完整新聞內文，但人類在瀏覽器點擊該連結可正常自動跳轉開啟原新聞）。"
+  },
+  {
+    "platform": "PTT 飲料板 (Drink)",
+    "status": "已測試可取得",
+    "tested_at": "2026-11-12 11:32:14",
+    "test_method": "HTTP GET https://www.ptt.cc/bbs/Drink/index.html (附 User-Agent)",
+    "test_result": "HTTP 200 成功取得列表頁，解析出 8 篇公開文章標題與網址（例如：[心得] 御私藏Cozy Tea 蜜奶粿鮮奶茶）。可取得標題、作者、日期、推文數與單篇內文。"
+  },
+  {
+    "platform": "Dcard (公開 API / 網頁)",
+    "status": "本次測試失敗",
+    "tested_at": "2026-11-12 11:32:14",
+    "test_method": "HTTP GET https://www.dcard.tw/service/api/v2/forums/food/posts?limit=5",
+    "test_result": "遭到 Cloudflare 防爬蟲攔截 (HTTP Error 403: Forbidden)，純標準 HTTP 請求無法直接取得 JSON。"
+  },
+  {
+    "platform": "Threads 搜尋頁",
+    "status": "本次測試失敗",
+    "tested_at": "2026-11-12 11:32:14",
+    "test_method": "HTTP GET https://www.threads.net/search?q=%E6%89%8B%E6%90%96%E9%A3%B2",
+    "test_result": "HTTP 200（回傳 615056 bytes SPA 前端框架殼層，是否含貼文內文: False；無公開免金鑰搜尋 API，需登入或無頭瀏覽器渲染）。"
+  },
+  {
+    "platform": "Instagram (官方帳號與 Hashtag)",
+    "status": "尚未實作",
+    "tested_at": "2026-11-12 11:32:14",
+    "test_method": "無（本階段尚未編寫該平台採集程式）",
+    "test_result": "尚未實作爬蟲；Meta Graph API 需商業開發者權杖，直接爬取網頁受登入牆限制。"
+  },
+  {
+    "platform": "Facebook 粉絲專頁",
+    "status": "尚未實作",
+    "tested_at": "2026-11-12 11:32:14",
+    "test_method": "無（本階段尚未編寫該平台採集程式）",
+    "test_result": "尚未實作爬蟲；需 Graph API 權杖或手動登錄貼文網址。"
+  },
+  {
+    "platform": "小紅書 / 抖音 / TikTok",
+    "status": "尚未實作",
+    "tested_at": "2026-11-12 11:32:14",
+    "test_method": "無（本階段尚未編寫該平台採集程式）",
+    "test_result": "尚未實作爬蟲；目前無接取任何跨區搜尋或解析腳本。"
+  },
+  {
+    "platform": "UberEats / Foodpanda 外送熱銷榜",
+    "status": "尚未實作",
+    "tested_at": "2026-11-12 11:32:14",
+    "test_method": "無（本階段尚未編寫該平台採集程式）",
+    "test_result": "尚未實作爬蟲；需指定門市經緯度座標與動態渲染。"
+  }
+]
