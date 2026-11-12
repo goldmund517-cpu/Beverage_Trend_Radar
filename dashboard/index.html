@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>公開商品熱度觀察室 — 新聞事件歸納與 PTT 消費者討論對照</title>
+  <title>飲品新品市場熱度戰情室 — 公開商品熱度觀察與跨來源證據溯源</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- ECharts & WordCloud CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
   <link rel="stylesheet" href="css/custom.css">
   <style>
     .tab-content { display: none; }
@@ -23,55 +26,56 @@
         <div class="flex items-center space-x-3.5">
           <div class="w-3.5 h-10 bg-emerald-600 rounded-md shadow-sm"></div>
           <div>
-            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">公開商品熱度觀察室：新聞事件歸納 × PTT 消費者討論對照</h1>
-            <p class="text-base text-slate-600 font-medium mt-0.5">宣傳訊息與消費者經驗嚴格分離 • 95筆依連結去重的新聞紀錄 • 14篇 PTT 飲料板原文與推噓文 • 暫不恢復總分與排名</p>
+            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">飲品新品市場熱度戰情室（公開商品熱度觀察）</h1>
+            <p class="text-base text-slate-600 font-medium mt-0.5">以商品為主 • 週次與可解釋排序 • 新聞與 PTT 原文雙向證據溯源 • 暫不填入模擬總分</p>
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2.5">
+        <div class="flex flex-wrap items-center gap-2">
           <nav class="flex flex-wrap gap-2">
             <button onclick="switchTab(0)" id="tab-btn-0" class="tab-btn px-4 py-2.5 text-base font-bold rounded-lg text-emerald-800 bg-emerald-50 border-2 border-emerald-300 shadow-sm transition">
-              分頁 0：新聞事件歸納 ＆ 3大案例對照驗收
+              🧋 分頁 0：商品趨勢總覽
             </button>
             <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn px-4 py-2.5 text-base font-bold rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 border-2 border-transparent transition">
-              分頁 1：PTT 飲料板端到端採集（原文 vs 程式分析）
+              📊 分頁 1：詞雲與品牌比較
             </button>
             <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn px-4 py-2.5 text-base font-bold rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 border-2 border-transparent transition">
-              分頁 2：平台能力實測 ＆ ⚠️ 隔離示範資料
+              📰 分頁 2：新聞情報與 PTT 原文庫
+            </button>
+            <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn px-4 py-2.5 text-base font-bold rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 border-2 border-transparent transition">
+              ⚙️ 分頁 3：資料狀態與系統設定
             </button>
           </nav>
 
-          <button onclick="openConceptModal()" class="inline-flex items-center px-4 py-2.5 border-2 border-emerald-600 text-base font-bold rounded-lg text-emerald-800 bg-emerald-50 hover:bg-emerald-100 shadow-sm transition">
-            📖 本階段驗收規範說明
+          <button onclick="openConceptModal()" class="inline-flex items-center px-3.5 py-2.5 border-2 border-emerald-600 text-base font-bold rounded-lg text-emerald-800 bg-emerald-50 hover:bg-emerald-100 shadow-sm transition">
+            📖 分析概念說明
           </button>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- 頂部事件類型與品牌篩選列 -->
+  <!-- 頂部單行控制列（監測期間切換 max-w-[380px] 防破版 ＋ 採集狀態膠囊 ＋ 爬蟲歷程按鈕） -->
   <div class="bg-emerald-900/95 text-white shadow-sm border-b border-emerald-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap lg:flex-nowrap justify-between items-center gap-3">
-      <div class="flex items-center gap-2 min-w-0 flex-1 max-w-full lg:max-w-[520px]">
-        <label for="filter-event-cat-select" class="text-base font-bold text-emerald-200 whitespace-nowrap shrink-0">
-          🗂️ 篩選事件類型：
+      <div class="flex items-center gap-2 min-w-0 flex-1 max-w-full lg:max-w-[460px]">
+        <label for="week-timeline-select" class="text-base font-bold text-emerald-200 whitespace-nowrap shrink-0">
+          📅 觀察期間：
         </label>
-        <select id="filter-event-cat-select" onchange="applyEventFilter()"
-          class="w-full max-w-[360px] sm:max-w-[400px] truncate bg-white text-emerald-950 font-extrabold text-base px-3 py-1.5 rounded-lg border-2 border-emerald-300 shadow-sm focus:outline-none cursor-pointer">
-          <option value="ALL">全部新聞事件 (共 20 個事件 / 保留全部 95 筆紀錄)</option>
-          <option value="FOCUSED">🎯 單一品牌明確同源事件 (9 個事件 / 46 筆紀錄)</option>
-          <option value="新品">🆕 包含「新品」標籤之事件</option>
-          <option value="舊品回歸">🔄 包含「舊品回歸」標籤之事件</option>
-          <option value="促銷">🏷️ 包含「促銷／聯名」標籤之事件</option>
-          <option value="合集">📦 跨品牌媒體「合集／懶人包」事件 (3 個合集 / 41 筆紀錄)</option>
-          <option value="UNMERGED">🔒 無法確認同源・單篇獨立保留 (8 篇不強制合併)</option>
+        <select id="week-timeline-select" onchange="selectObservationPeriod(this.value)"
+          class="w-full max-w-[340px] sm:max-w-[380px] truncate bg-white text-emerald-950 font-extrabold text-base px-3 py-1.5 rounded-lg border-2 border-emerald-300 shadow-sm focus:outline-none cursor-pointer">
         </select>
       </div>
 
-      <div class="flex items-center gap-2.5 text-sm sm:text-base whitespace-nowrap shrink-0">
-        <span id="event-filter-badge" class="bg-emerald-800/90 border border-emerald-600 px-3.5 py-1.5 rounded-lg font-bold text-emerald-200">
-          顯示：20 / 20 個事件（涵蓋 95 筆紀錄）
-        </span>
+      <div class="flex flex-wrap items-center gap-2.5 text-sm sm:text-base whitespace-nowrap shrink-0">
+        <div class="bg-emerald-800/90 border border-emerald-600 px-3.5 py-1.5 rounded-lg font-bold text-emerald-100 flex items-center gap-2">
+          <span>⏰ 實測採集：2026-11-12</span>
+          <span class="text-emerald-400">|</span>
+          <span>💾 證據庫：95則新聞 + 14篇PTT</span>
+        </div>
+        <button onclick="openHistoryModal()" class="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold rounded-lg shadow-sm transition">
+          🕒 查看爬蟲更新歷程表
+        </button>
       </div>
     </div>
   </div>
@@ -80,148 +84,198 @@
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
 
     <!-- ========================================================================= -->
-    <!-- 分頁 0：新聞事件歸納（95筆依連結去重紀錄 ➔ 20個事件）＆ 3大案例對照驗收 -->
+    <!-- 分頁 0：商品趨勢總覽（以商品為主 • 篩選與可解釋排序 • 50/50 商品卡 • 散佈圖） -->
     <!-- ========================================================================= -->
-    <section id="tab-0" class="tab-content active space-y-8">
-      <!-- 定位與指標正名聲明 -->
-      <div class="bg-white/95 backdrop-blur-sm border-l-8 border-emerald-600 rounded-xl p-5 shadow-sm">
-        <h2 class="text-lg font-extrabold text-slate-900">📌 階段二驗收重點：區分「媒體宣傳訊息」與「消費者實際經驗」，將轉載紀錄歸納為事件</h2>
-        <p class="text-base text-slate-700 mt-1.5 leading-relaxed">
-          1. <strong>指標正名：</strong>原「95筆不重複新聞」正式修正為<strong>「95筆依連結去重的新聞紀錄」</strong>，並另行呈現整理後的<strong>「新聞事件數（20個事件）」</strong>，避免把不同媒體對同一公關稿的轉載量或跨品牌優惠懶人包當成獨立消費者口碑。<br>
-          2. <strong>不強制合併原則：</strong>確認同品牌、同系列／同活動者歸納為單一事件並完整保留全部原始新聞連結；<strong>無法確認同源或單篇獨立題材（共 8 篇）一律保留獨立，絕不強制合併</strong>。<br>
-          3. <strong>嚴格區分宣傳與口碑：</strong>下方選取 3 個新聞事件與本次 <strong>PTT 飲料板 (`Drink`)</strong> 端到端採集資料對照；在採集範圍內未見討論者明確標示<strong>「本次採集範圍內未找到」</strong>（絕不寫成「無人討論」）。
-        </p>
-      </div>
-
-      <!-- 可追溯之真實採集統計卡片 -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+    <section id="tab-0" class="tab-content active space-y-6">
+      <!-- 4 張關鍵摘要指標卡 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-slate-200 shadow-sm">
-          <span class="text-base font-bold text-slate-600">依連結去重的新聞紀錄</span>
-          <div class="mt-2 text-3xl font-black text-emerald-700" id="stat-total-news">95 筆</div>
-          <p class="mt-1.5 text-sm text-slate-600" id="stat-capture-time">涵蓋 23 家媒體 • 100% 保留於事件中</p>
+          <span class="text-base font-bold text-slate-600">當期觀察商品／活動數</span>
+          <div class="mt-2 text-3xl font-black text-slate-900" id="kpi-product-count">16 款</div>
+          <p class="mt-1.5 text-sm text-slate-600" id="kpi-product-breakdown">新品 / 回歸 / 促銷 / 待確認分開標示</p>
         </div>
         <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-emerald-300 shadow-sm">
-          <span class="text-base font-bold text-emerald-900">整理後新聞事件數（另行呈現）</span>
-          <div class="mt-2 text-3xl font-black text-slate-900" id="stat-total-events">20 個事件</div>
-          <p class="mt-1.5 text-sm text-slate-700 font-medium" id="stat-events-breakdown">單品焦點 9 • 跨牌合集 3 • 獨立未合併 8</p>
+          <span class="text-base font-bold text-emerald-900">關聯新聞曝光證據</span>
+          <div class="mt-2 text-3xl font-black text-emerald-700" id="kpi-news-count">95 筆紀錄</div>
+          <p class="mt-1.5 text-sm text-slate-700 font-medium" id="kpi-news-breakdown">區分單品專文 vs 跨品牌合集提及</p>
         </div>
         <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-indigo-200 shadow-sm">
-          <span class="text-base font-bold text-indigo-900">PTT 飲料板端到端採集</span>
-          <div class="mt-2 text-3xl font-black text-indigo-700" id="stat-ptt-count">14 篇 / 79 則推文</div>
-          <p class="mt-1.5 text-sm text-slate-600">保存完整內文與推噓文 • 分離原文與分析</p>
+          <span class="text-base font-bold text-indigo-900">已取得 PTT 飲料板討論</span>
+          <div class="mt-2 text-3xl font-black text-indigo-700" id="kpi-ptt-count">14 篇 / 79 推文</div>
+          <p class="mt-1.5 text-sm text-slate-600" id="kpi-ptt-breakdown">區分當期新文、舊文新推文與歷史參考</p>
         </div>
-        <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-slate-200 shadow-sm">
-          <span class="text-base font-bold text-slate-600">熱度總分與推薦排名</span>
-          <div class="mt-2 text-2xl font-black text-slate-500">⏸️ 暫不恢復</div>
-          <p class="mt-1.5 text-sm text-slate-600">優先完成跨來源證據對照與溯源驗收</p>
+        <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-amber-200 shadow-sm">
+          <span class="text-base font-bold text-amber-900">目前排序依據 ＆ 評分狀態</span>
+          <div class="mt-2 text-xl font-black text-amber-800" id="kpi-sort-label">📰 依新聞曝光筆數</div>
+          <p class="mt-1.5 text-sm text-slate-600">綜合熱度評分：修訂中（不填模擬分）</p>
         </div>
       </div>
 
-      <!-- ================================================================= -->
-      <!-- 區塊 A：三個新聞事件 × 消費者討論 並列對照驗收區 -->
-      <!-- ================================================================= -->
-      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border-2 border-emerald-400 shadow-md space-y-6">
-        <div class="border-b-2 border-slate-200 pb-4">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <h2 class="text-2xl font-black text-slate-900">🔍 三個新聞事件 × PTT 消費者討論並列對照（宣傳訊息 vs 消費者經驗）</h2>
-            <span class="px-3.5 py-1 bg-emerald-100 text-emerald-900 font-extrabold text-sm rounded-full border border-emerald-300">
-              驗收核心：每一欄皆附原始可點擊來源連結
-            </span>
+      <!-- 篩選與可解釋排序工具列 -->
+      <div class="bg-white/95 backdrop-blur-sm p-5 rounded-2xl border-2 border-emerald-200 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-base font-extrabold text-slate-800 mr-1">🏷️ 項目性質：</span>
+            <button onclick="setProductTypeFilter('ALL')" id="type-btn-ALL" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-emerald-700 text-white shadow-sm">全部項目</button>
+            <button onclick="setProductTypeFilter('新品')" id="type-btn-新品" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-emerald-50">🆕 新品</button>
+            <button onclick="setProductTypeFilter('舊品回歸')" id="type-btn-舊品回歸" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-purple-50">🔄 舊品回歸</button>
+            <button onclick="setProductTypeFilter('促銷')" id="type-btn-促銷" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-amber-50">🏷️ 促銷／聯名</button>
+            <button onclick="setProductTypeFilter('PENDING')" id="type-btn-PENDING" class="type-filter-btn px-3.5 py-1.5 rounded-lg text-sm font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200">⏳ 待確認品名或原價</button>
           </div>
-          <p class="text-base text-slate-600 mt-1">
-            每個案例嚴格並列<strong>「📢 媒體報導了什麼」</strong>、<strong>「💬 使用者實際說了什麼」</strong>與<strong>「❓ 目前還不知道什麼」</strong>。找不到當期討論時如實標示<strong>「本次採集範圍內未找到」</strong>，不硬湊成功案例，亦不推論為「無人討論」。
-          </p>
+          <span id="product-filter-count-badge" class="px-3 py-1 bg-emerald-50 border border-emerald-300 text-emerald-900 font-extrabold text-sm rounded-lg"></span>
         </div>
 
-        <div id="crosscheck-cases-list" class="space-y-8"></div>
-      </div>
-
-      <!-- ================================================================= -->
-      <!-- 區塊 B：依「品牌＋商品／系列／活動」整理之 20 個新聞事件清單 -->
-      <!-- ================================================================= -->
-      <div class="space-y-4">
-        <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 border-t border-slate-200">
           <div>
-            <h2 class="text-2xl font-black text-slate-900">🗂️ 新聞事件整理清單（區分：新品、舊品回歸、促銷、合集、單篇獨立保留）</h2>
-            <p class="text-base text-slate-600 mt-1">
-              共整理出 <strong>20 個事件</strong>，100% 保留全部 <strong>95 筆依連結去重的新聞紀錄</strong>。點擊任一事件內的原始新聞連結皆可直接開啟核對。
-            </p>
+            <label class="block text-xs font-extrabold text-slate-600 mb-1">🏢 品牌篩選</label>
+            <select id="product-brand-select" onchange="applyProductFilters()" class="w-full bg-white text-slate-900 font-bold text-base px-3 py-2 rounded-lg border-2 border-slate-300 cursor-pointer">
+              <option value="ALL">全部品牌</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-slate-600 mb-1">🍵 品類／風味篩選</label>
+            <select id="product-flavor-select" onchange="applyProductFilters()" class="w-full bg-white text-slate-900 font-bold text-base px-3 py-2 rounded-lg border-2 border-slate-300 cursor-pointer">
+              <option value="ALL">全部品類與風味</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-emerald-800 mb-1">📊 可解釋關注排序（清楚標示依據）</label>
+            <select id="product-sort-select" onchange="applyProductFilters()" class="w-full bg-emerald-50 text-emerald-950 font-extrabold text-base px-3 py-2 rounded-lg border-2 border-emerald-400 cursor-pointer">
+              <option value="NEWS_DESC">📰 依新聞曝光筆數排序（單品專文優先，次依總關聯新聞數）</option>
+              <option value="DATE_DESC">🕒 依最新發布／推文時間排序（由近到遠）</option>
+              <option value="PTT_DESC">💬 依當期已取得社群討論數排序（當期新文＞舊文新推文＞歷史參考）</option>
+            </select>
           </div>
         </div>
-
-        <div id="news-events-list" class="space-y-5"></div>
       </div>
 
-      <!-- ================================================================= -->
-      <!-- 區塊 C：本次 Google News RSS 查詢條件與 95 筆原始紀錄收合檢視 -->
-      <!-- ================================================================= -->
-      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-wrap justify-between items-center gap-3">
-          <h3 class="text-xl font-extrabold text-slate-900">🔎 Google News RSS 實際執行之查詢條件紀錄（附原始 RSS XML 連結）</h3>
-          <button onclick="toggleRawRecordsSection()" id="toggle-raw-records-btn"
-            class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-base font-bold rounded-lg shadow-sm transition">
-            📂 展開檢視全部 95 筆依連結去重的新聞紀錄平鋪表
-          </button>
-        </div>
-        <div id="query-log-list" class="space-y-3"></div>
+      <!-- 商品卡片列表標題 -->
+      <div class="flex flex-wrap justify-between items-center gap-2">
+        <h2 class="text-xl font-black text-slate-900">📋 候選商品與活動觀察清單（點擊卡片「查看關聯證據明細」可檢視全部新聞與 PTT 原文）</h2>
+        <span class="px-3.5 py-1.5 bg-emerald-100/90 text-emerald-900 border border-emerald-300 font-extrabold text-sm rounded-lg">
+          左欄：商品規格與客觀證據計數 ｜ 右欄：媒體報導重點 vs 消費者實際反應
+        </span>
+      </div>
 
-        <div id="raw-records-wrapper" class="hidden pt-4 border-t-2 border-slate-200 space-y-4">
-          <div class="flex flex-wrap justify-between items-center gap-3">
-            <h4 class="text-lg font-extrabold text-slate-900">📜 95 筆依連結去重的新聞紀錄原始明細</h4>
-            <div class="flex flex-wrap items-center gap-2">
-              <select id="filter-brand-select" onchange="applyNewsFilter()"
-                class="bg-white text-slate-900 font-bold text-base px-3 py-1.5 rounded-lg border-2 border-slate-300 cursor-pointer">
-              </select>
-              <select id="filter-query-select" onchange="applyNewsFilter()"
-                class="bg-white text-slate-900 font-bold text-base px-3 py-1.5 rounded-lg border-2 border-slate-300 cursor-pointer">
-                <option value="ALL">全部查詢條件 (Q1 + Q2)</option>
-                <option value="Q1_TW_BEVERAGE_NEW">Q1：手搖飲新品/聯名/買一送一</option>
-                <option value="Q2_TW_BRANDS">Q2：指定連鎖品牌新品檢索</option>
-              </select>
-              <span id="filtered-count-badge" class="bg-slate-100 border border-slate-300 px-3 py-1.5 rounded-lg font-bold text-slate-700 text-sm"></span>
-            </div>
+      <!-- 50/50 雙欄商品卡片容器 -->
+      <div id="product-card-list" class="space-y-5"></div>
+
+      <!-- 媒體曝光 vs 社群討論 雙維度散佈圖 -->
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border-2 border-slate-200 shadow-sm">
+        <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+          <div>
+            <h3 class="text-xl font-black text-slate-900">📈 商品「新聞曝光筆數 × 涵蓋媒體與 PTT 討論數」客觀分佈矩陣</h3>
+            <p class="text-base text-slate-600">X 軸為關聯新聞紀錄總數（含專文與合集提及），Y 軸為獨立媒體家數＋PTT 佐證篇數；點擊圖上圓點可直接開啟該商品之證據視窗。</p>
           </div>
-          <div id="verified-news-list" class="space-y-4"></div>
+        </div>
+        <div id="chart-matrix" class="w-full h-[420px]"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 分頁 1：詞雲與品牌比較（ECharts 詞雲 + 品牌曝光/討論長條圖 + 批次歷程） -->
+    <!-- ========================================================================= -->
+    <section id="tab-1" class="tab-content space-y-6">
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border-2 border-slate-200 shadow-sm">
+        <h2 class="text-2xl font-black text-slate-900 mb-1">☁️ 候選商品證據聲量詞雲（點擊關鍵字可於右側檢視商品規格與真實來源）</h2>
+        <p class="text-base text-slate-600 mb-4">
+          字體大小依「關聯新聞紀錄數＋PTT 討論與推噓文數」客觀加權，不摻入模擬分數。點擊任一詞彙即可在右側查看該商品的媒體報導與 PTT 消費者回饋。
+        </p>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <div class="lg:col-span-7 bg-slate-50 rounded-xl border-2 border-slate-200 p-3 flex items-center justify-center">
+            <div id="chart-wordcloud" class="w-full h-[440px]"></div>
+          </div>
+          <div id="wordcloud-detail-panel" class="lg:col-span-5 bg-emerald-50/60 rounded-xl border-2 border-emerald-200 p-5 flex flex-col justify-between">
+          </div>
+        </div>
+      </div>
+
+      <!-- 品牌媒體曝光 vs PTT 討論比較圖 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border-2 border-slate-200 shadow-sm">
+          <h3 class="text-xl font-black text-slate-900 mb-1">🏢 各品牌「單品專文新聞 vs 合集提及 vs PTT 討論篇數」比較</h3>
+          <p class="text-sm text-slate-600 mb-3">清楚區分公關專文曝光、跨品牌合集順帶提及，以及 PTT 飲料板實際採集文章數。</p>
+          <div id="chart-brand-multipliers" class="w-full h-[380px]"></div>
+        </div>
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border-2 border-slate-200 shadow-sm">
+          <h3 class="text-xl font-black text-slate-900 mb-1">🗂️ 觀察商品之「項目性質與資訊確認狀態」結構</h3>
+          <p class="text-sm text-slate-600 mb-3">統計目前 16 款商品／活動中，新品、舊品回歸、促銷與待確認品名／原價之分佈。</p>
+          <div id="chart-category-radar" class="w-full h-[380px]"></div>
         </div>
       </div>
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 分頁 1：PTT 飲料板 (Drink) 端到端真實採集（原文內容 vs 程式分析結果嚴格分欄） -->
+    <!-- 分頁 2：新聞情報與 PTT 原文庫（完整保留階段二成果：3大對照案例 + 20事件 + 14篇PTT） -->
     <!-- ========================================================================= -->
-    <section id="tab-1" class="tab-content space-y-6">
-      <div class="bg-white/95 backdrop-blur-sm border-l-8 border-indigo-600 rounded-xl p-5 shadow-sm">
-        <h2 class="text-xl font-extrabold text-slate-900">💬 PTT 飲料板 (`bbs/Drink`) 小量端到端真實採集（共 14 篇文章、79 則推噓文）</h2>
-        <p class="text-base text-slate-700 mt-1.5 leading-relaxed">
-          由 <code class="bg-slate-100 px-2 py-0.5 rounded font-mono">scripts/collect_ptt_and_events.py</code> 實際存取 <a href="https://www.ptt.cc/bbs/Drink/index.html" target="_blank" class="text-indigo-700 font-bold underline">https://www.ptt.cc/bbs/Drink/index.html</a> 最新列表與 5 大品牌看板搜尋結果。
-          每筆紀錄完整保存<strong>文章網址、標題、作者、發布時間、擷取時間、完整內文與全部推噓文</strong>，並於下方卡片<strong>左欄呈現「📄 原文內容 (`raw_original`)」、右欄呈現「🤖 程式分析結果 (`programmatic_analysis`)」</strong>，絕不將程式判讀混入原文。
-        </p>
+    <section id="tab-2" class="tab-content space-y-8">
+      <!-- 區塊 A：三個新聞事件 × 消費者討論 並列對照驗收區 -->
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border-2 border-emerald-400 shadow-md space-y-6">
+        <div class="border-b-2 border-slate-200 pb-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="text-2xl font-black text-slate-900">🔍 三大代表案例：新聞宣傳訊息 × PTT 消費者實際經驗並列對照</h2>
+            <span class="px-3.5 py-1 bg-emerald-100 text-emerald-900 font-extrabold text-sm rounded-full border border-emerald-300">
+              每一欄皆附原始可點擊來源連結
+            </span>
+          </div>
+          <p class="text-base text-slate-600 mt-1">
+            每個案例嚴格並列<strong>「📢 媒體報導了什麼」</strong>、<strong>「💬 使用者實際說了什麼」</strong>與<strong>「❓ 目前還不知道什麼」</strong>。找不到當期討論時如實標示<strong>「本次採集範圍內未找到」</strong>。
+          </p>
+        </div>
+        <div id="crosscheck-cases-list" class="space-y-8"></div>
       </div>
 
-      <!-- PTT 看板關鍵字搜尋紀錄表 -->
-      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200 shadow-sm">
-        <h3 class="text-xl font-extrabold text-slate-900 mb-2">🔎 PTT Drink 板品牌關鍵字檢索紀錄（可點擊開啟 PTT 搜尋結果頁核對）</h3>
-        <p class="text-base text-slate-600 mb-4">
-          為了查核新聞事件在 PTT 飲料板是否有對應討論，程式實際對 5 個品牌執行板內搜尋，以下為各關鍵字在 PTT Drink 板上的最新文章日期與標題：
-        </p>
-        <div id="ptt-search-log-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-      </div>
-
-      <!-- PTT 14 篇文章端到端採集清單 (左欄原文 / 右欄程式分析) -->
+      <!-- 區塊 B：20 個新聞事件整理清單 -->
       <div class="space-y-4">
-        <h3 class="text-2xl font-black text-slate-900">📑 PTT 飲料板實際採集文章清單（左欄：原文內容與推噓文 ｜ 右欄：程式分析結果）</h3>
+        <div class="bg-white/95 backdrop-blur-sm p-5 rounded-xl border-2 border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3">
+          <div>
+            <h2 class="text-2xl font-black text-slate-900">🗂️ 20 個新聞事件整理清單（保留全部 95 筆依連結去重的新聞紀錄）</h2>
+            <p class="text-base text-slate-600 mt-1">
+              區分新品、舊品回歸、促銷、跨品牌合集，以及 8 篇無法確認同源之單篇獨立保留報導。
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="filter-event-cat-select" onchange="applyEventFilter()"
+              class="bg-emerald-50 text-emerald-950 font-extrabold text-base px-3 py-2 rounded-lg border-2 border-emerald-400 cursor-pointer">
+              <option value="ALL">全部新聞事件 (20 個事件 / 95 筆紀錄)</option>
+              <option value="FOCUSED">🎯 單一品牌明確同源事件 (9 個事件 / 46 筆紀錄)</option>
+              <option value="新品">🆕 包含「新品」標籤之事件</option>
+              <option value="舊品回歸">🔄 包含「舊品回歸」標籤之事件</option>
+              <option value="促銷">🏷️ 包含「促銷／聯名」標籤之事件</option>
+              <option value="合集">📦 跨品牌媒體「合集／懶人包」事件 (3 個合集 / 41 筆紀錄)</option>
+              <option value="UNMERGED">🔒 無法確認同源・單篇獨立保留 (8 篇)</option>
+            </select>
+            <span id="event-filter-badge" class="bg-slate-100 border border-slate-300 px-3 py-2 rounded-lg font-bold text-slate-800 text-sm"></span>
+          </div>
+        </div>
+        <div id="news-events-list" class="space-y-5"></div>
+      </div>
+
+      <!-- 區塊 C：PTT 飲料板 14 篇文章端到端採集（原文 vs 程式分析） -->
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border-2 border-indigo-300 shadow-sm space-y-6">
+        <div>
+          <h2 class="text-2xl font-black text-slate-900">💬 PTT 飲料板 (`bbs/Drink`) 端到端採集全文庫（14 篇文章 ＋ 79 則推噓文）</h2>
+          <p class="text-base text-slate-600 mt-1">
+            左欄原樣保存<strong>「📄 原文內容 (`raw_original`)」</strong>與推噓文；右欄獨立呈現<strong>「🤖 程式分析結果 (`programmatic_analysis`)」</strong>。
+          </p>
+        </div>
+        <div>
+          <h3 class="text-lg font-extrabold text-indigo-950 mb-3">🔎 PTT Drink 板 5 大品牌關鍵字搜尋紀錄（點擊可開啟 PTT 搜尋頁核對）</h3>
+          <div id="ptt-search-log-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
         <div id="verified-ptt-list" class="space-y-6"></div>
       </div>
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 分頁 2：各平台取得能力實測報告 ＆ ⚠️ 已隔離之介面展示用示範資料 -->
+    <!-- 分頁 3：資料狀態與系統設定（平台能力實測表 + Google News RSS 查詢紀錄 + 隔離示範資料） -->
     <!-- ========================================================================= -->
-    <section id="tab-2" class="tab-content space-y-8">
+    <section id="tab-3" class="tab-content space-y-8">
+      <!-- 平台取得能力實測報告 -->
       <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200 shadow-sm">
         <h2 class="text-2xl font-extrabold text-slate-900 mb-2">🧪 各平台資料取得能力實測報告（依實際程式執行結果回報）</h2>
         <p class="text-base text-slate-600 mb-4">
-          嚴格區分「已測試可取得」、「只能取得部分」、「本次測試失敗」與「尚未實作」。本階段已完成 Google News RSS（95筆紀錄）與 PTT 飲料板（14篇含內文與79則推噓文）之端到端採集。
+          嚴格區分「已測試可取得」、「只能取得部分」、「本次測試失敗」與「尚未實作」。
         </p>
         <div class="overflow-x-auto">
           <table class="min-w-full text-base text-left border-2 border-slate-200 rounded-lg overflow-hidden">
@@ -239,40 +293,133 @@
         </div>
       </div>
 
-      <div class="bg-amber-100 border-2 border-amber-500 rounded-xl p-6 shadow-sm">
-        <h2 class="text-xl font-black text-amber-950">⚠️ 隔離區警告：以下為早期「介面展示用模擬資料（Mock Data）」</h2>
-        <p class="text-base text-amber-900 mt-1 leading-relaxed font-medium">
-          本區資料（含五維度分數、互動倍數、7天開箱數與門市售罄描述）<strong>均為人工編寫之模擬示範數據，無實際貼文來源網址</strong>。
-          依驗收規範，本區已與正式採集流程完全隔離，<strong>不計入任何正式統計、排名或分析摘要</strong>，僅保留供檢視早期卡片版型設計。
-        </p>
+      <!-- Google News RSS 查詢條件與 95 筆平鋪明細 -->
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-wrap justify-between items-center gap-3">
+          <h3 class="text-xl font-extrabold text-slate-900">🔎 Google News RSS 查詢條件與 95 筆原始紀錄明細</h3>
+          <button onclick="toggleRawRecordsSection()" id="toggle-raw-records-btn"
+            class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-base font-bold rounded-lg shadow-sm transition">
+            📂 展開檢視全部 95 筆依連結去重的新聞紀錄平鋪表
+          </button>
+        </div>
+        <div id="query-log-list" class="space-y-3"></div>
+        <div id="raw-records-wrapper" class="hidden pt-4 border-t-2 border-slate-200 space-y-4">
+          <div class="flex flex-wrap justify-between items-center gap-3">
+            <h4 class="text-lg font-extrabold text-slate-900">📜 95 筆依連結去重的新聞紀錄原始明細</h4>
+            <div class="flex flex-wrap items-center gap-2">
+              <select id="filter-brand-select" onchange="applyNewsFilter()" class="bg-white text-slate-900 font-bold text-base px-3 py-1.5 rounded-lg border-2 border-slate-300 cursor-pointer"></select>
+              <select id="filter-query-select" onchange="applyNewsFilter()" class="bg-white text-slate-900 font-bold text-base px-3 py-1.5 rounded-lg border-2 border-slate-300 cursor-pointer">
+                <option value="ALL">全部查詢條件 (Q1 + Q2)</option>
+                <option value="Q1_TW_BEVERAGE_NEW">Q1：手搖飲新品/聯名/買一送一</option>
+                <option value="Q2_TW_BRANDS">Q2：指定連鎖品牌新品檢索</option>
+              </select>
+              <span id="filtered-count-badge" class="bg-slate-100 border border-slate-300 px-3 py-1.5 rounded-lg font-bold text-slate-700 text-sm"></span>
+            </div>
+          </div>
+          <div id="verified-news-list" class="space-y-4"></div>
+        </div>
       </div>
-      <div id="isolated-demo-list" class="space-y-4"></div>
+
+      <!-- 隔離示範資料區（預設收合） -->
+      <div class="bg-amber-100 border-2 border-amber-500 rounded-xl p-6 shadow-sm space-y-4">
+        <div class="flex flex-wrap justify-between items-center gap-3">
+          <div>
+            <h2 class="text-xl font-black text-amber-950">⚠️ 隔離封存區：早期「介面展示用模擬資料（Mock Data）」</h2>
+            <p class="text-base text-amber-900 mt-1 font-medium">
+              已與正式商品統計、排序與圖表完全隔離，不混入首頁分析。
+            </p>
+          </div>
+          <button onclick="toggleIsolatedDemoSection()" id="toggle-demo-btn" class="px-4 py-2 bg-amber-800 hover:bg-amber-900 text-white font-bold rounded-lg shadow-sm transition">
+            📂 展開檢視已隔離之早期模擬卡片
+          </button>
+        </div>
+        <div id="isolated-demo-list" class="hidden space-y-4 pt-3 border-t border-amber-300"></div>
+      </div>
     </section>
 
   </main>
 
-  <!-- 說明彈窗 -->
+  <!-- ========================================================================= -->
+  <!-- 彈窗 1：商品詳細資料與跨來源證據核對視窗 (#product-detail-modal) -->
+  <!-- ========================================================================= -->
+  <div id="product-detail-modal" class="modal fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[92vh] flex flex-col overflow-hidden border-2 border-emerald-400">
+      <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-emerald-50">
+        <div class="min-w-0 pr-4">
+          <div class="flex flex-wrap items-center gap-2" id="modal-product-badges"></div>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1 truncate" id="modal-product-title">商品證據明細</h2>
+        </div>
+        <button onclick="closeProductDetailModal()" class="text-slate-500 hover:text-slate-800 text-3xl font-bold leading-none shrink-0">&times;</button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-6 text-base text-slate-800" id="modal-product-body"></div>
+      <div class="px-6 py-3.5 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
+        <span class="text-sm text-slate-600 font-bold">💡 點擊任一新聞標題或 PTT 連結皆可在新分頁開啟原始網頁核對</span>
+        <button onclick="closeProductDetailModal()" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-base font-bold rounded-lg shadow transition">關閉視窗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 彈窗 2：爬蟲採集批次歷程表 (#history-modal) -->
+  <!-- ========================================================================= -->
+  <div id="history-modal" class="modal fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border-2 border-emerald-300">
+      <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-emerald-50">
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">🕒</span>
+          <h2 class="text-xl font-extrabold text-slate-900">真實資料採集批次歷程表（不補造歷史週次）</h2>
+        </div>
+        <button onclick="closeHistoryModal()" class="text-slate-500 hover:text-slate-800 text-3xl font-bold leading-none">&times;</button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4">
+        <p class="text-base text-slate-700">
+          本表僅紀錄實際執行之資料採集批次。上方「觀察期間」下拉選單係依各新聞與 PTT 文章之<strong>實際發布日期 (`published_at`)</strong> 歸入對應週次，並與<strong>擷取時間 (`captured_at`)</strong> 嚴格區分。
+        </p>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-base text-left border-2 border-slate-200 rounded-lg overflow-hidden">
+            <thead class="bg-emerald-50 font-extrabold text-slate-800 border-b-2 border-slate-200">
+              <tr>
+                <th class="p-3.5 border-r border-slate-200">批次編號</th>
+                <th class="p-3.5 border-r border-slate-200">實際執行時間</th>
+                <th class="p-3.5 border-r border-slate-200">採集管道與腳本</th>
+                <th class="p-3.5 border-r border-slate-200">實際取得成果</th>
+                <th class="p-3.5">狀態</th>
+              </tr>
+            </thead>
+            <tbody id="crawl-history-tbody" class="divide-y divide-slate-200 bg-white"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="px-6 py-3.5 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <button onclick="closeHistoryModal()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-base font-bold rounded-lg shadow transition">關閉歷程表</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 彈窗 3：分析概念與方法說明 (#concept-modal) -->
+  <!-- ========================================================================= -->
   <div id="concept-modal" class="modal fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border-2 border-emerald-200">
       <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-emerald-50">
         <div class="flex items-center space-x-2">
           <span class="text-2xl">📖</span>
-          <h2 class="text-xl font-extrabold text-slate-900">公開商品熱度觀察室 — 階段二驗收規範與方法說明</h2>
+          <h2 class="text-xl font-extrabold text-slate-900">公開商品熱度觀察室 — 選品使用流程與證據規範</h2>
         </div>
         <button onclick="closeConceptModal()" class="text-slate-500 hover:text-slate-800 text-3xl font-bold leading-none">&times;</button>
       </div>
       <div class="p-6 overflow-y-auto space-y-5 text-base text-slate-700 leading-relaxed">
         <div class="border-l-4 border-emerald-600 pl-4">
-          <h3 class="font-extrabold text-slate-900 text-lg mb-1">1. 為什麼將「95筆不重複新聞」改稱「95筆依連結去重的新聞紀錄」並另列「事件數」？</h3>
-          <p>同一波品牌公關稿常被十多家媒體轉載，或被寫入多篇「雙11買一送一懶人包」。若只看連結去重後的篇數（95筆），容易把媒體公關轉載量誤認為獨立消費者口碑。因此必須依「品牌＋商品／系列／活動」歸納為事件（共 20 個事件），並把「跨品牌合集」與「無法確認同源之單篇報導」明確分開。</p>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">1. 首頁以「商品與活動」為主，新聞與 PTT 作為可核對的證據來源</h3>
+          <p>首頁恢復商品卡片瀏覽、週次切換、品牌／品類篩選與排序。每張商品卡皆可點擊「查看關聯證據明細」，直接檢視該商品關聯之「單品專文新聞」、「跨品牌合集提及新聞」與「PTT 飲料板原文與推噓文」。多商品合集新聞允許同時關聯多個被提及的商品，絕不把新聞篇數直接當成商品數。</p>
         </div>
         <div class="border-l-4 border-emerald-600 pl-4">
-          <h3 class="font-extrabold text-slate-900 text-lg mb-1">2. 為什麼 PTT 飲料板查無當期討論時，要寫「本次採集範圍內未找到」而非「無人討論」？</h3>
-          <p>PTT 飲料板（Drink）目前的自然發文頻率較低（每週僅數篇新文），手搖飲新品的即時開箱可能散見於 Threads、Dcard 或 IG。因此，在 PTT 採集範圍內沒搜到，只能證明「本次 PTT 採集範圍內未找到」，絕不能武斷宣稱全網「無人討論」。</p>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">2. 可解釋的排序依據（暫不填入模擬綜合總分）</h3>
+          <p>提供三種客觀可驗證的排序：「依新聞曝光筆數排序」、「依最新發布時間排序」與「依當期已取得社群討論數排序」。在綜合熱度評分權重與缺值規範完成修訂前，統一標示為「修訂中」，不填入任何模擬分數。</p>
         </div>
         <div class="border-l-4 border-emerald-600 pl-4">
-          <h3 class="font-extrabold text-slate-900 text-lg mb-1">3. 原文內容 (`raw_original`) 與程式分析結果 (`programmatic_analysis`) 嚴格分欄</h3>
-          <p>所有 PTT 採集文章皆原樣保存標題、作者、時間、內文與每一則推噓文（推／噓／→、ID、內容、時間），並與程式自動判讀之品牌標籤、文章性質說明分欄呈現，確保任何分析結論都能回到原文逐字核對。</p>
+          <h3 class="font-extrabold text-slate-900 text-lg mb-1">3. 嚴格區分「當期新品討論」、「舊文近期新增推文」與「歷史同品項參考」</h3>
+          <p>系統清楚分開記錄文章的「發布日期」、「擷取日期」與「所屬觀察期間」。若舊文在當期有新增推文（如金茶伍兩顆紅蘋於 11/08、11/12 新增推文，或大茗於 11/07 新增推文），會明確標示為「舊文近期新增推文」，絕不混算成當期新發文。</p>
         </div>
       </div>
       <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end">
@@ -283,10 +430,10 @@
 
   <footer class="bg-white/90 backdrop-blur-sm border-t border-emerald-200 py-4 mt-auto">
     <div class="max-w-7xl mx-auto px-4 text-center text-base font-medium text-slate-600">
-      公開商品熱度觀察室 • 宣傳訊息與消費者經驗分離驗收版 • 任一筆資料皆可點擊核對原始來源
+      飲品新品市場熱度戰情室 • 商品趨勢總覽 × 新聞與 PTT 原文證據溯源版 • 任一筆資料皆可點擊核對原始來源
     </div>
   </footer>
 
-  <script src="js/app.js?v=stage2_20261112"></script>
+  <script src="js/app.js?v=stage3_product_centric"></script>
 </body>
 </html>

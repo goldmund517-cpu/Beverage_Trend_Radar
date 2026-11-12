@@ -1,10 +1,4278 @@
 // ============================================================================
-// 公開商品熱度觀察室 — 階段二：新聞事件歸納 × PTT 飲料板消費者討論對照
-// 1. 「95筆依連結去重的新聞紀錄」歸納為 20 個事件（區分新品、舊品回歸、促銷、合集、單篇獨立保留）
-// 2. 完成 PTT 飲料板 (Drink) 14 篇文章＋79 則推噓文端到端採集，嚴格分離「原文內容」與「程式分析結果」
-// 3. 並列呈現 3 個新聞事件之「媒體報導了什麼」「使用者實際說了什麼」「目前還不知道什麼」
+// 飲品新品市場熱度戰情室 — 商品趨勢總覽 × 新聞與 PTT 證據溯源版
+// 分頁 0：商品趨勢總覽（週次觀察、品牌/品類/性質篩選、可解釋排序、50/50商品卡、證據彈窗、ECharts散佈圖）
+// 分頁 1：詞雲與品牌比較（ECharts 證據加權詞雲、品牌曝光vs討論長條圖、商品性質結構圖）
+// 分頁 2：新聞情報與 PTT 原文庫（3大並列對照案例、20個新聞事件、14篇 PTT 原文 vs 程式分析）
+// 分頁 3：資料狀態與系統設定（平台能力實測表、RSS 查詢紀錄、已隔離之早期模擬資料）
 // ============================================================================
 
+const verifiedProductsPayload = {
+  "generated_at": "2026-11-12T22:30:00+08:00",
+  "total_products": 16,
+  "observation_periods": [
+    {
+      "period_id": "ALL",
+      "label": "ALL (10/13~11/12 全部已採集期間 — 共 16 款商品／活動)",
+      "date_range": "2026/10/13 - 2026/11/12",
+      "description": "完整涵蓋本次實際採集之 95 筆 Google News 新聞紀錄與 14 篇 PTT 飲料板原文"
+    },
+    {
+      "period_id": "2026-W46",
+      "label": "2026-W46 (11/09~11/12 當期最新) — 雙11檔期、迷客夏太妃與麻古芋泥回歸",
+      "date_range": "2026/11/09 - 2026/11/12",
+      "description": "依實際發布日歸屬本週之商品與當期新增 PTT 推文"
+    },
+    {
+      "period_id": "2026-W45",
+      "label": "2026-W45 (11/02~11/08) — CoCo皮克敏聯名、龜記Oatly抹茶與李記紅茶實測",
+      "date_range": "2026/11/02 - 2026/11/08",
+      "description": "依實際發布日歸屬 11/02~11/08 之商品與 PTT 當期實測文"
+    },
+    {
+      "period_id": "2026-W44",
+      "label": "2026-W44 (10/26~11/01) — 迷客夏糖燻奶霜、CoCo與茶湯會可可季、吃茶三千實測",
+      "date_range": "2026/10/26 - 2026/11/01",
+      "description": "依實際發布日歸屬 10/26~11/01 之秋冬新品與 PTT 當期實測文"
+    },
+    {
+      "period_id": "2026-W43",
+      "label": "2026-W43 (10/13~10/25) — 大茗榴槤冰淇淋、珍煮丹蕎麥、麻古巨峰葡萄",
+      "date_range": "2026/10/13 - 2026/10/25",
+      "description": "依實際發布日歸屬 10 月中下旬之萬聖節與秋季新品"
+    }
+  ],
+  "crawl_batches": [
+    {
+      "batch_id": "BATCH-20261112-PTT",
+      "executed_at": "2026-11-12 11:54:46",
+      "source_pipeline": "PTT 飲料板 (bbs/Drink) 端到端採集 + 20個新聞事件歸納",
+      "query_scope": "Drink 板最新列表 + 5 大品牌搜尋 (迷客夏/CoCo/龜記/麻古/大茗)",
+      "records_collected": "14 篇 PTT 全文 + 79 則推噓文；整理 20 個新聞事件",
+      "status": "✅ 實測成功 (HTTP 200)"
+    },
+    {
+      "batch_id": "BATCH-20261112-GNEWS",
+      "executed_at": "2026-11-12 11:32:12",
+      "source_pipeline": "Google News RSS 台灣手搖飲新品與品牌檢索",
+      "query_scope": "Q1 (手搖飲新品/聯名/買一送一 30d) + Q2 (13家連鎖品牌新品 30d)",
+      "records_collected": "原始 142 筆 RSS ➔ 依連結去重保存 95 筆新聞紀錄（涵蓋 23 家媒體）",
+      "status": "✅ 實測成功 (HTTP 200)"
+    }
+  ],
+  "products": [
+    {
+      "product_id": "PROD-MILKSHA-WINTER-1111",
+      "region": "台灣",
+      "brand": "迷客夏 Milksha",
+      "product_name": "冬季「太妃序曲（太妃奶Q）／森半抹茶」系列 ＆ 法芙娜可可回歸",
+      "short_word": "迷客夏・太妃奶Q與森半抹茶",
+      "item_types": [
+        "新品",
+        "舊品回歸",
+        "促銷"
+      ],
+      "info_status": "⏳ 單杯原價待內文確認（促銷價已確認）",
+      "is_pending_confirm": true,
+      "flavor_category": "奶茶／抹茶／可可",
+      "price_promo": "雙11線上買11送11、點新品免費加「太妃奶Q」、11元加購娜杯紅茶（⏳ 11款單杯原價待由內文或官網確認）",
+      "observation_weeks": [
+        "2026-W46"
+      ],
+      "primary_week": "2026-W46",
+      "latest_published_at": "2026-11-11 13:30:33",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-003",
+        "GNEWS-005",
+        "GNEWS-006",
+        "GNEWS-009",
+        "GNEWS-012",
+        "GNEWS-025",
+        "GNEWS-028",
+        "GNEWS-030",
+        "GNEWS-031",
+        "GNEWS-032",
+        "GNEWS-033",
+        "GNEWS-034",
+        "GNEWS-035",
+        "GNEWS-036"
+      ],
+      "roundup_news_ids": [
+        "GNEWS-004",
+        "GNEWS-007",
+        "GNEWS-008",
+        "GNEWS-010",
+        "GNEWS-019",
+        "GNEWS-026",
+        "GNEWS-027"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-007",
+        "PTT-DRINK-008"
+      ],
+      "media_summary": "14 筆單品專文＋7 筆跨品牌合集（共 21 筆紀錄）密集於 11/09～11/11 報導：迷客夏推出冬季限定「太妃序曲」與全新咀嚼配料「太妃奶Q」、日本森半抹茶與焙茶升級，同場回歸「法芙娜可可」，並祭出雙11線上買11送11與11元加購娜杯紅茶。",
+      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】上市初期雖有高達 21 筆媒體報導（部分標題稱「未開賣就爆紅」），但 PTT Drink 板最新搜尋僅有 8/05 折價券贈送文与 4/29 九折優惠討論，尚無 11 月冬季新品試喝心得。",
+      "unknowns": [
+        "消費者對新配料「太妃奶Q」與「森半抹茶」升級版的實際甜度、口感評價目前未知。",
+        "雙11線上買11送11與門市11元加購紅茶之實際兌換率與門市排隊狀況無公開量化數據。",
+        "11 款冬季新品的完整單杯原價尚未從 RSS 標題取得，需開啟新聞內文或官網菜單核對。"
+      ],
+      "metrics": {
+        "focused_news_count": 14,
+        "roundup_news_count": 7,
+        "total_news_count": 21,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 2,
+        "total_ptt_count": 2,
+        "total_ptt_pushes": 3,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-003",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 13:30:33",
+          "published_at_raw": "Wed, 11 Nov 2026 05:30:33 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "JUKSY 街星",
+          "source_media_home": "https://www.juksy.com",
+          "rss_title": "迷客夏新品抹茶好喝嗎？最新菜單、價格、飲品推薦一次看！ - JUKSY 街星",
+          "clean_title": "迷客夏新品抹茶好喝嗎？最新菜單、價格、飲品推薦一次看！",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9maUJpbkZ4eVdJWXRVTnRIcW82bkZhOHlsYmRRRTAzQXQxcmQ2NlFBbXpqZFNZa1REWEplR00tYkFRdmw1Zk5NcTdSanA?oc=5",
+          "rss_description_text": "迷客夏新品抹茶好喝嗎？最新菜單、價格、飲品推薦一次看！ JUKSY 街星",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-005",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 11:56:35",
+          "published_at_raw": "Wed, 11 Nov 2026 03:56:35 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "udn",
+          "source_media_home": "https://travel.udn.com",
+          "rss_title": "迷客夏「11元娜杯紅茶」！雙11「線上買11送11」 冬季新品「太妃序曲」開賣、「法芙娜可可」回歸 - udn",
+          "clean_title": "迷客夏「11元娜杯紅茶」！雙11「線上買11送11」 冬季新品「太妃序曲」開賣、「法芙娜可可」回歸",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9NMmpfbE9WQkpmeGFVLXdVSTVQMHJYTWVNanAwbVA0ZmU0SmRqWjdUYWtDd2dIb0JfQl9TWFRObjY5aE1MRHllNUtFWTFWZ29ic1lYcDc4SmpsT0xL?oc=5",
+          "rss_description_text": "迷客夏「11元娜杯紅茶」！雙11「線上買11送11」 冬季新品「太妃序曲」開賣、「法芙娜可可」回歸 udn",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-006",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 11:18:26",
+          "published_at_raw": "Wed, 11 Nov 2026 03:18:26 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "迷客夏新品抹茶、太妃今開賣爆紅！雙11優惠菜單價格　眾店員求饒 - NOWnews今日新聞",
+          "clean_title": "迷客夏新品抹茶、太妃今開賣爆紅！雙11優惠菜單價格　眾店員求饒",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBNelhwOHhGNTZjdHIyanVVVlEwQkhvZjFaTjdLaVVMRE4taVM1cEFFVzRJNGhmeklVa000UzZIVVp5STZKRVIxM0o0SmUwWXNzb0HSAVJBVV95cUxQTXpYcDh4RjU2Y3RyMmp1VVZRMEJIb2YxWk43S2lVTEROLWlTNXBBRVc0STRoZnpJVWtNNFM2SFVaeUk2SkVSMTNKNEplMFlzc29B?oc=5",
+          "rss_description_text": "迷客夏新品抹茶、太妃今開賣爆紅！雙11優惠菜單價格 眾店員求饒 NOWnews今日新聞",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-009",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 09:08:21",
+          "published_at_raw": "Wed, 11 Nov 2026 01:08:21 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "Zeek玩家誌",
+          "source_media_home": "https://zeekmagazine.com",
+          "rss_title": "迷客夏冬季限定「太妃序曲」系列開賣！限時免費加料「太妃奶Q」、加11元再多一杯 - Zeek玩家誌",
+          "clean_title": "迷客夏冬季限定「太妃序曲」系列開賣！限時免費加料「太妃奶Q」、加11元再多一杯",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE10Z3pVcTQ0MFhVX0ZqNUdGNFpGVjEtNTZlempMd3VNUFRSanNGTEp6TGNjT3JiZTA0UVZCSXdObng0RmpGYWNjNEExNFNzby0xUlE?oc=5",
+          "rss_description_text": "迷客夏冬季限定「太妃序曲」系列開賣！限時免費加料「太妃奶Q」、加11元再多一杯 Zeek玩家誌",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-012",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-10 16:00:00",
+          "published_at_raw": "Tue, 10 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "Niusnews妞新聞",
+          "source_media_home": "https://www.niusnews.com",
+          "rss_title": "迷客夏冬季「太妃序曲」新品登場！10款必喝推薦懶人包，法芙娜可可回歸、靜岡焙焙鮮奶激推 - Niusnews妞新聞",
+          "clean_title": "迷客夏冬季「太妃序曲」新品登場！10款必喝推薦懶人包，法芙娜可可回歸、靜岡焙焙鮮奶激推",
+          "rss_link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBVaHlSTklOVDhDX19uOHVsN2FmNmx6dWxMUjVMUF9WaXdObWtUbjZBVkkzMHpYQnVRMkoyVWJwQkgxRDJZM0thc2FUcw?oc=5",
+          "rss_description_text": "迷客夏冬季「太妃序曲」新品登場！10款必喝推薦懶人包，法芙娜可可回歸、靜岡焙焙鮮奶激推 Niusnews妞新聞",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認候選：太妃序曲（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-025",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 17:50:00",
+          "published_at_raw": "Mon, 09 Nov 2026 09:50:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "BEAUTY美人圈",
+          "source_media_home": "https://www.beauty321.com",
+          "rss_title": "迷客夏冬季新品「太妃序曲」上市！日本抹茶、焙茶及法芙娜可可同步登場，再推雙11優惠 - BEAUTY美人圈",
+          "clean_title": "迷客夏冬季新品「太妃序曲」上市！日本抹茶、焙茶及法芙娜可可同步登場，再推雙11優惠",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFBRVGlHam1XV25zbUhRX0ZVdkNXZDZRZUdRaXg3ZTRMNFhEdmNTdmgtbkptMmN2a3hoLUoyUDh2QnBSVW9MbVpwZHFuTGzSAVJBVV95cUxNQ2hfNWZ5SGNsNzY4TXJTVGs1eVFadzdDRjRCV1pvSk9QVmJfaFFqWkg4M0VwSGljVGtBNEgxelZ3SFAzOTh5NFdMYy1sVm1FSHFn?oc=5",
+          "rss_description_text": "迷客夏冬季新品「太妃序曲」上市！日本抹茶、焙茶及法芙娜可可同步登場，再推雙11優惠 BEAUTY美人圈",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認候選：太妃序曲（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-028",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 17:20:00",
+          "published_at_raw": "Mon, 09 Nov 2026 09:20:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "WalkerLand 窩客島",
+          "source_media_home": "https://www.walkerland.com.tw",
+          "rss_title": "迷客夏買11送11寄杯喝！抹茶、焙茶、娜杯太妃、可可9大新品，未開賣就爆紅|美食 - WalkerLand 窩客島",
+          "clean_title": "迷客夏買11送11寄杯喝！抹茶、焙茶、娜杯太妃、可可9大新品，未開賣就爆紅|美食",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9TbDRGRHJUVWJhcHBfWENlS2dWMTZVZnI2SEp1SXdpdXZyay1pSmRjdWFoelo5aEFFWXk5Yl9tbkdqQnZQbFhLeGZFdzVGUHNCZ1hDUmNKVkFZQjdydXc?oc=5",
+          "rss_description_text": "迷客夏買11送11寄杯喝！抹茶、焙茶、娜杯太妃、可可9大新品，未開賣就爆紅|美食 WalkerLand 窩客島",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-030",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 16:30:00",
+          "published_at_raw": "Mon, 09 Nov 2026 08:30:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "上報Up Media",
+          "source_media_home": "https://www.upmedia.mg",
+          "rss_title": "【完整菜單】迷客夏買11 送 11、太妃奶Q 免費加！太妃糖、抹茶、焙茶三大系列冬季飲品新推薦法芙娜可可同步回歸 - 上報Up Media",
+          "clean_title": "【完整菜單】迷客夏買11 送 11、太妃奶Q 免費加！太妃糖、抹茶、焙茶三大系列冬季飲品新推薦法芙娜可可同步回歸",
+          "rss_link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1iQjJuRG5Mb1Fnck5yZFRqckY3X1R2Y3JrVjVFc05tRDc3NzcwRV9BeUV6NWg0MDF2anZSc0U2Yk43aDdYMXB4SlpCU09Gb0RfT1pvZnl3NGxZYXM?oc=5",
+          "rss_description_text": "【完整菜單】迷客夏買11 送 11、太妃奶Q 免費加！太妃糖、抹茶、焙茶三大系列冬季飲品新推薦法芙娜可可同步回歸 上報Up Media",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-031",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 15:40:47",
+          "published_at_raw": "Mon, 09 Nov 2026 07:40:47 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "卡優新聞網",
+          "source_media_home": "https://www.cardu.com.tw",
+          "rss_title": "迷客夏太妃冬季新品11/11開賣！全新配料太妃奶Q必吃 - 卡優新聞網",
+          "clean_title": "迷客夏太妃冬季新品11/11開賣！全新配料太妃奶Q必吃",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1nQ19UdE15V0FibHdiUEctUFdIZXp3TTRhVWFVYzNOTF92OFFfa0tvZG9UcDhMczZlRXJMZmdITnp5TmVSWUpvLVpBaTFMVjBpVW9QNmJxSVg2M25l?oc=5",
+          "rss_description_text": "迷客夏太妃冬季新品11/11開賣！全新配料太妃奶Q必吃 卡優新聞網",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-032",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 14:31:03",
+          "published_at_raw": "Mon, 09 Nov 2026 06:31:03 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "迷客夏太妃奶Q免費加料！森半抹茶、法芙娜可可　雙11開賣優惠曝 - NOWnews今日新聞",
+          "clean_title": "迷客夏太妃奶Q免費加料！森半抹茶、法芙娜可可　雙11開賣優惠曝",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5GS2NkUWFFVUFEOXptRVhuSE1OMEFpWU5MV2sydFFmejhZNVBhMklzOEYtU0xkVjJBNGppWFNRYWlWS2dGa3NDUmdab0NJdE1uUXfSAVJBVV95cUxORktjZFFhRVVBRDl6bUVYbkhNTjBBaVlOTFdrMnRRZno4WTVQYTJJczhGLVNMZFYyQTRqaVhTUWFpVktnRmtzQ1JnWm9DSXRNblF3?oc=5",
+          "rss_description_text": "迷客夏太妃奶Q免費加料！森半抹茶、法芙娜可可 雙11開賣優惠曝 NOWnews今日新聞",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-033",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 12:57:16",
+          "published_at_raw": "Mon, 09 Nov 2026 04:57:16 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "COOL-STYLE 潮流生活網",
+          "source_media_home": "https://www.cool-style.com.tw",
+          "rss_title": "迷客夏也加入「抹茶」戰局！同場加碼法芙娜可可系列回歸，焙茶、太妃飲品冬季新菜單登場！ - COOL-STYLE 潮流生活網",
+          "clean_title": "迷客夏也加入「抹茶」戰局！同場加碼法芙娜可可系列回歸，焙茶、太妃飲品冬季新菜單登場！",
+          "rss_link": "https://news.google.com/rss/articles/CBMi6AJBVV95cUxQV2pTLWh2cU1tMi1lb044QXNyYlp4TUFLMG1wNURPeGE2MS1tQXZfVkpjcnh5YnJIX3JTc0ZGdF9GMDI0RTF5Ri1BV1V3SndmWWl6bWtpVWE3aHNrWGNEY21mNHZmOHUyc3VxV0R2RGJHLWVtRVVoRGVrVmhkR0hFc1R2MkRaOElKYVlLeHN1Q0Q4M2V4amUwc3NfMGYxQzh2aWFkQlhWR2F3VzhuNkhmZE81YXVKT09qeVh6bW1KSW1kb0FDUm8tLXNhNDk3MFctV2o4MWJaZ2R0ZGNJbmVaVnZIUmFlWG90T2cyVk50VHZzekVTZVNLeW13WXNtaVc0Z0YtcVU4ZG5WSTBkU29LajJfdlZ0RS1QUmhnUjd3Y2hlRVlkOU5pT0xnRU13bDhYelZ4SnFpOTkyRUM5QlFXT0s3QWNYQmlBeEVpV2UwRzRDVEhJZHNNdktLWXppWWpnRU45cEI5NGvSAe4CQVVfeXFMTzNsUnUyaWUxXy1UZm1VTkZtR1l1aGJ4Nk9QNVU0eXBjVnR1SlR4cTllZGtOQS1QYkotQkNIcXl0NlVEVVVmUHMtTjJCTER5UXVjTDdXOE0yczhnSHItcFM2X0JTQU5uSElsMkhXQmFuUEsyUWh6WWJUSE1VclRXdERVOGh0NDVfQWdMZkxzaXJlaHl2c1lvR1pzVWhWMTJoZkVMU2R3X0YzdVc1bFo1SDZtWl9wYnN5eXQ1UkQxeTRCaHhsZjVlU3c0NmlndnlqbENRRzVzcGluOGRqa1Q5MTVWOUxkNjdvV1NtT2R4c2Vfb2taMGF6UXVBSkt0N2E2c2tEYWZfVUpzNXZEd0R6UGw1Q1YwRXNJSkxzbHFNXzVBVUJpb2lfMmZIemdvSUZjQkVQS0JpLThLc0cySTlWU0xvX3FvZGJzZFhaV3U4NEx0c01aVjNHYlZIVkVuaFBWdDdscXprVEV6aUNsd213?oc=5",
+          "rss_description_text": "迷客夏也加入「抹茶」戰局！同場加碼法芙娜可可系列回歸，焙茶、太妃飲品冬季新菜單登場！ COOL-STYLE 潮流生活網",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認候選：抹茶（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-034",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 11:55:00",
+          "published_at_raw": "Mon, 09 Nov 2026 03:55:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "工商時報",
+          "source_media_home": "https://www.ctee.com.tw",
+          "rss_title": "迷客夏冬季新品「太妃序曲」11月11日香甜上市 雙11限定「買11贈11」！ - 工商時報",
+          "clean_title": "迷客夏冬季新品「太妃序曲」11月11日香甜上市 雙11限定「買11贈11」！",
+          "rss_link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE52UEpQNlpSM3lLMDYtMFZXUHFKcG9SSDl4SUZScEJCY1NTZ01RUGt1aGFPNjkxNWtvb19hZjlBZ2dfWk5UTC1VdU95YVNWZWpyMEcyMGNJcnZTaFZsUHc4?oc=5",
+          "rss_description_text": "迷客夏冬季新品「太妃序曲」11月11日香甜上市 雙11限定「買11贈11」！ 工商時報",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-035",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 11:38:00",
+          "published_at_raw": "Mon, 09 Nov 2026 03:38:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "ETtoday旅遊雲",
+          "source_media_home": "https://travel.ettoday.net",
+          "rss_title": "迷客夏「太妃序曲」後天上市　買新品免費加料、11元加購紅茶 - ETtoday旅遊雲",
+          "clean_title": "迷客夏「太妃序曲」後天上市　買新品免費加料、11元加購紅茶",
+          "rss_link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFA5LVk2QUJTVFBJSkNrS3ZhTjYtWENlV3NZVldIeDkxRHVfS1YwR2l2b0tjRzFUcU83V2Z4U2tPNEZIbHJhZVFRUl9mQ1NxRTTSAU9BVV95cUxQOS1ZNkFCU1RQSUpDa0t2YU42LVhDZVdzWVZXSHg5MUR1X0tWMEdpdm9LY0cxVHFPN1dmeFNrTzRGSGxyYWVRUVJfZkNTcUU0?oc=5",
+          "rss_description_text": "迷客夏「太妃序曲」後天上市 買新品免費加料、11元加購紅茶 ETtoday旅遊雲",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認候選：太妃序曲（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-036",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 10:59:34",
+          "published_at_raw": "Mon, 09 Nov 2026 02:59:34 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "食尚玩家",
+          "source_media_home": "https://supertaste.tvbs.com.tw",
+          "rss_title": "迷客夏11款冬季菜單！太妃奶Q飲登場，抹茶升級、焙茶可可回歸，雙11買11送11 - 食尚玩家",
+          "clean_title": "迷客夏11款冬季菜單！太妃奶Q飲登場，抹茶升級、焙茶可可回歸，雙11買11送11",
+          "rss_link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5TNW5nR01Jamdzekp3MjZaWnk2a3BkalpralpsdnVpU0w5X2NKdFZMWGxBc1laWGFRQ29yeVVnT1VXbW8zTFdMMWZ1ZmhRSzNYMWlJSg?oc=5",
+          "rss_description_text": "迷客夏11款冬季菜單！太妃奶Q飲登場，抹茶升級、焙茶可可回歸，雙11買11送11 食尚玩家",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-004",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 13:12:25",
+          "published_at_raw": "Wed, 11 Nov 2026 05:12:25 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝 - NOWnews今日新聞",
+          "clean_title": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE83OVUxdFR4ejhXbDFqNGZwWXJSYTIyLVo4dTlneGljNk9TZG50ejNFLXZIaGpCRURSVlo1ME43bXAxa1R3a3Mtd1ZVczNJRUt2QUHSAVJBVV95cUxPNzlVMXRUeHo4V2wxajRmcFlyUmEyMi1aOHU5Z3hpYzZPU2RudHozRS12SGhqQkVEUlZaNTBON21wMWtUd2tzLXdWVXMzSUVLdkFB?oc=5",
+          "rss_description_text": "雙11優惠CoCo買一送一！迷客夏11元 麻古、珍煮丹、大苑子8家曝 NOWnews今日新聞",
+          "brand_detected": "多品牌提及（迷客夏、CoCo都可、麻古茶坊、珍煮丹、大苑子）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-007",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 11:15:00",
+          "published_at_raw": "Wed, 11 Nov 2026 03:15:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "ETtoday旅遊雲",
+          "source_media_home": "https://travel.ettoday.net",
+          "rss_title": "手搖飲雙11優惠　日出茶太買1送1、迷客夏娜杯紅茶11元 - ETtoday旅遊雲",
+          "clean_title": "手搖飲雙11優惠　日出茶太買1送1、迷客夏娜杯紅茶11元",
+          "rss_link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA3VTB5TU1Kd2JIdmU4TE84YXBScGg2T3VtNlVvRE1aZTI0bVlTN3RmSzBmVEp3alJYYTVTVWkzNVl2UFpNRjNLRHktMWwyRGljaHA4Qm1ZSVB5d9IBT0FVX3lxTE5BdEp4ZHFMYWJYbk5pQlFyclZ0QTVpOUIwZkNJUU5FdkgtcEtaYTdEMFBDcFd4TlFaM0pxN1FfQUotdDZrR0NneTlBOE5tY1E?oc=5",
+          "rss_description_text": "手搖飲雙11優惠 日出茶太買1送1、迷客夏娜杯紅茶11元 ETtoday旅遊雲",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-008",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 11:12:00",
+          "published_at_raw": "Wed, 11 Nov 2026 03:12:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "TVBS新聞網",
+          "source_media_home": "https://news.tvbs.com.tw",
+          "rss_title": "雙11手搖優惠！CoCo雙響炮買1送1 迷客夏買11送11 - TVBS新聞網",
+          "clean_title": "雙11手搖優惠！CoCo雙響炮買1送1 迷客夏買11送11",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9nVlN1LWROcUE1YXlGMGdoYW10QjJJbWFOeXNPd0ZVTkdYV2JBZWFGUFNxRzFGREJJVGhNWGFiOWdqZUlmTjI5c0hacF9zdw?oc=5",
+          "rss_description_text": "雙11手搖優惠！CoCo雙響炮買1送1 迷客夏買11送11 TVBS新聞網",
+          "brand_detected": "多品牌提及（迷客夏、CoCo都可）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-010",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-10 16:16:00",
+          "published_at_raw": "Tue, 10 Nov 2026 08:16:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "食尚玩家",
+          "source_media_home": "https://supertaste.tvbs.com.tw",
+          "rss_title": "CoCo買一送一、迷客夏紅茶11元！雙11「手搖飲優惠」11間，鶴茶樓第２杯半價 - 食尚玩家",
+          "clean_title": "CoCo買一送一、迷客夏紅茶11元！雙11「手搖飲優惠」11間，鶴茶樓第２杯半價",
+          "rss_link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5rQ2ZRRnBxcmtld2U0YVFLbGgtZHVjNTFzZnpzRUtXZi1tdzJTZkpnNmxQTjIwamVpd3U5T3g0bHBqcWhiNDFRNFdneGtyMHZjdHV3dw?oc=5",
+          "rss_description_text": "CoCo買一送一、迷客夏紅茶11元！雙11「手搖飲優惠」11間，鶴茶樓第２杯半價 食尚玩家",
+          "brand_detected": "多品牌提及（迷客夏、CoCo都可、鶴茶樓）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-019",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-10 10:11:00",
+          "published_at_raw": "Tue, 10 Nov 2026 02:11:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "食尚玩家",
+          "source_media_home": "https://supertaste.tvbs.com.tw",
+          "rss_title": "買飲料竟能抽演唱會門票！UG告五人限定杯登場，迷客夏11元加購紅茶 - 食尚玩家",
+          "clean_title": "買飲料竟能抽演唱會門票！UG告五人限定杯登場，迷客夏11元加購紅茶",
+          "rss_link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1LOERyZnRHcmNRZFdEbFRzeG5leFFzb1JRTXFVNWVDMEVBOFFBZGRQc1VHbEdiYTNVMFltbG94NGhRdXNmVTU3bXp6NkZxd3hBT1Bzdw?oc=5",
+          "rss_description_text": "買飲料竟能抽演唱會門票！UG告五人限定杯登場，迷客夏11元加購紅茶 食尚玩家",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-026",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 17:47:00",
+          "published_at_raw": "Mon, 09 Nov 2026 09:47:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "鏡週刊Mirror Media",
+          "source_media_home": "https://www.mirrormedia.mg",
+          "rss_title": "UG一撕免費看告五人演唱會　迷客夏新品曝 - 鏡週刊Mirror Media",
+          "clean_title": "UG一撕免費看告五人演唱會　迷客夏新品曝",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5Xc1hzTDV0SVZZTXlXanVUdXNLR2hFVGdZOFdNU096b3NhNjdqYkk4WmtKblBtbWk4NG9KaHQxWXF3Q2VRNlZCVUJKS2tBalUtX3dHOWRKMG5iRHQ00gFiQVVfeXFMTnpnYjROYnNvSU80QTJaT0FrTjVZSXZkX1RXeVVZNDZKRGM3Ylc5UkVfeGVQQXNSZ0NqMm43Z2NpYlFRcVJYaVlZRy00d1AwbnFUMm5MVWUxbUZjVHZCcHB4dUE?oc=5",
+          "rss_description_text": "UG一撕免費看告五人演唱會 迷客夏新品曝 鏡週刊Mirror Media",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-027",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-09 17:47:00",
+          "published_at_raw": "Mon, 09 Nov 2026 09:47:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "三立新聞網SETN.com",
+          "source_media_home": "https://www.setn.com",
+          "rss_title": "雙11開喝！翰林、日出茶太、迷客夏優惠一次看　UG一撕開看告五人演唱會 - 三立新聞網SETN.com",
+          "clean_title": "雙11開喝！翰林、日出茶太、迷客夏優惠一次看　UG一撕開看告五人演唱會",
+          "rss_link": "https://news.google.com/rss/articles/CBMiSEFVX3lxTE13VlZIOWxGTkF6SWttZnZKQ3V1ZEZ1OFlwaTI5SElYOHhpSmY0ZlFXZ1NWR2lVaW5fSlY5SjN6X3luV0NlY2xRTdIBTEFVX3lxTE5XcHoxclRVNFhjV2tFT3hXVlNVNWNfeks5bTNqbElyOGd2N3RiU0NwaEE2YzEzTVM1US1LSWZzdHR4SXdMNUljRVM5WEc?oc=5",
+          "rss_description_text": "雙11開喝！翰林、日出茶太、迷客夏優惠一次看 UG一撕開看告五人演唱會 三立新聞網SETN.com",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1785908962.A.C9D.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=迷客夏",
+          "raw_original": {
+            "title": "[贈送] 迷客夏 10元折價券五張",
+            "author": "dollysheep24 (妃妃)",
+            "board": "Drink",
+            "published_at": "Wed Aug  5 13:49:20 2026",
+            "captured_at": "2026-11-12T11:54:41+08:00",
+            "body_text": "https://i.imgur.com/Wsvo2Ew.jpeg\n\n到8/20，共有五張就送給推文第一人吧~\n\n推完站內，謝謝~",
+            "push_counts": {
+              "推": 1,
+              "噓": 0,
+              "→": 0
+            },
+            "total_push_entries": 1,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "owen13",
+                "content": "推一個",
+                "ipdatetime": "08/05 14:09"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "贈送",
+            "article_nature_note": "板友票券／折價券贈送交流文（非飲品口味評測）",
+            "detected_brands_in_post": [
+              "迷客夏"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-007",
+          "list_nrec_badge": "1",
+          "list_date_short": "8/05"
+        },
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1777394077.A.184.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=迷客夏",
+          "raw_original": {
+            "title": "[討論] 迷客夏九折優惠",
+            "author": "hc726 (妞兒)",
+            "board": "Drink",
+            "published_at": "Wed Apr 29 00:34:35 2026",
+            "captured_at": "2026-11-12T11:54:41+08:00",
+            "body_text": "請問有人需要購買迷客夏九折優惠可以站內信，我馬上給您會員截圖，不限店家使用\n希望到會員截止日之前可以累積到一定點數，謝謝～\n我只需要累積點數，九折給你！\n\n\n--\nSent from nPTT on my iPhone 11",
+            "push_counts": {
+              "推": 1,
+              "噓": 0,
+              "→": 1
+            },
+            "total_push_entries": 2,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "adaphne",
+                "content": "店員會說內用要先找位置 怕你沒位置 那種沒消費的你可以",
+                "ipdatetime": "05/15 14:01"
+              },
+              {
+                "tag": "→",
+                "userid": "adaphne",
+                "content": "當下跟店員說呀",
+                "ipdatetime": "05/15 14:01"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "討論",
+            "article_nature_note": "消費者提問／口味與品項討論（板友於推噓文提供實際喝過的經驗與意見）",
+            "detected_brands_in_post": [
+              "迷客夏"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-008",
+          "list_nrec_badge": "1",
+          "list_date_short": "4/29"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-COCO-PIKMIN-MOLI",
+      "region": "台灣",
+      "brand": "CoCo都可",
+      "product_name": "《Pikmin Bloom 皮克敏》聯名活動 ＆ 茉香凍奶綠／奶茶三兄弟促銷",
+      "short_word": "CoCo・皮克敏聯名與茉香凍奶綠",
+      "item_types": [
+        "促銷"
+      ],
+      "info_status": "✅ 活動機制與促銷價已確認",
+      "is_pending_confirm": false,
+      "flavor_category": "果茶／奶茶／跨界聯名",
+      "price_promo": "來店免費領8款咖啡杯皮克敏金色花苗與明信片；茉香凍奶綠買一送一／2杯60元、奶茶三兄弟45元",
+      "observation_weeks": [
+        "2026-W46",
+        "2026-W45"
+      ],
+      "primary_week": "2026-W46",
+      "latest_published_at": "2026-11-11 13:57:18",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-002",
+        "GNEWS-011",
+        "GNEWS-017",
+        "GNEWS-021",
+        "GNEWS-038",
+        "GNEWS-039",
+        "GNEWS-040",
+        "GNEWS-043",
+        "GNEWS-044",
+        "GNEWS-048",
+        "GNEWS-049",
+        "GNEWS-052",
+        "GNEWS-053",
+        "GNEWS-054",
+        "GNEWS-055",
+        "GNEWS-056",
+        "GNEWS-057"
+      ],
+      "roundup_news_ids": [
+        "GNEWS-045",
+        "GNEWS-047",
+        "GNEWS-051"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-009"
+      ],
+      "media_summary": "17 筆專文＋3 筆合集（共 20 筆紀錄）報導 CoCo 自 11/5 起與手遊《Pikmin Bloom》聯名，全台門市開放掃描領取 8 款咖啡杯飾品皮克敏金色花苗與明信片，並搭配茉香凍奶綠買一送一與奶茶三兄弟 45 元促銷。",
+      "consumer_summary": "【聯名活動本身 PTT 討論：本次採集範圍內未找到】但同波促銷飲品「茉香凍奶綠」已採集到 PTT 實測心得（PTT-DRINK-009）：作者讚賞茉莉茶香搭茶凍口感豐富像 28 茉輕乳茶，惟推文有 2 位板友因「使用奶精基底」表示 pass，另有板友表示特價時會買。",
+      "unknowns": [
+        "玩家因免費領取金色花苗而實際在門市消費購買飲品的轉換率未知。",
+        "皮克敏玩家的打卡討論可能集中於遊戲專板或 Threads，在 PTT Drink 板未見聯名討論。"
+      ],
+      "metrics": {
+        "focused_news_count": 17,
+        "roundup_news_count": 3,
+        "total_news_count": 20,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 1,
+        "total_ptt_count": 1,
+        "total_ptt_pushes": 4,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-002",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 13:57:18",
+          "published_at_raw": "Wed, 11 Nov 2026 05:57:18 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "皮克敏全家、CoCo金色花苗不要囤！遊戲隱藏機制曝光：會影響任務 - NOWnews今日新聞",
+          "clean_title": "皮克敏全家、CoCo金色花苗不要囤！遊戲隱藏機制曝光：會影響任務",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1nNHIweHUwVG5PVXIwQkx2RmpSU05SWWdMd1JiWmxJUl92QkRoN1ZFRkRIdVNVYUhHYXBtX0xYMlVqVHF4a3BjUks4Ylk1RDlUOGfSAVJBVV95cUxNZzRyMHh1MFRuT1VyMEJMdkZqUlNOUllnTHdSYlpsSVJfdkJEaDdWRUZESHVTVWFIR2FwbV9MWDJValRxeGtwY1JLOGJZNUQ5VDhn?oc=5",
+          "rss_description_text": "皮克敏全家、CoCo金色花苗不要囤！遊戲隱藏機制曝光：會影響任務 NOWnews今日新聞",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-011",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-10 16:00:00",
+          "published_at_raw": "Tue, 10 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "今周刊",
+          "source_media_home": "https://www.businesstoday.com.tw",
+          "rss_title": "皮克敏11月活動！CoCo聯名活動開跑，飾品皮克敏怎麼拿？新玩法「神秘洞窟」將上線…社群日、巨菇時間先筆記 - 今周刊",
+          "clean_title": "皮克敏11月活動！CoCo聯名活動開跑，飾品皮克敏怎麼拿？新玩法「神秘洞窟」將上線…社群日、巨菇時間先筆記",
+          "rss_link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOYzNQMjdIWWNMSEJ1UnBlWXU0bm1PT0tJRF9QSTRDcUhUTzRRMzFnenNTSXdfd0ZaZUJNTnpYdnF4TlJsczlPdG9EMmp0VW05RHVhX3lFNGRFdVdTenlsMnZ1d1NUZERPTGw1RENzZjU5dzgxY2VzdV9nZUFJWV9Kag?oc=5",
+          "rss_description_text": "皮克敏11月活動！CoCo聯名活動開跑，飾品皮克敏怎麼拿？新玩法「神秘洞窟」將上線…社群日、巨菇時間先筆記 今周刊",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認候選：神秘洞窟（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-017",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-10 11:40:00",
+          "published_at_raw": "Tue, 10 Nov 2026 03:40:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "TVBS新聞網",
+          "source_media_home": "https://news.tvbs.com.tw",
+          "rss_title": "皮克敏11月活動懶人包》全家與CoCo聯名、天竺葵社群日與5週年飾品 - TVBS新聞網",
+          "clean_title": "皮克敏11月活動懶人包》全家與CoCo聯名、天竺葵社群日與5週年飾品",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBBNnRSekI3b0NlRk4tMTZkUG5wN3VfbVd0Q080YUYwb0lzMC1ibjJQXzZVZG5YMGFnRXpWaWt4Nzd1VDhfZ1JVdzJkNXRGZw?oc=5",
+          "rss_description_text": "皮克敏11月活動懶人包》全家與CoCo聯名、天竺葵社群日與5週年飾品 TVBS新聞網",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-021",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-10 02:37:00",
+          "published_at_raw": "Mon, 09 Nov 2026 18:37:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "WalkerLand 窩客島",
+          "source_media_home": "https://www.walkerland.com.tw",
+          "rss_title": "Pikmin Bloom皮克敏迷快衝全家！7款五週年限定造型開放收集，CoCo都可再推8款咖啡杯皮克敏 - WalkerLand 窩客島",
+          "clean_title": "Pikmin Bloom皮克敏迷快衝全家！7款五週年限定造型開放收集，CoCo都可再推8款咖啡杯皮克敏",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBCdmFTeUVTN3JsSW5zRGVBZTd4d1ZTSnVVREppVUJLNTgyRGRVUU1ic2IzbkpEd2FXdi1pUGJINUx0LTFzMHVXVU00MTZxek5SNEZSX2NHX214RHZpZ3c?oc=5",
+          "rss_description_text": "Pikmin Bloom皮克敏迷快衝全家！7款五週年限定造型開放收集，CoCo都可再推8款咖啡杯皮克敏 WalkerLand 窩客島",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-038",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-07 16:00:00",
+          "published_at_raw": "Sat, 07 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "ELLE",
+          "source_media_home": "https://www.elle.com",
+          "rss_title": "皮克敏×CoCo都可聯名活動開跑！咖啡杯飾品免費拿，走2000步再送特殊金色花苗 - ELLE",
+          "clean_title": "皮克敏×CoCo都可聯名活動開跑！咖啡杯飾品免費拿，走2000步再送特殊金色花苗",
+          "rss_link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5SRkV1UU1adWlxSmVPLWNpUjlycmdSX2pNTC1ubUtOTURSNWdyOGo4TUF5dFRmMUxnTHNSV0ZqM0tTSnRxX0JKakd0Q1czbTBGSkJHNzZCejdCRy1yamFQNVluMkhJMThnc05ybHRmSFJLa3M4NUdlZlJNSQ?oc=5",
+          "rss_description_text": "皮克敏×CoCo都可聯名活動開跑！咖啡杯飾品免費拿，走2000步再送特殊金色花苗 ELLE",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-039",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-07 10:27:53",
+          "published_at_raw": "Sat, 07 Nov 2026 02:27:53 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "Marie Claire 美麗佳人",
+          "source_media_home": "https://www.marieclaire.com.tw",
+          "rss_title": "皮克敏ＸCoCo都可聯名登場！搶拿咖啡杯皮克敏，再享雙11買1送1好康優惠 - Marie Claire 美麗佳人",
+          "clean_title": "皮克敏ＸCoCo都可聯名登場！搶拿咖啡杯皮克敏，再享雙11買1送1好康優惠",
+          "rss_link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE8ySk9HREJ4Q2I5WFVkNE1UeVU2MmlIN3hhRG92STZzeENrdndSZUluUVZQdWI1bFRybjU3dXkyeEJNdGxmOWRaSFVrWm1zTHFBNEg3WmV2dFVGUnZUZVA3NnRB?oc=5",
+          "rss_description_text": "皮克敏ＸCoCo都可聯名登場！搶拿咖啡杯皮克敏，再享雙11買1送1好康優惠 Marie Claire 美麗佳人",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-040",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-05 18:09:52",
+          "published_at_raw": "Thu, 05 Nov 2026 10:09:52 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "Cosmopolitan",
+          "source_media_home": "https://www.cosmopolitan.com",
+          "rss_title": "皮克敏CoCo聯名今開跑！免費拿咖啡杯皮克敏，解鎖隱藏任務多拿限定花苗 - Cosmopolitan",
+          "clean_title": "皮克敏CoCo聯名今開跑！免費拿咖啡杯皮克敏，解鎖隱藏任務多拿限定花苗",
+          "rss_link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOWjhfQ1VVbVBhRDlaMnVHcUdDeEhMbkp3a2J4M0JXQXY4NExCdWZ2V0E0YncxaTdCZklFODFSU1lOMGpZc3BXamNiV0c3TzlmblA1cEUyNlNqblBJYUVEbldjN0xqYWtacnZTUkZwMl9EaWswaWxNV2Z3VWpYdlBBVVlYeS1aTXVsQU5LOXBReHN4UkN5?oc=5",
+          "rss_description_text": "皮克敏CoCo聯名今開跑！免費拿咖啡杯皮克敏，解鎖隱藏任務多拿限定花苗 Cosmopolitan",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-043",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-05 04:30:00",
+          "published_at_raw": "Wed, 04 Nov 2026 20:30:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "皮克敏CoCo聯名今天開跑！8款咖啡杯金色花苗免費拿、攻略一次看 - NOWnews今日新聞",
+          "clean_title": "皮克敏CoCo聯名今天開跑！8款咖啡杯金色花苗免費拿、攻略一次看",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE5lRVlUNVByenAtRVBhaV9FenRubll6aklkNmRJRzY2Y2Zkd2ZPRWo3U21wVXdBWW5neXcxMXQySG5ZX0NOUktSZkE3dnnSAVJBVV95cUxNOG9UMG9aNE9xSFRLUnVTLTIwOEZ3ZTZ4Z1NodXBuMm5kUWxudlVYbDJXeVl0TE1jZVhhQTFqdTBsSHdvdXdGQWNxUlRPQ0tqVzNn?oc=5",
+          "rss_description_text": "皮克敏CoCo聯名今天開跑！8款咖啡杯金色花苗免費拿、攻略一次看 NOWnews今日新聞",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-044",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-04 09:57:22",
+          "published_at_raw": "Wed, 04 Nov 2026 01:57:22 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "CoCo茉香凍奶綠買一送一！奶茶三兄弟45元喝整個11月　皮克敏聯名 - NOWnews今日新聞",
+          "clean_title": "CoCo茉香凍奶綠買一送一！奶茶三兄弟45元喝整個11月　皮克敏聯名",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE1SQzFYdFp3S2hEdlVYRV9fV3FpY0Y3YXAybjFMZ3MzMTJ6VVdpU0Vjc2VUSWFuWGFXcnF5Q1FxdTZKQUFpRDBQc291M2jSAVJBVV95cUxQUW9TUVJnNThrdUxXN3hoTkFrZFBQcEZGZ3JJb01RclRmdVN4eG1CT0NlREZuY2EwYU1KM3dvQ1h5T1FxOGd4LVZIMDZUR2hpMnpB?oc=5",
+          "rss_description_text": "CoCo茉香凍奶綠買一送一！奶茶三兄弟45元喝整個11月 皮克敏聯名 NOWnews今日新聞",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-048",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-03 16:00:00",
+          "published_at_raw": "Tue, 03 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "UDN",
+          "source_media_home": "https://travel.udn.com",
+          "rss_title": "CoCo都可超強聯名「皮克敏」！8款咖啡杯造型限定飾品登場 11／5起全台門市開收 - UDN",
+          "clean_title": "CoCo都可超強聯名「皮克敏」！8款咖啡杯造型限定飾品登場 11／5起全台門市開收",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5RaUNpLVl6UUpMeDlDU1hzY0FoNVpPNXZNVWxHWllQUWczQjNVU1ZkbVJPLWxEWlFFb0MzOEw1d0R6S3IxUFJYSGdjZkZWdmQzaXhxV2NMZWFCN21f?oc=5",
+          "rss_description_text": "CoCo都可超強聯名「皮克敏」！8款咖啡杯造型限定飾品登場 11／5起全台門市開收 UDN",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認候選：皮克敏（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-049",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-03 16:00:00",
+          "published_at_raw": "Tue, 03 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "CoCo聯手皮克敏《Pikmin Bloom》！金盆拿法攻略　全台門市一次看 - NOWnews今日新聞",
+          "clean_title": "CoCo聯手皮克敏《Pikmin Bloom》！金盆拿法攻略　全台門市一次看",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE5wNzljWDh6TWtSUzBTd1VHakdYTllnSFFSUElUU1dZS0VNZjhRbGR3QTlnS0F1MHRadGs3RDE4V3V3TEFHRDFRaXBTTGXSAVJBVV95cUxOUlQtY3M3TTZpb2hLM3pBX18zejJLZTdURjZxRFhESUs5ZnRyM251UFN1REZQOWZkSV96S1ZCeTBQQXk4enl0N2dqZHdmRzI4M2tR?oc=5",
+          "rss_description_text": "CoCo聯手皮克敏《Pikmin Bloom》！金盆拿法攻略 全台門市一次看 NOWnews今日新聞",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-052",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 16:00:00",
+          "published_at_raw": "Mon, 02 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "玩咖Playing",
+          "source_media_home": "https://playing.ltn.com.tw",
+          "rss_title": "皮克敏CoCo聯名金盆&明信片免費送！手搖飲、咖啡買一送一接力喝 - 玩咖Playing",
+          "clean_title": "皮克敏CoCo聯名金盆&明信片免費送！手搖飲、咖啡買一送一接力喝",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5tclZNblo2VzdxZ29vdmVCV2xRczhRcDB6VTk0VlBWOS1WMjNNUEEydzFzYmVxeVFrUjlxNHcxTnlyMjczQ2dCd1RIQl9YZFVNSWc?oc=5",
+          "rss_description_text": "皮克敏CoCo聯名金盆&明信片免費送！手搖飲、咖啡買一送一接力喝 玩咖Playing",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-053",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 16:00:00",
+          "published_at_raw": "Mon, 02 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "ETtoday旅遊雲",
+          "source_media_home": "https://travel.ettoday.net",
+          "rss_title": "CoCo聯名皮克敏11/5開跑　來店領咖啡杯飾品金色花苗、明信片 - ETtoday旅遊雲",
+          "clean_title": "CoCo聯名皮克敏11/5開跑　來店領咖啡杯飾品金色花苗、明信片",
+          "rss_link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBNYTRUR1ozQXh2dzBvNUx1YTJ0ck1KUlNWYS1pNWZnWUVVa0U5ZEM5a0UyTHVTNXhpYTMwbUFKMDhCd3VUM2lFR3VsbEFxZWZoTHhOT2NjRUVkQdIBT0FVX3lxTE5JMGVNS1F6NTg0b1Z1anF4ZWFTRnJHdC1xZk1vYThXMWVQNDE2N0p2V0o4VWdPSXYyQThoMDFEY21QOEF5RmdwcFZ0UkEycWM?oc=5",
+          "rss_description_text": "CoCo聯名皮克敏11/5開跑 來店領咖啡杯飾品金色花苗、明信片 ETtoday旅遊雲",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-054",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 16:00:00",
+          "published_at_raw": "Mon, 02 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "食尚玩家",
+          "source_media_home": "https://supertaste.tvbs.com.tw",
+          "rss_title": "CoCo聯名皮克敏！８款咖啡杯造型免費收集，皮克敏路跑早鳥送超萌周邊 - 食尚玩家",
+          "clean_title": "CoCo聯名皮克敏！８款咖啡杯造型免費收集，皮克敏路跑早鳥送超萌周邊",
+          "rss_link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE8zbkp3dDlOYlZTU3NNRXpWU1RzcGg1a3dLTUdwelZMcmE2RUxHTDhNTVZIRWF1cGVueWJreWM5NThnY3VjNDc2aHJSVXJaUmttcGh5Rg?oc=5",
+          "rss_description_text": "CoCo聯名皮克敏！８款咖啡杯造型免費收集，皮克敏路跑早鳥送超萌周邊 食尚玩家",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-055",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 16:00:00",
+          "published_at_raw": "Mon, 02 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "4Gamers",
+          "source_media_home": "https://www.4gamers.com.tw",
+          "rss_title": "《Pikmin Bloom》CoCo都可聯名11/5開跑 蒐集兩款金色花苗與特殊明信片 - 4Gamers",
+          "clean_title": "《Pikmin Bloom》CoCo都可聯名11/5開跑 蒐集兩款金色花苗與特殊明信片",
+          "rss_link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxONzcySmRpajdhM0NtdnBzWXFZaUNqVnVlOE53UXJ1ZDNldThJNWxQeDhGLW1EeDdLZG44cmIteVpsdzRPelUyM2VUbXBTYTZnLXgyTHhsWnFXa285SXI4TkNpcnpTbEYyQWJuVmhKNmo4Q0YxczJnUXB5VmdpTkxwTDVIa3NhWTI3dHg4OV9iMjU?oc=5",
+          "rss_description_text": "《Pikmin Bloom》CoCo都可聯名11/5開跑 蒐集兩款金色花苗與特殊明信片 4Gamers",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-056",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 16:00:00",
+          "published_at_raw": "Mon, 02 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "皮克敏CoCo聯名11/5開跑！2款金色花苗、明信片全台門市免費送 - NOWnews今日新聞",
+          "clean_title": "皮克敏CoCo聯名11/5開跑！2款金色花苗、明信片全台門市免費送",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE13c1QxUXp6MXJDdHFqTnBMaU04S3JxNW00REQzM3d2Q1pobnEtN3V1MUJRTFFRRXBHSW9TbFh0TllQMEF5aE1ZV1Q3Y3PSAVJBVV95cUxPNVl2RG1GNmFTSFJaYUVfSTlocUZEdFVObkFJMFFNOUttTDN0RWJjejdEWVNFaW5wNHFSOHZ5Q1Vzem5WM19Vb1BMU1NlODNKcG5R?oc=5",
+          "rss_description_text": "皮克敏CoCo聯名11/5開跑！2款金色花苗、明信片全台門市免費送 NOWnews今日新聞",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-057",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 16:00:00",
+          "published_at_raw": "Mon, 02 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "TVBS新聞網",
+          "source_media_home": "https://news.tvbs.com.tw",
+          "rss_title": "玩家注意！CoCo聯名皮克敏 金色花苗、明信片免費送 - TVBS新聞網",
+          "clean_title": "玩家注意！CoCo聯名皮克敏 金色花苗、明信片免費送",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5PRDNJQWNEM1ZUVVZPdUdVb2d3TDFPZlp0QUZmRGlCVHAyTTRpNGFRSm5kTThZZHpfTVg5Mk1mclRTM0VHVDBfd1hoSUpnQQ?oc=5",
+          "rss_description_text": "玩家注意！CoCo聯名皮克敏 金色花苗、明信片免費送 TVBS新聞網",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-045",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-04 09:46:00",
+          "published_at_raw": "Wed, 04 Nov 2026 01:46:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "壹蘋新聞網",
+          "source_media_home": "https://news.nextapple.com",
+          "rss_title": "今起飆高溫！手搖飲推買1送1、珍奶40元 皮克敏限定花苗開搶 - 壹蘋新聞網",
+          "clean_title": "今起飆高溫！手搖飲推買1送1、珍奶40元 皮克敏限定花苗開搶",
+          "rss_link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1JeHVRajM3TDBzWXlzY3JxdVVmSVNPR2ZRc0lodUlWalVUTUZkTXNJWWhFemtYeVlkRmRCWGd6VjZYOTRXcDRFQmZSekVhSVFhaG1Gc0Y3SU5tUmNEd3lsakhHaDA5UVF5Q0Z1cU95bUNpWkZGNjIwM0R0VHZBdw?oc=5",
+          "rss_description_text": "今起飆高溫！手搖飲推買1送1、珍奶40元 皮克敏限定花苗開搶 壹蘋新聞網",
+          "brand_detected": "待確認品牌",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-047",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-03 16:00:00",
+          "published_at_raw": "Tue, 03 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "中時新聞網",
+          "source_media_home": "https://www.chinatimes.com",
+          "rss_title": "手搖飲買1送1來了！茉香凍奶綠2杯60元 優惠一次看 - 中時新聞網",
+          "clean_title": "手搖飲買1送1來了！茉香凍奶綠2杯60元 優惠一次看",
+          "rss_link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE42SzdwQXRybms5eWRyQlAtOHZuUEExTlhFQ1psdEc1NEs0SWdzVWFBZWd0aXVxT1RKZnZZRlI3R0JDQ0lYeUFfOXQtNzBJTWRFUUJNYU5HT2xGNUdyaUVuQWIwMENEa2RiTnk4ejZn?oc=5",
+          "rss_description_text": "手搖飲買1送1來了！茉香凍奶綠2杯60元 優惠一次看 中時新聞網",
+          "brand_detected": "待確認品牌",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-051",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 16:00:00",
+          "published_at_raw": "Mon, 02 Nov 2026 08:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "中天新聞網",
+          "source_media_home": "https://ctinews.com",
+          "rss_title": "「胖妃」殺進手搖飲！甄嬛傳聯名大苑子、CoCo迎皮克敏 - 中天新聞網",
+          "clean_title": "「胖妃」殺進手搖飲！甄嬛傳聯名大苑子、CoCo迎皮克敏",
+          "rss_link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5DQ0ZQZWFQMFhoYU5qM1hoVGlzNS1UaTd4N2tLVXVibHJVRW5FOUFiN1U5dXpxM0VvbFQzR0ZHVGNBZ0NCSHd0UWNHalJJbEM2d3RN?oc=5",
+          "rss_description_text": "「胖妃」殺進手搖飲！甄嬛傳聯名大苑子、CoCo迎皮克敏 中天新聞網",
+          "brand_detected": "多品牌提及（CoCo都可、大苑子）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1784535385.A.A41.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=CoCo",
+          "raw_original": {
+            "title": "[心得] coco茉香凍奶綠",
+            "author": "starpipiuu (小新新)",
+            "board": "Drink",
+            "published_at": "Mon Jul 20 16:16:23 2026",
+            "captured_at": "2026-11-12T11:54:42+08:00",
+            "body_text": "之前很喜歡coco的28茉輕乳茶，那陣子每次去都點這個\n我覺得茉莉茶香跟奶味比例很剛好，不會太甜\n茶也不會被奶味蓋過，喝起來很順\n結果他好像不是常駐商品，現在好像已經沒有賣了，哭\n\n剛好昨天跟朋友一起去買，他點了(應該是新的)茉香凍奶綠\n我喝一口發現有點像之前的28茉耶\n而且裡面還有茶凍可以咬，口感更豐富\n下次我也要自己點一杯來喝",
+            "push_counts": {
+              "推": 2,
+              "噓": 0,
+              "→": 2
+            },
+            "total_push_entries": 4,
+            "pushes": [
+              {
+                "tag": "→",
+                "userid": "pippen2002",
+                "content": "ss93r奶精?? pass",
+                "ipdatetime": "07/23 20:02"
+              },
+              {
+                "tag": "推",
+                "userid": "shairg",
+                "content": "我也不愛奶精",
+                "ipdatetime": "08/16 00:33"
+              },
+              {
+                "tag": "推",
+                "userid": "punkmilk",
+                "content": "我也覺得好喝，有特價都會買",
+                "ipdatetime": "08/22 08:09"
+              },
+              {
+                "tag": "→",
+                "userid": "lkdsa",
+                "content": "之前偶爾會買28 沒想到停售了",
+                "ipdatetime": "08/23 04:16"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [
+              "CoCo都可"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-009",
+          "list_nrec_badge": "2",
+          "list_date_short": "7/20"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-COCO-COCOSWEET",
+      "region": "台灣",
+      "brand": "CoCo都可",
+      "product_name": "冬季「可可甜心」系列（可可珍奶、蕎麥可可）",
+      "short_word": "CoCo・可可珍奶與蕎麥可可",
+      "item_types": [
+        "新品",
+        "促銷"
+      ],
+      "info_status": "⏳ 單杯原價待確認（任選2杯85元已確認）",
+      "is_pending_confirm": true,
+      "flavor_category": "可可／穀物蕎麥",
+      "price_promo": "可可珍奶、蕎麥可可任選 2 杯 85 元；日焙珍珠奶茶買一送一大杯 32.5 元（⏳ 單杯原價待內文確認）",
+      "observation_weeks": [
+        "2026-W44"
+      ],
+      "primary_week": "2026-W44",
+      "latest_published_at": "2026-10-31 15:00:00",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-062",
+        "GNEWS-063",
+        "GNEWS-069"
+      ],
+      "roundup_news_ids": [
+        "GNEWS-060",
+        "GNEWS-064",
+        "GNEWS-065"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-009",
+        "PTT-DRINK-010"
+      ],
+      "media_summary": "3 筆單品專文＋3 筆巧克力季跨品牌合集（共 6 筆紀錄）報導 CoCo 於 11/1 推出冬季「可可甜心」系列，主打「可可珍奶」與無咖啡因穀物風味「蕎麥可可」雙口味，享任選 2 杯 85 元優惠。",
+      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板目前尚未出現「可可甜心／蕎麥可可」之試喝文；既有 CoCo 冬季濃厚系心得（PTT-DRINK-010）則對週一特價 49 元之「酪梨奶昔杯杯」給予高CP值正面評價。",
+      "unknowns": [
+        "「蕎麥可可」與「可可珍奶」的實際甜度、可可濃度及是否使用奶精或鮮奶尚未有 PTT 板友實測回報。"
+      ],
+      "metrics": {
+        "focused_news_count": 3,
+        "roundup_news_count": 3,
+        "total_news_count": 6,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 2,
+        "total_ptt_count": 2,
+        "total_ptt_pushes": 4,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-062",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-30 15:00:00",
+          "published_at_raw": "Fri, 30 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "風傳媒",
+          "source_media_home": "https://www.storm.mg",
+          "rss_title": "CoCo可可甜心11月登場 珍奶蕎麥雙口味暖心開喝 | 程霽玥 | 地方新聞 - 風傳媒",
+          "clean_title": "CoCo可可甜心11月登場 珍奶蕎麥雙口味暖心開喝 | 程霽玥 | 地方新聞",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE56dXp1dklzNTdnQUlMMnhBeU1lOUxVTkk4ZTcwNWhJQnZRRWNQbzNJR2lkUnZIWWhFaUpFOFMyamhwUEtiTTVTMnRlVm9kUQ?oc=5",
+          "rss_description_text": "CoCo可可甜心11月登場 珍奶蕎麥雙口味暖心開喝 | 程霽玥 | 地方新聞 風傳媒",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-063",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-29 15:00:00",
+          "published_at_raw": "Thu, 29 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "WalkerLand 窩客島",
+          "source_media_home": "https://www.walkerland.com.tw",
+          "rss_title": "CoCo開賣巧克力手搖！可可珍奶、蕎麥可可任選2杯才85元，45元奶茶三兄弟加碼喝|美食 - WalkerLand 窩客島",
+          "clean_title": "CoCo開賣巧克力手搖！可可珍奶、蕎麥可可任選2杯才85元，45元奶茶三兄弟加碼喝|美食",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFB6X0FPemxsb29OSzVieUZYWDQ0LUN1Ti14SGNRLVpETG5kM21WQXBpU2xxNzhwdlYzRFQ1R1BJM2pSREx5bnhiYUdvX2dxV3dvQXRsODhuamwyMUQxcGc?oc=5",
+          "rss_description_text": "CoCo開賣巧克力手搖！可可珍奶、蕎麥可可任選2杯才85元，45元奶茶三兄弟加碼喝|美食 WalkerLand 窩客島",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-069",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-28 15:00:00",
+          "published_at_raw": "Wed, 28 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "CoCo日焙珍珠奶茶買一送一！大杯才32.5元　可可甜心新品11/1開賣 - NOWnews今日新聞",
+          "clean_title": "CoCo日焙珍珠奶茶買一送一！大杯才32.5元　可可甜心新品11/1開賣",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE1mSVRDV3dtNmRGTXpFU1dWU2psSE54VHNSOFRWTDJ4MV9iNkgzdFZQWHRLb1U2RktPTXIxYzR2amxnYks3N2pkMTUwMnfSAVJBVV95cUxNYWF6bDNCVFdxT1dPN2JyUVBIcjdDWThKMHJZSTdGNWFRQzY5UF9kYWYtcVNDdkpDZGRPVGxQYndLSXZDUVc0UmltX0Z2MDQ1T21B?oc=5",
+          "rss_description_text": "CoCo日焙珍珠奶茶買一送一！大杯才32.5元 可可甜心新品11/1開賣 NOWnews今日新聞",
+          "brand_detected": "CoCo都可",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-060",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-31 15:00:00",
+          "published_at_raw": "Sat, 31 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "網路溫度計 DailyView",
+          "source_media_home": "https://dailyview.tw",
+          "rss_title": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題 - 網路溫度計 DailyView",
+          "clean_title": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題",
+          "rss_link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5WRzdSZXlxN1Btb0JFa0RoS2ZFa0FMSVhuQmMwb2F5Qm1RQXdHQlNYRS1JZ2UzUklGX3pXUExsZHRsQ19hYmlGNU56QmZqMFdMZzZZ?oc=5",
+          "rss_description_text": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題 網路溫度計 DailyView",
+          "brand_detected": "多品牌提及（CoCo都可、茶湯會）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-064",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-29 15:00:00",
+          "published_at_raw": "Thu, 29 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "食尚玩家",
+          "source_media_home": "https://supertaste.tvbs.com.tw",
+          "rss_title": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠 - 食尚玩家",
+          "clean_title": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠",
+          "rss_link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9rUUtsaXd3bkVhSVlaZTU3cjB1Zk5na2ZHNUpjNmtpNW1vZVNXbWZWbzNiWGx2Y3c1Znh3OWlIeDhYNUhDOHRCeWFhMElfVmQ5YUMtZQ?oc=5",
+          "rss_description_text": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠 食尚玩家",
+          "brand_detected": "多品牌提及（CoCo都可、茶湯會）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-065",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-29 15:00:00",
+          "published_at_raw": "Thu, 29 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "UDN",
+          "source_media_home": "https://travel.udn.com",
+          "rss_title": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一 - UDN",
+          "clean_title": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE0wYUtrMXhfTXlPTFBWN3NVMXEwb3hYOGVUSUdQc2lYVGVXMFYzaGpYVzdNYU10U2ltbVNLZVBMLTBCOFc1ZkdaaUYtbEhGd2kyMjFBWjU0U1B3aFZN?oc=5",
+          "rss_description_text": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一 UDN",
+          "brand_detected": "多品牌提及（CoCo都可、茶湯會）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1784535385.A.A41.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=CoCo",
+          "raw_original": {
+            "title": "[心得] coco茉香凍奶綠",
+            "author": "starpipiuu (小新新)",
+            "board": "Drink",
+            "published_at": "Mon Jul 20 16:16:23 2026",
+            "captured_at": "2026-11-12T11:54:42+08:00",
+            "body_text": "之前很喜歡coco的28茉輕乳茶，那陣子每次去都點這個\n我覺得茉莉茶香跟奶味比例很剛好，不會太甜\n茶也不會被奶味蓋過，喝起來很順\n結果他好像不是常駐商品，現在好像已經沒有賣了，哭\n\n剛好昨天跟朋友一起去買，他點了(應該是新的)茉香凍奶綠\n我喝一口發現有點像之前的28茉耶\n而且裡面還有茶凍可以咬，口感更豐富\n下次我也要自己點一杯來喝",
+            "push_counts": {
+              "推": 2,
+              "噓": 0,
+              "→": 2
+            },
+            "total_push_entries": 4,
+            "pushes": [
+              {
+                "tag": "→",
+                "userid": "pippen2002",
+                "content": "ss93r奶精?? pass",
+                "ipdatetime": "07/23 20:02"
+              },
+              {
+                "tag": "推",
+                "userid": "shairg",
+                "content": "我也不愛奶精",
+                "ipdatetime": "08/16 00:33"
+              },
+              {
+                "tag": "推",
+                "userid": "punkmilk",
+                "content": "我也覺得好喝，有特價都會買",
+                "ipdatetime": "08/22 08:09"
+              },
+              {
+                "tag": "→",
+                "userid": "lkdsa",
+                "content": "之前偶爾會買28 沒想到停售了",
+                "ipdatetime": "08/23 04:16"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [
+              "CoCo都可"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-009",
+          "list_nrec_badge": "2",
+          "list_date_short": "7/20"
+        },
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1765240811.A.E5F.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=CoCo",
+          "raw_original": {
+            "title": "[心得] Coco/麻古/全家Let's Tea",
+            "author": "a5925457 (桌桌)",
+            "board": "Drink",
+            "published_at": "Tue Dec  9 08:40:08 2025",
+            "captured_at": "2026-11-12T11:54:42+08:00",
+            "body_text": "分享近期喝到的幾款新品\n全家只限定喝現煮門市有賣\n想買的可以先用app地圖趣查\nhttps://i.mopix.cc/Cl67ip.jpg\n\n1.CoCo酪梨奶昔杯杯, 週一買49$\n平常蠻難買到酪梨飲品的\nCoco出這個我還不喝爆\n裡面有加布丁去打\n雖然咬不到布丁口感\n喝起來的是有濃郁感有厚度的\n平常夜市賣的酪梨牛奶動輒就要7.80了, 這價格很ok\n\n2.麻古茶坊芋泥奶茶$75\n喝起來就是芋頭牛奶\n能喝得到芋泥&吃到細小芋頭顆粒\n口感還不錯 芋頭味也夠\n冬天就喜歡這種濃厚系的\n有機會想試米麻糬芋泥奶茶\n\n3.全家金焙蕎麥醇奶茶$55買一送一\n剛入口是蕎麥香氣\n慢慢才有個奶味上來\n蕎麥的穀味蠻香的\n配上鮮奶還蠻清爽的\n個人覺得不輸手搖店\n本來原價55就不貴了\n現在還特價兩杯55\n(但好像只到今天，想便宜嚐鮮的人要快",
+            "push_counts": {
+              "推": 0,
+              "噓": 0,
+              "→": 0
+            },
+            "total_push_entries": 0,
+            "pushes": []
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [
+              "CoCo都可",
+              "麻古茶坊"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-010",
+          "list_nrec_badge": "0",
+          "list_date_short": "12/09"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-MILKSHA-SMOKED-CREAM",
+      "region": "台灣",
+      "brand": "迷客夏 Milksha",
+      "product_name": "「迷客夏 3.0」概念店＆秋季新品「娜杯糖燻奶霜」",
+      "short_word": "迷客夏・娜杯糖燻奶霜",
+      "item_types": [
+        "新品",
+        "促銷"
+      ],
+      "info_status": "⏳ 單杯原價待內文確認（折10元／2杯99元已確認）",
+      "is_pending_confirm": true,
+      "flavor_category": "鮮奶茶／奶蓋",
+      "price_promo": "新品「娜杯糖燻奶霜」全台折 10 元、鮮奶茶 2 杯 99 元（⏳ 單杯原價待確認）",
+      "observation_weeks": [
+        "2026-W44"
+      ],
+      "primary_week": "2026-W44",
+      "latest_published_at": "2026-10-28 15:00:00",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-070",
+        "GNEWS-073",
+        "GNEWS-074"
+      ],
+      "roundup_news_ids": [
+        "GNEWS-072"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-007"
+      ],
+      "media_summary": "3 筆單品專文＋1 筆秋季新品合集（共 4 筆紀錄）報導迷客夏 3.0 新店型開幕（設試聞茶瓶體驗），同步推出秋季新品「娜杯糖燻奶霜」表面呈現乳牛斑點炙燒糖燻視覺，享全台折 10 元優惠。",
+      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板在本次採集範圍內未見「娜杯糖燻奶霜」之消費者開箱或甜度回饋。",
+      "unknowns": [
+        "炙燒糖燻奶霜的實際煙燻風味接受度與攪勻後甜度表現目前未知。"
+      ],
+      "metrics": {
+        "focused_news_count": 3,
+        "roundup_news_count": 1,
+        "total_news_count": 4,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 1,
+        "total_ptt_count": 1,
+        "total_ptt_pushes": 1,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-070",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-28 15:00:00",
+          "published_at_raw": "Wed, 28 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "WalkerLand 窩客島",
+          "source_media_home": "https://www.walkerland.com.tw",
+          "rss_title": "迷客夏3.0升級亮點！新品「娜杯糖燻奶霜」折10元、鮮奶茶2杯99元，極簡風、試聞茶瓶要踩點|美食 - WalkerLand 窩客島",
+          "clean_title": "迷客夏3.0升級亮點！新品「娜杯糖燻奶霜」折10元、鮮奶茶2杯99元，極簡風、試聞茶瓶要踩點|美食",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFAwbkZxN0ZXdTNoc2FOUjhrTmdyODdPSFhUV01JeEpqbEJiRjQ4S3hydnJhTmh0dzVQck9uOXlVRWVYVVQtb1VpVkh2VzlNZHBBUEtCVFRZV3JfZU1IRmc?oc=5",
+          "rss_description_text": "迷客夏3.0升級亮點！新品「娜杯糖燻奶霜」折10元、鮮奶茶2杯99元，極簡風、試聞茶瓶要踩點|美食 WalkerLand 窩客島",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認候選：娜杯糖燻奶霜（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-073",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-27 15:00:00",
+          "published_at_raw": "Tue, 27 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "迷客夏3.0新店開幕！娜杯糖燻奶霜開賣送托特包　全台折10元優惠 - NOWnews今日新聞",
+          "clean_title": "迷客夏3.0新店開幕！娜杯糖燻奶霜開賣送托特包　全台折10元優惠",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFBHY2pnV2tSbGVWT1dkbXdRUVJuei1hblpxQm1UdDV4NHFUX0hrQ2ZSMHhfeUVSVDdsWEJ5ZXZHOHUtdVBIcXgxczVOdjDSAVJBVV95cUxOS204eUtlZFdJdzg4Nm5TT3czdVdoOC01dGE0SmhEdy00TnRNU2RNSFRocUlpN1RpVC1YSXlPWEJaZWtxYm9Qc3FKanpaV2xLcU13?oc=5",
+          "rss_description_text": "迷客夏3.0新店開幕！娜杯糖燻奶霜開賣送托特包 全台折10元優惠 NOWnews今日新聞",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-074",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-27 15:00:00",
+          "published_at_raw": "Tue, 27 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "食尚玩家",
+          "source_media_home": "https://supertaste.tvbs.com.tw",
+          "rss_title": "「全台最大迷客夏」開在這！10坪新門市亮相，「娜杯糖燻奶霜」乳牛斑點萌翻 - 食尚玩家",
+          "clean_title": "「全台最大迷客夏」開在這！10坪新門市亮相，「娜杯糖燻奶霜」乳牛斑點萌翻",
+          "rss_link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB4SGRtWmZyT3BtMEFmTFBfTVg4WHpsWUFWOWRORTBYaWUwRXdVZ0ZoYy1SZUdwTUNoZUxsNHJEM1R3RHlOSlA4UTVLdllQTkkwSkRreQ?oc=5",
+          "rss_description_text": "「全台最大迷客夏」開在這！10坪新門市亮相，「娜杯糖燻奶霜」乳牛斑點萌翻 食尚玩家",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-072",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-27 15:00:00",
+          "published_at_raw": "Tue, 27 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "Yahoo新聞",
+          "source_media_home": "https://tw.news.yahoo.com",
+          "rss_title": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場 - Yahoo新聞",
+          "clean_title": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場",
+          "rss_link": "https://news.google.com/rss/articles/CBMi6gJBVV95cUxOamNqSDdpLUVZU256VjJIZV9jbU5uLTlwdVZjd2pJNUhBNXVpb2xpem1CeUt1WnlvbDU3YVMwT2x1enRVbjVmWU5BOTdZNmFXclNsS1BVRjM2STlIMWVSbTBfWVJaano0c2NFU244TEYtMC1YeDIyRVd2MlcyQTZzalRKdklyRDgwa0dWODJ2ZEhzTlhHTkVRODk4WTNvQkFrdFVDNTgwTjNUdmhEZG0xRkVxQjlvd2dSY0J3cjEtWjZ5T3RpamV6TXNQeG85eG9aUXBLVDJZdGlqRDdEZ2NScDl4ZDZmTW9ybHNuMl9qci1NU1NmVjVuU2hfdS1penV2N3NoT251RUY0NWx1dVNCYjY2eVRnaEdhdWF1QkZMa2lPYnY5cHQwM1hmZzJxWmlBWjlCVkYtUWw1OS11VVYxbC1XMURMMDFaMmhTeTViS2xxZ2dRM3ZlclEtcGk0cjRMX0s5WjFIZFFvZw?oc=5",
+          "rss_description_text": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場 Yahoo新聞",
+          "brand_detected": "多品牌提及（迷客夏、珍煮丹）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1785908962.A.C9D.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=迷客夏",
+          "raw_original": {
+            "title": "[贈送] 迷客夏 10元折價券五張",
+            "author": "dollysheep24 (妃妃)",
+            "board": "Drink",
+            "published_at": "Wed Aug  5 13:49:20 2026",
+            "captured_at": "2026-11-12T11:54:41+08:00",
+            "body_text": "https://i.imgur.com/Wsvo2Ew.jpeg\n\n到8/20，共有五張就送給推文第一人吧~\n\n推完站內，謝謝~",
+            "push_counts": {
+              "推": 1,
+              "噓": 0,
+              "→": 0
+            },
+            "total_push_entries": 1,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "owen13",
+                "content": "推一個",
+                "ipdatetime": "08/05 14:09"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "贈送",
+            "article_nature_note": "板友票券／折價券贈送交流文（非飲品口味評測）",
+            "detected_brands_in_post": [
+              "迷客夏"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-007",
+          "list_nrec_badge": "1",
+          "list_date_short": "8/05"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-MILKSHA-DOLLY",
+      "region": "台灣",
+      "brand": "迷客夏 Milksha",
+      "product_name": "金馬入圍動畫《歡迎來到朵莉之家》聯名限定套組",
+      "short_word": "迷客夏・朵莉之家聯名套組",
+      "item_types": [
+        "促銷"
+      ],
+      "info_status": "⏳ 套組品項明細待內文確認",
+      "is_pending_confirm": true,
+      "flavor_category": "跨界聯名",
+      "price_promo": "獨家聯名優惠套組 75 折（⏳ 套組搭配飲品與周邊單價待內文確認）",
+      "observation_weeks": [
+        "2026-W44",
+        "2026-W43"
+      ],
+      "primary_week": "2026-W44",
+      "latest_published_at": "2026-10-28 15:00:00",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-071",
+        "GNEWS-077",
+        "GNEWS-078"
+      ],
+      "roundup_news_ids": [
+        "GNEWS-068"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [],
+      "media_summary": "3 筆專文＋1 筆金馬手搖周邊報導（共 4 筆紀錄）指出迷客夏攜手台灣原創金馬入圍動畫《歡迎來到朵莉之家》，推出獨家 75 折限定飲品套組與應援周邊。",
+      "consumer_summary": "【當期活動 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見相關聯名套組討論。",
+      "unknowns": [
+        "75 折限定套組的實際指定飲品組合與門市兌換熱度待查。"
+      ],
+      "metrics": {
+        "focused_news_count": 3,
+        "roundup_news_count": 1,
+        "total_news_count": 4,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 0,
+        "total_ptt_count": 0,
+        "total_ptt_pushes": 0,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-071",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-27 15:00:00",
+          "published_at_raw": "Tue, 27 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "壹蘋新聞網",
+          "source_media_home": "https://news.nextapple.com",
+          "rss_title": "金馬入圍動畫跨界手搖飲！迷客夏聯名《朵莉之家》 - 壹蘋新聞網",
+          "clean_title": "金馬入圍動畫跨界手搖飲！迷客夏聯名《朵莉之家》",
+          "rss_link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPamQ4OU5ZTUVDUWx2M1B2MGs1empfZFNCMkFWT1RiUklWTlB1cy0xOUs3ZTJobmJQNmE1WXQzb2s4dGxFRkZSYUltbVlYVWYxUzFiVC13RXl4TEJ6MGVpLUp6ZlFhdzdrWUJJTnY2U1BybnA1V2dpZDhISWpOU0lEY2Fkd0s?oc=5",
+          "rss_description_text": "金馬入圍動畫跨界手搖飲！迷客夏聯名《朵莉之家》 壹蘋新聞網",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-077",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-22 15:00:00",
+          "published_at_raw": "Thu, 22 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "CARTURE 車勢文化",
+          "source_media_home": "https://www.carture.com.tw",
+          "rss_title": "迷客夏聯名《歡迎來到朵莉之家》 獨家推「75折限定套組」搶攻動漫商機 - CARTURE 車勢文化",
+          "clean_title": "迷客夏聯名《歡迎來到朵莉之家》 獨家推「75折限定套組」搶攻動漫商機",
+          "rss_link": "https://news.google.com/rss/articles/CBMi1wNBVV95cUxQbUVKODhranNiTXFaWUFYaElvUERobG5mUWQ3VW9ycTBvYy1mNDJxdU5palNodzVDMGNXZlp6RDRGbkpJVGVkV2pMYXpKWDZGMzRIN05wM0pBTm9CWGZCSWJkSUx0dUdGdTVEV2dZTTItdGNUTlZJclBmNXZwMlhyenlQbDJkeXMyR3RVUWEzRC12YmhDbjBmdHpIRGJBMmtxd1BZbUMydFhCMVkxQVc5OW41cUcxdFh5MmF5Rzc0eXNpNUpiajhNekNNWFp2QWlIMTNSbW92TUNCU0tkY2lZQTBCQWtIWS1qQVpRS1FhRmZZcUdmbjExcEcwS2o2TmR2bHJmYUZfUnBOSklyNElEZ3d0MWx1MXFVXy1vdk5TalI3c3lZR1hKRmkydl9wN01nd09pakx2OTNzQ3pHcU00bFJST1NYczBxUU1PZWRQRVExVmNncGJSRVEzVTdyTV9oN2JXal9DbUdyQTc2MTR0dWliVDNxY1ZKLUNhTVFfaG9wWDc2dVFlLXQ5eXEtcWF4ZG1xLTZIOHBtaEd0eGZXOG5fUFo3WTlOWHF0eUI2SXZ4STIyeHJEZi1QWHk3MVpIODFsbnhPMXR1UDhDbTlscGRNY3pxeUk?oc=5",
+          "rss_description_text": "迷客夏聯名《歡迎來到朵莉之家》 獨家推「75折限定套組」搶攻動漫商機 CARTURE 車勢文化",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-078",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-22 15:00:00",
+          "published_at_raw": "Thu, 22 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "玩咖Playing",
+          "source_media_home": "https://playing.ltn.com.tw",
+          "rss_title": "迷客夏聯名《歡迎來到朵莉之家》！優惠套組75折應援台灣原創金獎動畫 - 玩咖Playing",
+          "clean_title": "迷客夏聯名《歡迎來到朵莉之家》！優惠套組75折應援台灣原創金獎動畫",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFAxR0lSSU8za1ZNOGtNUm5oQTRiV29RMExhUXduYUZ5MGVGbW1fT1lPUVU2blRKcW1WSWlhVm50eW5NbXpHSjFOYVBZMkVZRWNBblE?oc=5",
+          "rss_description_text": "迷客夏聯名《歡迎來到朵莉之家》！優惠套組75折應援台灣原創金獎動畫 玩咖Playing",
+          "brand_detected": "迷客夏",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-068",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-28 15:00:00",
+          "published_at_raw": "Wed, 28 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "中時新聞網",
+          "source_media_home": "https://www.chinatimes.com",
+          "rss_title": "金馬聯名手搖飲周邊商品吸睛- 時尚消費- 中國時報 - 中時新聞網",
+          "clean_title": "金馬聯名手搖飲周邊商品吸睛- 時尚消費- 中國時報",
+          "rss_link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5HV2VUUDgwUlZVMEJJd040TzYtUGo5cEp2X3NmdXltYzduZkU5Z1VKWWowaVloa3dPWGpiWDh2X2R0M1g0MVpGOEdqdWVpVFpvYlZMSF91QThfTHZwbGpTeXAtMkpSSW1yUDZJ?oc=5",
+          "rss_description_text": "金馬聯名手搖飲周邊商品吸睛- 時尚消費- 中國時報 中時新聞網",
+          "brand_detected": "待確認品牌",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": []
+    },
+    {
+      "product_id": "PROD-DAMING-DURIAN",
+      "region": "台灣",
+      "brand": "大茗本位製茶堂",
+      "product_name": "萬聖節限定「榴槤冰淇淋茶飲（榴槤奶茶／紅玉）」與芒果美式",
+      "short_word": "大茗・榴槤冰淇淋茶飲與玉露青",
+      "item_types": [
+        "新品",
+        "促銷"
+      ],
+      "info_status": "⏳ 單杯原價待確認（限時79折已確認）",
+      "is_pending_confirm": true,
+      "flavor_category": "果茶／特調獵奇",
+      "price_promo": "萬聖節限定只賣 3 天、新品限時 79 折（⏳ 單杯原價待內文確認）",
+      "observation_weeks": [
+        "2026-W46",
+        "2026-W43"
+      ],
+      "primary_week": "2026-W43",
+      "latest_published_at": "2026-11-07 23:28:00",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-083",
+        "GNEWS-084"
+      ],
+      "roundup_news_ids": [
+        "GNEWS-079",
+        "GNEWS-089"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [
+        "PTT-DRINK-013"
+      ],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-014"
+      ],
+      "media_summary": "2 筆單品專文＋2 筆跨品牌合集（共 4 筆紀錄）報導大茗於萬聖節推出獵奇限定「榴槤冰淇淋手搖飲（榴槤奶茶、紅玉紅茶）」只賣 3 天享 79 折，並同步上市「芒果美式」。",
+      "consumer_summary": "【榴槤新品 PTT 討論：本次採集範圍內未找到】但舊文 `PTT-DRINK-013`（大茗/麻古酪梨評比，24則推文）於當期 11/07 新增 2 則推文，板友 `pkmu8426` 盛讚「大茗的玉露青 終於找到順口有喉韻的口感了，根本就是一沐日沒換茶葉時的水準」；另 `PTT-DRINK-014` 討論大茗草莓優格飲與翡翠莓香好喝但偏貴。",
+      "unknowns": [
+        "萬聖節 3 天限定「榴槤冰淇淋茶飲」與常態新品「芒果美式」的消費者實際試喝評價未知。",
+        "注意區分：11/07 新增之 2 則 PTT 推文為針對大茗常態基底「玉露青」與「酪梨奶蓋」之回饋，已嚴格標示為「舊文近期新增推文」，不混算為榴槤新品討論。"
+      ],
+      "metrics": {
+        "focused_news_count": 2,
+        "roundup_news_count": 2,
+        "total_news_count": 4,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 1,
+        "historical_ref_ptt_count": 1,
+        "total_ptt_count": 2,
+        "total_ptt_pushes": 32,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-083",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-19 15:00:00",
+          "published_at_raw": "Mon, 19 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "食尚玩家",
+          "source_media_home": "https://supertaste.tvbs.com.tw",
+          "rss_title": "大茗推「榴槤冰淇淋手搖飲」！２款萬聖飲限定喝，榴槤奶茶、紅玉紅茶來挑戰 - 食尚玩家",
+          "clean_title": "大茗推「榴槤冰淇淋手搖飲」！２款萬聖飲限定喝，榴槤奶茶、紅玉紅茶來挑戰",
+          "rss_link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1xeEE3OGdxVWhCTFlteUVsbWlXMTRrSnduQlkwTjRNeHBLV1RBNGVna0ZqU3JYaTJjOWlzckpIZGJaOF9kTUY3ZGNKeVZkWmhET2xTXw?oc=5",
+          "rss_description_text": "大茗推「榴槤冰淇淋手搖飲」！２款萬聖飲限定喝，榴槤奶茶、紅玉紅茶來挑戰 食尚玩家",
+          "brand_detected": "大茗",
+          "candidate_product_name": "待確認候選：榴槤冰淇淋手搖飲（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-084",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-19 15:00:00",
+          "published_at_raw": "Mon, 19 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "ETtoday旅遊雲",
+          "source_media_home": "https://travel.ettoday.net",
+          "rss_title": "大茗「榴槤冰淇淋茶飲」只賣3天　芒果美式明起上市 - ETtoday旅遊雲",
+          "clean_title": "大茗「榴槤冰淇淋茶飲」只賣3天　芒果美式明起上市",
+          "rss_link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE8yTENhbGlKZVg0ZUpoc1ctMjBkUHNYWXZNUnRybnlOclFWMlZ0R01tRDJmX0tIcEh6Y2ZDOXk4LWY4bWFVOVdZWTNwc1BDVGU5UUVDTGJzbnR5QdIBT0FVX3lxTE81U011WnJrQ18xZkd0blZXeXlGTlA1SmczdlFEOTJGZFZqdFJjVDYzZFN4M05JdDBaazFseGc2VjM5RlByNzNKV3I4d1hybDA?oc=5",
+          "rss_description_text": "大茗「榴槤冰淇淋茶飲」只賣3天 芒果美式明起上市 ETtoday旅遊雲",
+          "brand_detected": "大茗",
+          "candidate_product_name": "待確認候選：榴槤冰淇淋茶飲（取自標題引號，需核對內文）",
+          "parse_status": "單一候選待確認",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-079",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-21 15:00:00",
+          "published_at_raw": "Wed, 21 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "UDN",
+          "source_media_home": "https://travel.udn.com",
+          "rss_title": "大茗萬聖節推「榴槤冰淇淋」新品限時79折 CoCo「葡萄柚果粒茶」買1送1 - UDN",
+          "clean_title": "大茗萬聖節推「榴槤冰淇淋」新品限時79折 CoCo「葡萄柚果粒茶」買1送1",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1HNVVkSWJSOXBLVlZRVlpSZVZTTVZKX3VjZmE0LTI1cDBoaFJ4Njh6WkZORzJxZGJkWlNFQjdiS1gwZXNZRnRPX0NHeVg2Ync4bjJ5UWpmMDdoMzJY?oc=5",
+          "rss_description_text": "大茗萬聖節推「榴槤冰淇淋」新品限時79折 CoCo「葡萄柚果粒茶」買1送1 UDN",
+          "brand_detected": "多品牌提及（CoCo都可、大茗）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-089",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-16 15:00:00",
+          "published_at_raw": "Fri, 16 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "BEAUTY美人圈",
+          "source_media_home": "https://www.beauty321.com",
+          "rss_title": "買一送一！10月最新手搖優惠：50嵐、大茗、UG、大苑子、鶴茶樓都有，再睡五分鐘推新品 - BEAUTY美人圈",
+          "clean_title": "買一送一！10月最新手搖優惠：50嵐、大茗、UG、大苑子、鶴茶樓都有，再睡五分鐘推新品",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9vMUkyckJvTkg3VjgtLXlZZ2hDWXR4ZTIzazNWSmxFR2JfWjFhalJaQktjZl9HSFRnd0hqN2JaUDN6RTJ4VlVyOUppMHXSAVJBVV95cUxQaWxpQ0U4aEFLbDVjTGVOelJXcW5TRFpEWWVMNUQ1Z2oyZEs3SGhmWFNxYVB3c2ZJZWJqT3dTU3JYU1VEQ0dPTHAxc0NQWmlBUDZn?oc=5",
+          "rss_description_text": "買一送一！10月最新手搖優惠：50嵐、大茗、UG、大苑子、鶴茶樓都有，再睡五分鐘推新品 BEAUTY美人圈",
+          "brand_detected": "多品牌提及（大茗、鶴茶樓、大苑子）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1755674756.A.7AB.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=麻古",
+          "raw_original": {
+            "title": "[心得] 初韻/大茗/麻古酪梨品項評比",
+            "author": "asd3404 ()",
+            "board": "Drink",
+            "published_at": "Wed Aug 20 15:25:54 2025",
+            "captured_at": "2026-11-12T11:54:45+08:00",
+            "body_text": "身為酪梨控，實在很樂見各家手搖推出不同的酪梨飲料\n所以，這邊直接跟大家分享幾間完全不同Level的酪梨手搖\n酪梨們全都～納命來吧！\n（以下口感味道都是個人口味僅供參考）\n\n1.初韻 酪布是你\n酪梨跟雞蛋布丁的組合\n最傳統的酪梨飲料\n奶昔口感，酪梨味蠻濃厚的\n怕酪梨味道的人可能不能輕易嘗試\n布丁對我來說蠻甜的\n但對螞蟻人來說應該剛好\n\n2.大茗 酪梨奶蓋紅玉\n微糖微冰剛剛好\n存在感沒有太強的酪梨\n想要初體驗酪梨的人可以試\n奶蓋本身有一點點酪梨香，直接對口喝才喝的出來\n如果是搖勻我覺得酪梨味會不見\n紅茶中規中矩，建議一口奶蓋一口紅茶\n不然到最後剩誰都會很無聊\n\n3.麻古 酪梨甘露\n冰沙口感的酪梨牛奶\n有芒果丁跟綠茶凍\n蠻喜歡這個很有咀嚼感的組合，芒果的甜跟綠茶凍的茶香\n雖然甜度冰量是固定的，但喝起來完全不膩\n酪梨味我覺得很剛好不會太淡\n是可以喝到酪梨香的程度\n還有!料很多不用怕喝到最後只剩酪梨本人\n\n以上是以我口味評比的三家酪梨手搖\n如果怕酪梨的人想要漸進嘗試可以麻古>初韻\n大茗我自己不太推 因為基本沒有甚麼酪梨味 喝了有點無感哈哈哈\n希望各位酪梨人也可以分享自己的酪梨口袋名單給我XDD",
+            "push_counts": {
+              "推": 17,
+              "噓": 0,
+              "→": 7
+            },
+            "total_push_entries": 24,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "CCahNan",
+                "content": "大茗的酪梨奶蓋還不錯 我喜歡攪勻但這樣酪梨香會直接不",
+                "ipdatetime": "08/20 16:29"
+              },
+              {
+                "tag": "→",
+                "userid": "CCahNan",
+                "content": "見QQ",
+                "ipdatetime": "08/20 16:29"
+              },
+              {
+                "tag": "推",
+                "userid": "ss3617586",
+                "content": "麻古酪梨甘露前幾天才喝，我覺得加芒果跟茶凍更特別",
+                "ipdatetime": "08/20 17:34"
+              },
+              {
+                "tag": "→",
+                "userid": "ss3617586",
+                "content": "不會像加布丁一樣會膩",
+                "ipdatetime": "08/20 17:34"
+              },
+              {
+                "tag": "推",
+                "userid": "MiHua",
+                "content": "終於有酪梨飲料不是加布丁了嗎",
+                "ipdatetime": "08/20 18:19"
+              },
+              {
+                "tag": "推",
+                "userid": "ciaoliang",
+                "content": "麻古料真的很多 我都點拿鐵然後料加爆 不用加價！(歪",
+                "ipdatetime": "08/21 11:59"
+              },
+              {
+                "tag": "推",
+                "userid": "catalina0919",
+                "content": "初韻的酪梨加布丁真的久久喝就好，熱量爆炸",
+                "ipdatetime": "08/21 14:14"
+              },
+              {
+                "tag": "推",
+                "userid": "t813900",
+                "content": "不知道麻古能不能讓酪梨變成每年季節限定 希望會><",
+                "ipdatetime": "08/21 15:12"
+              },
+              {
+                "tag": "推",
+                "userid": "qaz91222",
+                "content": "+1樓上 感覺可以跟楊枝甘露一樣變主打哈哈哈",
+                "ipdatetime": "08/21 15:55"
+              },
+              {
+                "tag": "推",
+                "userid": "taco52012",
+                "content": "一杯酪梨甘露感覺可以直接當午餐欸哈哈",
+                "ipdatetime": "08/21 16:54"
+              },
+              {
+                "tag": "推",
+                "userid": "unicorn1222",
+                "content": "好多酪梨飲料 一直很想嘗試看看但有點害怕",
+                "ipdatetime": "08/21 17:31"
+              },
+              {
+                "tag": "推",
+                "userid": "abcdef434",
+                "content": "每次麻古出的季節限定都是喝完會飽到天靈蓋",
+                "ipdatetime": "08/21 18:56"
+              },
+              {
+                "tag": "推",
+                "userid": "SekiAnn",
+                "content": "麻古那個酪梨好像被歸在芒果系列裡，如果賣很好就有機會",
+                "ipdatetime": "08/21 20:42"
+              },
+              {
+                "tag": "→",
+                "userid": "SekiAnn",
+                "content": "每年回歸",
+                "ipdatetime": "08/21 20:42"
+              },
+              {
+                "tag": "推",
+                "userid": "kfcvc",
+                "content": "愛大茗的酪梨奶蓋！",
+                "ipdatetime": "08/28 08:10"
+              },
+              {
+                "tag": "推",
+                "userid": "nng7baby",
+                "content": "大茗酪梨奶蓋再+蓋 濃到不要不要",
+                "ipdatetime": "09/01 17:45"
+              },
+              {
+                "tag": "推",
+                "userid": "jaundice68",
+                "content": "麻古的好喝",
+                "ipdatetime": "09/02 13:43"
+              },
+              {
+                "tag": "→",
+                "userid": "samuelzx",
+                "content": "大茗酪梨頂",
+                "ipdatetime": "09/17 22:02"
+              },
+              {
+                "tag": "→",
+                "userid": "tob860324",
+                "content": "原來這麼多飲料店都有出酪梨的品項!",
+                "ipdatetime": "09/18 11:49"
+              },
+              {
+                "tag": "推",
+                "userid": "oddman",
+                "content": "謝謝分享~想來試試麻古的~",
+                "ipdatetime": "09/21 13:33"
+              },
+              {
+                "tag": "→",
+                "userid": "oddman",
+                "content": "不怕單純酪梨味，只怕加太多糖或太甜~",
+                "ipdatetime": "09/21 13:34"
+              },
+              {
+                "tag": "推",
+                "userid": "daffodil2",
+                "content": "大茗昨天才喝～很喜歡+1",
+                "ipdatetime": "10/08 11:52"
+              },
+              {
+                "tag": "推",
+                "userid": "pkmu8426",
+                "content": "大茗的玉露青 終於找到順口有喉韻的口感了",
+                "ipdatetime": "11/07 23:27"
+              },
+              {
+                "tag": "→",
+                "userid": "pkmu8426",
+                "content": "根本就是一沐日沒換茶葉時的水準",
+                "ipdatetime": "11/07 23:28"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [
+              "麻古茶坊",
+              "大茗本位製茶堂"
+            ],
+            "detected_brands_in_pushes": [
+              "麻古茶坊",
+              "大茗本位製茶堂",
+              "一沐日"
+            ],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-013",
+          "list_nrec_badge": "17",
+          "list_date_short": "8/20"
+        }
+      ],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1767852749.A.20C.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=大茗",
+          "raw_original": {
+            "title": "[討論] 大茗草莓系飲料喝過嗎",
+            "author": "timilili88 (timi瓜)",
+            "board": "Drink",
+            "published_at": "Thu Jan  8 14:12:27 2026",
+            "captured_at": "2026-11-12T11:54:45+08:00",
+            "body_text": "前幾天去大茗飲料店，忍不住點了招牌草莓優格飲和翡翠莓香，雖然價格不斐但兩杯都讓\n我驚豔！\n\n草莓優格飲，新鮮草莓果泥混入滑順優格，一喝下去就是滿滿草莓爆香，酸甜比例掌握得\n恰到好處。優格的奶味濃郁卻不膩，搭配細緻氣泡，草莓丁散布其中，咬勁十足，喝完\n嘴巴裡還殘留果香，我自己給他88分！\n\n翡翠莓香則是綠茶與莓果的夢幻CP，茶湯清澈翠綠，入口茶香味道先出來，隨即莓果酸\n甜湧現，苦甘平衡，喝起來比優格飲更清爽，自己喝完一杯絕對沒問題!",
+            "push_counts": {
+              "推": 4,
+              "噓": 0,
+              "→": 4
+            },
+            "total_push_entries": 8,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "MBAR",
+                "content": "有夠貴……",
+                "ipdatetime": "01/08 22:30"
+              },
+              {
+                "tag": "推",
+                "userid": "jeanwstour",
+                "content": "現在飲料好貴，我都好猶豫@@",
+                "ipdatetime": "01/16 12:51"
+              },
+              {
+                "tag": "→",
+                "userid": "uniwu",
+                "content": "草莓優格很像ab優酪乳",
+                "ipdatetime": "01/19 09:29"
+              },
+              {
+                "tag": "→",
+                "userid": "pippen2002",
+                "content": "趁機減肥省錢啊!!",
+                "ipdatetime": "01/19 16:01"
+              },
+              {
+                "tag": "推",
+                "userid": "LisaPrincess",
+                "content": "有喝過...真心覺得貴，而且也小小杯的",
+                "ipdatetime": "01/22 22:30"
+              },
+              {
+                "tag": "推",
+                "userid": "otosukisugi",
+                "content": "翡翠莓香蠻特別的",
+                "ipdatetime": "01/30 20:52"
+              },
+              {
+                "tag": "→",
+                "userid": "philipa",
+                "content": "還沒",
+                "ipdatetime": "02/08 10:19"
+              },
+              {
+                "tag": "→",
+                "userid": "jing213",
+                "content": "只喝過酪梨奶蓋",
+                "ipdatetime": "02/22 14:28"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "討論",
+            "article_nature_note": "消費者提問／口味與品項討論（板友於推噓文提供實際喝過的經驗與意見）",
+            "detected_brands_in_post": [
+              "大茗本位製茶堂"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-014",
+          "list_nrec_badge": "4",
+          "list_date_short": "1/08"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-GUIJI-OATLY-MATCHA",
+      "region": "台灣",
+      "brand": "龜記茗品",
+      "product_name": "龜記 × Oatly 聯名「3 款抹茶手搖新品（抹茶燕麥乳系列）」",
+      "short_word": "龜記・Oatly抹茶燕麥乳",
+      "item_types": [
+        "新品"
+      ],
+      "info_status": "⏳ 11/16開賣・3款完整品名與定價待內文確認",
+      "is_pending_confirm": true,
+      "flavor_category": "抹茶／燕麥奶",
+      "price_promo": "預計 11/16 開賣，聯手 Oatly 燕麥奶主打乳糖不耐友善（⏳ 3款完整品名與單杯定價待確認）",
+      "observation_weeks": [
+        "2026-W45"
+      ],
+      "primary_week": "2026-W45",
+      "latest_published_at": "2026-11-02 16:28:22",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-050",
+        "GNEWS-058"
+      ],
+      "roundup_news_ids": [],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-011",
+        "PTT-DRINK-012"
+      ],
+      "media_summary": "2 筆單品專文（卡優新聞網、COOL-STYLE）於 11/02 預告龜記將推出 3 款抹茶系列新品，並聯手 Oatly 推出「抹茶燕麥乳」，預計 11/16 正式開賣。",
+      "consumer_summary": "【當期新品 PTT 討論：11/16 才開賣，本次採集範圍內未找到】同品牌歷史 PTT 討論呈現兩極：7/08 `PTT-DRINK-011` 推薦「雷夢蘆薈蜜」不另加糖酸甜解膩；但 4/20 `PTT-DRINK-012`（20 則推文）針對「紅柚翡翠」改用調合果汁罐且未標示含糖引發板友強烈負評。",
+      "unknowns": [
+        "商品於 11/16 才正式開賣，目前尚無任何消費者試喝體驗。",
+        "3 款抹茶新品的完整品名與售價區間需開啟新聞內文或待官方公布菜單確認。"
+      ],
+      "metrics": {
+        "focused_news_count": 2,
+        "roundup_news_count": 0,
+        "total_news_count": 2,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 2,
+        "total_ptt_count": 2,
+        "total_ptt_pushes": 21,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-050",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 16:28:22",
+          "published_at_raw": "Mon, 02 Nov 2026 08:28:22 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "卡優新聞網",
+          "source_media_home": "https://www.cardu.com.tw",
+          "rss_title": "龜記推3款抹茶手搖新品！Oatly聯名抹茶燕麥乳11/16開賣 - 卡優新聞網",
+          "clean_title": "龜記推3款抹茶手搖新品！Oatly聯名抹茶燕麥乳11/16開賣",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1NckRiWnE2a05OQUhXV0lSbUktLUpraGQtV096X1NvSDZiSF8zVjR3eE9CTUNsQnoxcGxmNXlPT1ZnU09pSUJUTmNVcXdFaHRWY2QwUnhVZlNNdENs?oc=5",
+          "rss_description_text": "龜記推3款抹茶手搖新品！Oatly聯名抹茶燕麥乳11/16開賣 卡優新聞網",
+          "brand_detected": "龜記",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-058",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-02 10:28:28",
+          "published_at_raw": "Mon, 02 Nov 2026 02:28:28 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "COOL-STYLE 潮流生活網",
+          "source_media_home": "https://www.cool-style.com.tw",
+          "rss_title": "抹茶熱潮燒進手搖飲！龜記抹茶系列3款新品登場，聯手 Oatly 燕麥奶乳糖不耐也能喝！ - COOL-STYLE 潮流生活網",
+          "clean_title": "抹茶熱潮燒進手搖飲！龜記抹茶系列3款新品登場，聯手 Oatly 燕麥奶乳糖不耐也能喝！",
+          "rss_link": "https://news.google.com/rss/articles/CBMi6gJBVV95cUxNelBHNjZ0MDFTUXBKWmljbkFnWGt2N3lObElKSXNPWmFLUlZVVWk1NXRteFc4ZHlWWWtvYzViNEF6UHkzWVdfajlqd1J3eGdqSnduUDFmWmN2dzg3X1J4NkhETVBaTGUzWGlBamtocnBiWWVPaEh3V1B2STBMTHp6UEJLWjFwOHNiS1k3cDJ5cmhuU2tTcVVPVUlZYXFsWVlkbk80V3Q1dkFhT29uZTcyVUt5V3pJU1NXWUFwalJLUVB2N1h1czkwU0VQSHlWQkR6YVVwZjVUZExHemNwM3hTUTVfb0c4blpPZFdEOWJjdUhuZ3p5ZldJLV9LQ1ZaNEItWFlzaVVrMmtISjB4WUVWTnF5LWhqQS12WExSeVVjeXM4ZzZibERXVjB5RTk3QWRoTW03YzRQZ1gxTXVzMUR4UnFmMklicnlfam1PTzJjM3pjX3F1U3lZdEFGcjRTVFNpTEM1dTRBSEVsQdIB7wJBVV95cUxPb09GYVlDOW84QUROMXlJUWZnXzNoQ1pLR3B3cndxa1djQnhuTEhQbDhBTERfVVFCaTlmNjBvdVltdkF3SzBxMzkzTjd1VXdwQ1d5OHFVSG5aaE1STWNudUd1NnRZc2RyM2U1TnB5SHVMQlYtSDFQZGVBUkJYMTNLM1RJdW9KVWt5cm9xbEFyYl9WTXJRaUEyZnZ6NGNBUDZBMEFpcGY3dWNUZHVPSGVNakhzNmVLRGl0dmQzbW1NUVpjRlFOdjBDeVQyb2s0dDlNSlFpRGNycm9FVXp2dVdnQkQxVFJRVGNWZi05UEJzV2xlalZGeDNwbmI2a0k1NGd6RUcwVEV1ZDQyYmJ4RlZZSnVHdGpLUGtjUnVOQXVzMHRmNWFoOGU2MHIwMS1UbDA0a3VFSmlROV9CcFNzRlJHVjJmeEtXYzdtUG5LN0JvQ3FDclBoWk8zWFJmZ3ExZmZEQTY0eEozdHAybGUtbjVv?oc=5",
+          "rss_description_text": "抹茶熱潮燒進手搖飲！龜記抹茶系列3款新品登場，聯手 Oatly 燕麥奶乳糖不耐也能喝！ COOL-STYLE 潮流生活網",
+          "brand_detected": "龜記",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1783503899.A.E08.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=龜記",
+          "raw_original": {
+            "title": "[心得] 龜記 雷夢蘆薈蜜",
+            "author": "Ericajj (妏妏)",
+            "board": "Drink",
+            "published_at": "Wed Jul  8 17:44:57 2026",
+            "captured_at": "2026-11-12T11:54:43+08:00",
+            "body_text": "夏天喜歡喝有檸檬的飲料 第一次喝龜記的雷夢蘆薈蜜\n因為我喜歡喝酸一點而且這款本身就有加蜂蜜了 所以我是點不另外加糖\n這樣喝起來剛剛好 酸甜中和又解膩\n(但如果真的怕酸的人 建議還是要點一分糖到微糖)\n龜記的蘆薈算大顆 很有口感 只是喝到最後會有點吸不起來\n當消暑飲料還不錯 推薦",
+            "push_counts": {
+              "推": 0,
+              "噓": 0,
+              "→": 1
+            },
+            "total_push_entries": 1,
+            "pushes": [
+              {
+                "tag": "→",
+                "userid": "pippen2002",
+                "content": "這葛好喝 !! Push",
+                "ipdatetime": "07/09 11:50"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [
+              "龜記茗品"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-011",
+          "list_nrec_badge": "0",
+          "list_date_short": "7/08"
+        },
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1776673240.A.487.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=龜記",
+          "raw_original": {
+            "title": "Re: [問題] 龜記 紅柚翡翠",
+            "author": "q2520q (理宮莎筱)",
+            "board": "Drink",
+            "published_at": "Mon Apr 20 16:20:38 2026",
+            "captured_at": "2026-11-12T11:54:43+08:00",
+            "body_text": "多年後的今天，在脆上終於看到原料是什麼了\nhttp://i.imgur.com/GirwH2f.jpg\n\n然後這是龜記的回應\nhttp://i.imgur.com/AQwUBvQ.jpg\n\n算是解謎了不少人對於叫無糖還是有甜的疑問\n\n然後這是官網現在的介紹\nhttp://i.imgur.com/iPKUDwa.jpg\n這是剛發文被人截圖的介紹\nhttp://i.imgur.com/mWip7Y7.jpg\n\n沒有每日手挖了\n\n\n-----\nSent from JPTT on my Samsung SM-S9280.",
+            "push_counts": {
+              "推": 8,
+              "噓": 0,
+              "→": 12
+            },
+            "total_push_entries": 20,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "lanvendereed",
+                "content": "防腐劑 香料 甜味劑 添加物加好加滿的化工飲料賣75",
+                "ipdatetime": "04/20 17:20"
+              },
+              {
+                "tag": "→",
+                "userid": "lanvendereed",
+                "content": "元，拒買龜記",
+                "ipdatetime": "04/20 17:20"
+              },
+              {
+                "tag": "→",
+                "userid": "since2022",
+                "content": "所以從來沒有手挖跟新鮮水果？",
+                "ipdatetime": "04/20 18:01"
+              },
+              {
+                "tag": "推",
+                "userid": "MBAR",
+                "content": "一開始應該有吧",
+                "ipdatetime": "04/20 18:52"
+              },
+              {
+                "tag": "推",
+                "userid": "h120968",
+                "content": "23年以後應該就沒了 再之前的明顯沒那麼甜",
+                "ipdatetime": "04/20 20:12"
+              },
+              {
+                "tag": "→",
+                "userid": "h120968",
+                "content": "從果肉口感吃起來的感覺就不一樣了 非常有差",
+                "ipdatetime": "04/20 20:12"
+              },
+              {
+                "tag": "→",
+                "userid": "pippen2002",
+                "content": "笑死!!又一個有毒害可能?",
+                "ipdatetime": "04/20 21:53"
+              },
+              {
+                "tag": "→",
+                "userid": "tylerdurdenn",
+                "content": "幸好我家附近的倒了後就很少喝了 不然之前偶爾真的",
+                "ipdatetime": "04/20 23:01"
+              },
+              {
+                "tag": "→",
+                "userid": "tylerdurdenn",
+                "content": "會來一杯 還賣這麼貴",
+                "ipdatetime": "04/20 23:01"
+              },
+              {
+                "tag": "推",
+                "userid": "MBAR",
+                "content": "說實在的純加果肉跟有加糖泡過口感非常明顯不一樣，本來會相",
+                "ipdatetime": "04/21 07:59"
+              },
+              {
+                "tag": "→",
+                "userid": "MBAR",
+                "content": "信龜記完全沒加糖的本來就很奇怪吧？只是它這罐東西實在齁…",
+                "ipdatetime": "04/21 07:59"
+              },
+              {
+                "tag": "推",
+                "userid": "h120968",
+                "content": "你喝過剛開始沒幾家分店時候的版本就知道有差了",
+                "ipdatetime": "04/21 08:57"
+              },
+              {
+                "tag": "→",
+                "userid": "h120968",
+                "content": "本來是只有果肉泡一點蜂蜜而已 現在變成這罐就...",
+                "ipdatetime": "04/21 08:57"
+              },
+              {
+                "tag": "→",
+                "userid": "h120968",
+                "content": "以前停賣還會說葡萄柚進口不到 沒貨賣所以暫停",
+                "ipdatetime": "04/21 08:59"
+              },
+              {
+                "tag": "→",
+                "userid": "h120968",
+                "content": "不過真相是要改成這罐所以停賣改配方 誠信就很差",
+                "ipdatetime": "04/21 08:59"
+              },
+              {
+                "tag": "推",
+                "userid": "SekiAnn",
+                "content": "他聲明的第2點真的很搞笑，普通消費者哪會知道他家水果",
+                "ipdatetime": "04/22 08:56"
+              },
+              {
+                "tag": "→",
+                "userid": "SekiAnn",
+                "content": "茶的無糖是指不再另外加糖，早就應該寫清楚了",
+                "ipdatetime": "04/22 08:56"
+              },
+              {
+                "tag": "推",
+                "userid": "ikok92819",
+                "content": "賣那麼貴真的傻眼",
+                "ipdatetime": "04/22 17:08"
+              },
+              {
+                "tag": "→",
+                "userid": "miniUU",
+                "content": "還額外加糖，當然貴",
+                "ipdatetime": "04/25 07:02"
+              },
+              {
+                "tag": "推",
+                "userid": "Yoimiya",
+                "content": "哭 以後不會再點了",
+                "ipdatetime": "05/05 16:17"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "問題",
+            "article_nature_note": "消費者提問／口味與品項討論（板友於推噓文提供實際喝過的經驗與意見）",
+            "detected_brands_in_post": [
+              "龜記茗品"
+            ],
+            "detected_brands_in_pushes": [
+              "龜記茗品"
+            ],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-012",
+          "list_nrec_badge": "8",
+          "list_date_short": "4/20"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-MACU-TARO-RETURN",
+      "region": "台灣",
+      "brand": "麻古茶坊 MACU",
+      "product_name": "冬季「濃厚芋泥系列」三款人氣飲品回歸開賣",
+      "short_word": "麻古・濃厚芋泥系列回歸",
+      "item_types": [
+        "舊品回歸"
+      ],
+      "info_status": "⏳ 2026本波3款品名與最新定價待確認（前波芋泥奶茶$75）",
+      "is_pending_confirm": true,
+      "flavor_category": "芋泥／鮮奶茶",
+      "price_promo": "前一波 PTT 實測芋泥奶茶 NT$75（⏳ 2026/11 本波回歸之三款完整品名與最新定價待確認）",
+      "observation_weeks": [
+        "2026-W46"
+      ],
+      "primary_week": "2026-W46",
+      "latest_published_at": "2026-11-11 13:12:25",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-014"
+      ],
+      "roundup_news_ids": [
+        "GNEWS-004"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [
+        "PTT-DRINK-013"
+      ],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-010"
+      ],
+      "media_summary": "1 筆單品專文（卡優新聞網 `GNEWS-014`）＋1 筆雙11合集（`GNEWS-004`）報導麻古茶坊於 11/10 宣布冬季人氣「濃厚芋泥系列」三款飲品正式回歸。",
+      "consumer_summary": "【本波 11/10 剛開賣未見新文｜已採集前一波同款「麻古芋泥奶茶」實測心得】`PTT-DRINK-010` 作者實測「麻古茶坊芋泥奶茶 $75：能喝得到芋泥&吃到細小芋頭顆粒，芋頭味夠，想試米麻糬芋泥奶茶」；另 `PTT-DRINK-013` 多位板友推文肯定麻古季節限定「料多、飽到天靈蓋」。",
+      "unknowns": [
+        "2026/11 本波回歸的三款飲品具體品名與是否調漲價格（相較 2025/12 的 $75）尚待確認。",
+        "本波回歸後的當期消費者新試喝心得尚待開賣後追蹤。"
+      ],
+      "metrics": {
+        "focused_news_count": 1,
+        "roundup_news_count": 1,
+        "total_news_count": 2,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 1,
+        "historical_ref_ptt_count": 1,
+        "total_ptt_count": 2,
+        "total_ptt_pushes": 24,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-014",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-10 15:21:18",
+          "published_at_raw": "Tue, 10 Nov 2026 07:21:18 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "卡優新聞網",
+          "source_media_home": "https://www.cardu.com.tw",
+          "rss_title": "麻古茶坊芋泥系列回歸開賣 三款人氣飲品一次喝 - 卡優新聞網",
+          "clean_title": "麻古茶坊芋泥系列回歸開賣 三款人氣飲品一次喝",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE53RmJleDZMQXhIcGV5Y2FJVXJfNmZob3IyT0dvcmxpaXVUSHJPQ0lfM184TTdnVEROU1RIUUszYU04b2JoNjNfRUFyUXItNmotY1p2RGVlVG4xOFdl?oc=5",
+          "rss_description_text": "麻古茶坊芋泥系列回歸開賣 三款人氣飲品一次喝 卡優新聞網",
+          "brand_detected": "麻古茶坊",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-004",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 13:12:25",
+          "published_at_raw": "Wed, 11 Nov 2026 05:12:25 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝 - NOWnews今日新聞",
+          "clean_title": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE83OVUxdFR4ejhXbDFqNGZwWXJSYTIyLVo4dTlneGljNk9TZG50ejNFLXZIaGpCRURSVlo1ME43bXAxa1R3a3Mtd1ZVczNJRUt2QUHSAVJBVV95cUxPNzlVMXRUeHo4V2wxajRmcFlyUmEyMi1aOHU5Z3hpYzZPU2RudHozRS12SGhqQkVEUlZaNTBON21wMWtUd2tzLXdWVXMzSUVLdkFB?oc=5",
+          "rss_description_text": "雙11優惠CoCo買一送一！迷客夏11元 麻古、珍煮丹、大苑子8家曝 NOWnews今日新聞",
+          "brand_detected": "多品牌提及（迷客夏、CoCo都可、麻古茶坊、珍煮丹、大苑子）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1755674756.A.7AB.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=麻古",
+          "raw_original": {
+            "title": "[心得] 初韻/大茗/麻古酪梨品項評比",
+            "author": "asd3404 ()",
+            "board": "Drink",
+            "published_at": "Wed Aug 20 15:25:54 2025",
+            "captured_at": "2026-11-12T11:54:45+08:00",
+            "body_text": "身為酪梨控，實在很樂見各家手搖推出不同的酪梨飲料\n所以，這邊直接跟大家分享幾間完全不同Level的酪梨手搖\n酪梨們全都～納命來吧！\n（以下口感味道都是個人口味僅供參考）\n\n1.初韻 酪布是你\n酪梨跟雞蛋布丁的組合\n最傳統的酪梨飲料\n奶昔口感，酪梨味蠻濃厚的\n怕酪梨味道的人可能不能輕易嘗試\n布丁對我來說蠻甜的\n但對螞蟻人來說應該剛好\n\n2.大茗 酪梨奶蓋紅玉\n微糖微冰剛剛好\n存在感沒有太強的酪梨\n想要初體驗酪梨的人可以試\n奶蓋本身有一點點酪梨香，直接對口喝才喝的出來\n如果是搖勻我覺得酪梨味會不見\n紅茶中規中矩，建議一口奶蓋一口紅茶\n不然到最後剩誰都會很無聊\n\n3.麻古 酪梨甘露\n冰沙口感的酪梨牛奶\n有芒果丁跟綠茶凍\n蠻喜歡這個很有咀嚼感的組合，芒果的甜跟綠茶凍的茶香\n雖然甜度冰量是固定的，但喝起來完全不膩\n酪梨味我覺得很剛好不會太淡\n是可以喝到酪梨香的程度\n還有!料很多不用怕喝到最後只剩酪梨本人\n\n以上是以我口味評比的三家酪梨手搖\n如果怕酪梨的人想要漸進嘗試可以麻古>初韻\n大茗我自己不太推 因為基本沒有甚麼酪梨味 喝了有點無感哈哈哈\n希望各位酪梨人也可以分享自己的酪梨口袋名單給我XDD",
+            "push_counts": {
+              "推": 17,
+              "噓": 0,
+              "→": 7
+            },
+            "total_push_entries": 24,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "CCahNan",
+                "content": "大茗的酪梨奶蓋還不錯 我喜歡攪勻但這樣酪梨香會直接不",
+                "ipdatetime": "08/20 16:29"
+              },
+              {
+                "tag": "→",
+                "userid": "CCahNan",
+                "content": "見QQ",
+                "ipdatetime": "08/20 16:29"
+              },
+              {
+                "tag": "推",
+                "userid": "ss3617586",
+                "content": "麻古酪梨甘露前幾天才喝，我覺得加芒果跟茶凍更特別",
+                "ipdatetime": "08/20 17:34"
+              },
+              {
+                "tag": "→",
+                "userid": "ss3617586",
+                "content": "不會像加布丁一樣會膩",
+                "ipdatetime": "08/20 17:34"
+              },
+              {
+                "tag": "推",
+                "userid": "MiHua",
+                "content": "終於有酪梨飲料不是加布丁了嗎",
+                "ipdatetime": "08/20 18:19"
+              },
+              {
+                "tag": "推",
+                "userid": "ciaoliang",
+                "content": "麻古料真的很多 我都點拿鐵然後料加爆 不用加價！(歪",
+                "ipdatetime": "08/21 11:59"
+              },
+              {
+                "tag": "推",
+                "userid": "catalina0919",
+                "content": "初韻的酪梨加布丁真的久久喝就好，熱量爆炸",
+                "ipdatetime": "08/21 14:14"
+              },
+              {
+                "tag": "推",
+                "userid": "t813900",
+                "content": "不知道麻古能不能讓酪梨變成每年季節限定 希望會><",
+                "ipdatetime": "08/21 15:12"
+              },
+              {
+                "tag": "推",
+                "userid": "qaz91222",
+                "content": "+1樓上 感覺可以跟楊枝甘露一樣變主打哈哈哈",
+                "ipdatetime": "08/21 15:55"
+              },
+              {
+                "tag": "推",
+                "userid": "taco52012",
+                "content": "一杯酪梨甘露感覺可以直接當午餐欸哈哈",
+                "ipdatetime": "08/21 16:54"
+              },
+              {
+                "tag": "推",
+                "userid": "unicorn1222",
+                "content": "好多酪梨飲料 一直很想嘗試看看但有點害怕",
+                "ipdatetime": "08/21 17:31"
+              },
+              {
+                "tag": "推",
+                "userid": "abcdef434",
+                "content": "每次麻古出的季節限定都是喝完會飽到天靈蓋",
+                "ipdatetime": "08/21 18:56"
+              },
+              {
+                "tag": "推",
+                "userid": "SekiAnn",
+                "content": "麻古那個酪梨好像被歸在芒果系列裡，如果賣很好就有機會",
+                "ipdatetime": "08/21 20:42"
+              },
+              {
+                "tag": "→",
+                "userid": "SekiAnn",
+                "content": "每年回歸",
+                "ipdatetime": "08/21 20:42"
+              },
+              {
+                "tag": "推",
+                "userid": "kfcvc",
+                "content": "愛大茗的酪梨奶蓋！",
+                "ipdatetime": "08/28 08:10"
+              },
+              {
+                "tag": "推",
+                "userid": "nng7baby",
+                "content": "大茗酪梨奶蓋再+蓋 濃到不要不要",
+                "ipdatetime": "09/01 17:45"
+              },
+              {
+                "tag": "推",
+                "userid": "jaundice68",
+                "content": "麻古的好喝",
+                "ipdatetime": "09/02 13:43"
+              },
+              {
+                "tag": "→",
+                "userid": "samuelzx",
+                "content": "大茗酪梨頂",
+                "ipdatetime": "09/17 22:02"
+              },
+              {
+                "tag": "→",
+                "userid": "tob860324",
+                "content": "原來這麼多飲料店都有出酪梨的品項!",
+                "ipdatetime": "09/18 11:49"
+              },
+              {
+                "tag": "推",
+                "userid": "oddman",
+                "content": "謝謝分享~想來試試麻古的~",
+                "ipdatetime": "09/21 13:33"
+              },
+              {
+                "tag": "→",
+                "userid": "oddman",
+                "content": "不怕單純酪梨味，只怕加太多糖或太甜~",
+                "ipdatetime": "09/21 13:34"
+              },
+              {
+                "tag": "推",
+                "userid": "daffodil2",
+                "content": "大茗昨天才喝～很喜歡+1",
+                "ipdatetime": "10/08 11:52"
+              },
+              {
+                "tag": "推",
+                "userid": "pkmu8426",
+                "content": "大茗的玉露青 終於找到順口有喉韻的口感了",
+                "ipdatetime": "11/07 23:27"
+              },
+              {
+                "tag": "→",
+                "userid": "pkmu8426",
+                "content": "根本就是一沐日沒換茶葉時的水準",
+                "ipdatetime": "11/07 23:28"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [
+              "麻古茶坊",
+              "大茗本位製茶堂"
+            ],
+            "detected_brands_in_pushes": [
+              "麻古茶坊",
+              "大茗本位製茶堂",
+              "一沐日"
+            ],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-013",
+          "list_nrec_badge": "17",
+          "list_date_short": "8/20"
+        }
+      ],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1765240811.A.E5F.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=CoCo",
+          "raw_original": {
+            "title": "[心得] Coco/麻古/全家Let's Tea",
+            "author": "a5925457 (桌桌)",
+            "board": "Drink",
+            "published_at": "Tue Dec  9 08:40:08 2025",
+            "captured_at": "2026-11-12T11:54:42+08:00",
+            "body_text": "分享近期喝到的幾款新品\n全家只限定喝現煮門市有賣\n想買的可以先用app地圖趣查\nhttps://i.mopix.cc/Cl67ip.jpg\n\n1.CoCo酪梨奶昔杯杯, 週一買49$\n平常蠻難買到酪梨飲品的\nCoco出這個我還不喝爆\n裡面有加布丁去打\n雖然咬不到布丁口感\n喝起來的是有濃郁感有厚度的\n平常夜市賣的酪梨牛奶動輒就要7.80了, 這價格很ok\n\n2.麻古茶坊芋泥奶茶$75\n喝起來就是芋頭牛奶\n能喝得到芋泥&吃到細小芋頭顆粒\n口感還不錯 芋頭味也夠\n冬天就喜歡這種濃厚系的\n有機會想試米麻糬芋泥奶茶\n\n3.全家金焙蕎麥醇奶茶$55買一送一\n剛入口是蕎麥香氣\n慢慢才有個奶味上來\n蕎麥的穀味蠻香的\n配上鮮奶還蠻清爽的\n個人覺得不輸手搖店\n本來原價55就不貴了\n現在還特價兩杯55\n(但好像只到今天，想便宜嚐鮮的人要快",
+            "push_counts": {
+              "推": 0,
+              "噓": 0,
+              "→": 0
+            },
+            "total_push_entries": 0,
+            "pushes": []
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [
+              "CoCo都可",
+              "麻古茶坊"
+            ],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-010",
+          "list_nrec_badge": "0",
+          "list_date_short": "12/09"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-MACU-GRAPE",
+      "region": "台灣",
+      "brand": "麻古茶坊 MACU",
+      "product_name": "「巨峰葡萄系列」回歸 ＆ 萬聖節限定紙杯",
+      "short_word": "麻古・巨峰葡萄系列",
+      "item_types": [
+        "舊品回歸",
+        "促銷"
+      ],
+      "info_status": "⏳ 單杯定價與詳細品項待內文確認",
+      "is_pending_confirm": true,
+      "flavor_category": "果茶（葡萄）",
+      "price_promo": "搭配萬聖節限定紙杯開賣（⏳ 單杯定價待內文確認）",
+      "observation_weeks": [
+        "2026-W43"
+      ],
+      "primary_week": "2026-W43",
+      "latest_published_at": "2026-10-20 15:00:00",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [],
+      "roundup_news_ids": [
+        "GNEWS-080",
+        "GNEWS-092",
+        "GNEWS-094",
+        "GNEWS-095"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-013"
+      ],
+      "media_summary": "4 筆跨品牌新品與促銷合集（NOWnews、玩咖Playing、中天、造咖）於 10/13～10/20 報導麻古茶坊「巨峰葡萄系列」回歸並換上萬聖節限定紙杯。",
+      "consumer_summary": "【當期品項 PTT 討論：本次採集範圍內未找到】PTT Drink 板在本次採集範圍內未見巨峰葡萄系列之試喝文。",
+      "unknowns": [
+        "由於 4 筆新聞均為多品牌合集報導，巨峰葡萄系列的具體子品名（如芝芝葡萄或葡萄果粒茶）與單價需開啟內文確認。"
+      ],
+      "metrics": {
+        "focused_news_count": 0,
+        "roundup_news_count": 4,
+        "total_news_count": 4,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 1,
+        "total_ptt_count": 1,
+        "total_ptt_pushes": 24,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-080",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-20 15:00:00",
+          "published_at_raw": "Tue, 20 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "玩咖Playing",
+          "source_media_home": "https://playing.ltn.com.tw",
+          "rss_title": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品 - 玩咖Playing",
+          "clean_title": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5MU2w1WFJEVmJjWE55RXNpQ2pBTGpESDJiN1Zwa3A2VTJqRmdzTnU0MmVHajhaWm1DdzhZRTBLMHhHSGtGY0VLd2hrbEVISm9pVHc?oc=5",
+          "rss_description_text": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品 玩咖Playing",
+          "brand_detected": "多品牌提及（CoCo都可、麻古茶坊、珍煮丹）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-092",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-14 15:00:00",
+          "published_at_raw": "Wed, 14 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "CoCo買一送一！粉角奶茶30元　麻古「巨峰葡萄」萬聖節紙杯明開賣 - NOWnews今日新聞",
+          "clean_title": "CoCo買一送一！粉角奶茶30元　麻古「巨峰葡萄」萬聖節紙杯明開賣",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9KSGlVclJhNW82cFZSZ2N4UWlIVDNRVVRwLVdkbVpzYUlVcjc1VENnakd3b0xld1g3QWtuNGZnVkFvRXM3WXcxRHFuQUPSAVJBVV95cUxQVDQ0eXFjZjFiYkZINmdRMHl2ampiNEJJOHEtS1gzc29uaUdxUUttWWhTSG1SLUszVHViZ2Z0bUl1bHk0T2FHTHNZd3FNOFNDZGRB?oc=5",
+          "rss_description_text": "CoCo買一送一！粉角奶茶30元 麻古「巨峰葡萄」萬聖節紙杯明開賣 NOWnews今日新聞",
+          "brand_detected": "多品牌提及（CoCo都可、麻古茶坊）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-094",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-13 15:00:00",
+          "published_at_raw": "Tue, 13 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "中天新聞網",
+          "source_media_home": "https://ctinews.com",
+          "rss_title": "秋天涼涼喝新品！麻古、鶴茶樓攜新品登場 CoCo都可買1送1 - 中天新聞網",
+          "clean_title": "秋天涼涼喝新品！麻古、鶴茶樓攜新品登場 CoCo都可買1送1",
+          "rss_link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE1icFZEenNuZExPR2YyVUlxT1lRVUJmUUJDeTNDeXJZYUNad1R3NnI4T3JVNFotUXBUbFFyMlFZbzBGZXRPNGZvMzBLRE5Pc3ZBS1k4?oc=5",
+          "rss_description_text": "秋天涼涼喝新品！麻古、鶴茶樓攜新品登場 CoCo都可買1送1 中天新聞網",
+          "brand_detected": "多品牌提及（CoCo都可、麻古茶坊、鶴茶樓）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-095",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-13 15:00:00",
+          "published_at_raw": "Tue, 13 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "造咖",
+          "source_media_home": "https://cava.tw",
+          "rss_title": "9大手搖新品！麻古茶坊「巨峰葡萄系列」、UG「檸檬冰奶」 - 造咖",
+          "clean_title": "9大手搖新品！麻古茶坊「巨峰葡萄系列」、UG「檸檬冰奶」",
+          "rss_link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE8wcTdOaHF4ZFQ2czJqaldJREpxZ1hnbVpMMGZsSmU2Y053d2hHdTVRLV9QaWk1RElnZS1odC1lXzR1ZHF5dVFOdVprN0Y5aGwwLXVKcDAxVQ?oc=5",
+          "rss_description_text": "9大手搖新品！麻古茶坊「巨峰葡萄系列」、UG「檸檬冰奶」 造咖",
+          "brand_detected": "麻古茶坊",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1755674756.A.7AB.html",
+          "discovered_via": "PTT Drink 板關鍵字搜尋：q=麻古",
+          "raw_original": {
+            "title": "[心得] 初韻/大茗/麻古酪梨品項評比",
+            "author": "asd3404 ()",
+            "board": "Drink",
+            "published_at": "Wed Aug 20 15:25:54 2025",
+            "captured_at": "2026-11-12T11:54:45+08:00",
+            "body_text": "身為酪梨控，實在很樂見各家手搖推出不同的酪梨飲料\n所以，這邊直接跟大家分享幾間完全不同Level的酪梨手搖\n酪梨們全都～納命來吧！\n（以下口感味道都是個人口味僅供參考）\n\n1.初韻 酪布是你\n酪梨跟雞蛋布丁的組合\n最傳統的酪梨飲料\n奶昔口感，酪梨味蠻濃厚的\n怕酪梨味道的人可能不能輕易嘗試\n布丁對我來說蠻甜的\n但對螞蟻人來說應該剛好\n\n2.大茗 酪梨奶蓋紅玉\n微糖微冰剛剛好\n存在感沒有太強的酪梨\n想要初體驗酪梨的人可以試\n奶蓋本身有一點點酪梨香，直接對口喝才喝的出來\n如果是搖勻我覺得酪梨味會不見\n紅茶中規中矩，建議一口奶蓋一口紅茶\n不然到最後剩誰都會很無聊\n\n3.麻古 酪梨甘露\n冰沙口感的酪梨牛奶\n有芒果丁跟綠茶凍\n蠻喜歡這個很有咀嚼感的組合，芒果的甜跟綠茶凍的茶香\n雖然甜度冰量是固定的，但喝起來完全不膩\n酪梨味我覺得很剛好不會太淡\n是可以喝到酪梨香的程度\n還有!料很多不用怕喝到最後只剩酪梨本人\n\n以上是以我口味評比的三家酪梨手搖\n如果怕酪梨的人想要漸進嘗試可以麻古>初韻\n大茗我自己不太推 因為基本沒有甚麼酪梨味 喝了有點無感哈哈哈\n希望各位酪梨人也可以分享自己的酪梨口袋名單給我XDD",
+            "push_counts": {
+              "推": 17,
+              "噓": 0,
+              "→": 7
+            },
+            "total_push_entries": 24,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "CCahNan",
+                "content": "大茗的酪梨奶蓋還不錯 我喜歡攪勻但這樣酪梨香會直接不",
+                "ipdatetime": "08/20 16:29"
+              },
+              {
+                "tag": "→",
+                "userid": "CCahNan",
+                "content": "見QQ",
+                "ipdatetime": "08/20 16:29"
+              },
+              {
+                "tag": "推",
+                "userid": "ss3617586",
+                "content": "麻古酪梨甘露前幾天才喝，我覺得加芒果跟茶凍更特別",
+                "ipdatetime": "08/20 17:34"
+              },
+              {
+                "tag": "→",
+                "userid": "ss3617586",
+                "content": "不會像加布丁一樣會膩",
+                "ipdatetime": "08/20 17:34"
+              },
+              {
+                "tag": "推",
+                "userid": "MiHua",
+                "content": "終於有酪梨飲料不是加布丁了嗎",
+                "ipdatetime": "08/20 18:19"
+              },
+              {
+                "tag": "推",
+                "userid": "ciaoliang",
+                "content": "麻古料真的很多 我都點拿鐵然後料加爆 不用加價！(歪",
+                "ipdatetime": "08/21 11:59"
+              },
+              {
+                "tag": "推",
+                "userid": "catalina0919",
+                "content": "初韻的酪梨加布丁真的久久喝就好，熱量爆炸",
+                "ipdatetime": "08/21 14:14"
+              },
+              {
+                "tag": "推",
+                "userid": "t813900",
+                "content": "不知道麻古能不能讓酪梨變成每年季節限定 希望會><",
+                "ipdatetime": "08/21 15:12"
+              },
+              {
+                "tag": "推",
+                "userid": "qaz91222",
+                "content": "+1樓上 感覺可以跟楊枝甘露一樣變主打哈哈哈",
+                "ipdatetime": "08/21 15:55"
+              },
+              {
+                "tag": "推",
+                "userid": "taco52012",
+                "content": "一杯酪梨甘露感覺可以直接當午餐欸哈哈",
+                "ipdatetime": "08/21 16:54"
+              },
+              {
+                "tag": "推",
+                "userid": "unicorn1222",
+                "content": "好多酪梨飲料 一直很想嘗試看看但有點害怕",
+                "ipdatetime": "08/21 17:31"
+              },
+              {
+                "tag": "推",
+                "userid": "abcdef434",
+                "content": "每次麻古出的季節限定都是喝完會飽到天靈蓋",
+                "ipdatetime": "08/21 18:56"
+              },
+              {
+                "tag": "推",
+                "userid": "SekiAnn",
+                "content": "麻古那個酪梨好像被歸在芒果系列裡，如果賣很好就有機會",
+                "ipdatetime": "08/21 20:42"
+              },
+              {
+                "tag": "→",
+                "userid": "SekiAnn",
+                "content": "每年回歸",
+                "ipdatetime": "08/21 20:42"
+              },
+              {
+                "tag": "推",
+                "userid": "kfcvc",
+                "content": "愛大茗的酪梨奶蓋！",
+                "ipdatetime": "08/28 08:10"
+              },
+              {
+                "tag": "推",
+                "userid": "nng7baby",
+                "content": "大茗酪梨奶蓋再+蓋 濃到不要不要",
+                "ipdatetime": "09/01 17:45"
+              },
+              {
+                "tag": "推",
+                "userid": "jaundice68",
+                "content": "麻古的好喝",
+                "ipdatetime": "09/02 13:43"
+              },
+              {
+                "tag": "→",
+                "userid": "samuelzx",
+                "content": "大茗酪梨頂",
+                "ipdatetime": "09/17 22:02"
+              },
+              {
+                "tag": "→",
+                "userid": "tob860324",
+                "content": "原來這麼多飲料店都有出酪梨的品項!",
+                "ipdatetime": "09/18 11:49"
+              },
+              {
+                "tag": "推",
+                "userid": "oddman",
+                "content": "謝謝分享~想來試試麻古的~",
+                "ipdatetime": "09/21 13:33"
+              },
+              {
+                "tag": "→",
+                "userid": "oddman",
+                "content": "不怕單純酪梨味，只怕加太多糖或太甜~",
+                "ipdatetime": "09/21 13:34"
+              },
+              {
+                "tag": "推",
+                "userid": "daffodil2",
+                "content": "大茗昨天才喝～很喜歡+1",
+                "ipdatetime": "10/08 11:52"
+              },
+              {
+                "tag": "推",
+                "userid": "pkmu8426",
+                "content": "大茗的玉露青 終於找到順口有喉韻的口感了",
+                "ipdatetime": "11/07 23:27"
+              },
+              {
+                "tag": "→",
+                "userid": "pkmu8426",
+                "content": "根本就是一沐日沒換茶葉時的水準",
+                "ipdatetime": "11/07 23:28"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [
+              "麻古茶坊",
+              "大茗本位製茶堂"
+            ],
+            "detected_brands_in_pushes": [
+              "麻古茶坊",
+              "大茗本位製茶堂",
+              "一沐日"
+            ],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-013",
+          "list_nrec_badge": "17",
+          "list_date_short": "8/20"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-TRUEDAN-BUCKWHEAT",
+      "region": "台灣",
+      "brand": "珍煮丹",
+      "product_name": "秋季「蕎麥系列」3 款無咖啡因穀物新品",
+      "short_word": "珍煮丹・蕎麥系列3新品",
+      "item_types": [
+        "新品"
+      ],
+      "info_status": "⏳ 3款完整品名與單杯定價待內文確認",
+      "is_pending_confirm": true,
+      "flavor_category": "穀物蕎麥／無咖啡因",
+      "price_promo": "⏳ 3款完整品名與單杯定價待由新聞內文確認",
+      "observation_weeks": [
+        "2026-W46",
+        "2026-W44",
+        "2026-W43"
+      ],
+      "primary_week": "2026-W43",
+      "latest_published_at": "2026-11-11 13:12:25",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [],
+      "roundup_news_ids": [
+        "GNEWS-004",
+        "GNEWS-072",
+        "GNEWS-080",
+        "GNEWS-081"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [],
+      "media_summary": "4 筆跨品牌合集報導（ETtoday、Yahoo、玩咖Playing、NOWnews）於 10/20～11/11 提及珍煮丹開賣秋季「蕎麥系列」3 款新品，並參與雙11優惠。",
+      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見珍煮丹蕎麥系列討論（但同期間 `PTT-DRINK-010` 板友提及全家金焙蕎麥醇奶茶好喝，顯示蕎麥茶底具討論熱度）。",
+      "unknowns": [
+        "珍煮丹 3 款蕎麥新品的完整品名、配料與價格待進入內文確認。"
+      ],
+      "metrics": {
+        "focused_news_count": 0,
+        "roundup_news_count": 4,
+        "total_news_count": 4,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 0,
+        "total_ptt_count": 0,
+        "total_ptt_pushes": 0,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-004",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-11 13:12:25",
+          "published_at_raw": "Wed, 11 Nov 2026 05:12:25 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝 - NOWnews今日新聞",
+          "clean_title": "雙11優惠CoCo買一送一！迷客夏11元　麻古、珍煮丹、大苑子8家曝",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE83OVUxdFR4ejhXbDFqNGZwWXJSYTIyLVo4dTlneGljNk9TZG50ejNFLXZIaGpCRURSVlo1ME43bXAxa1R3a3Mtd1ZVczNJRUt2QUHSAVJBVV95cUxPNzlVMXRUeHo4V2wxajRmcFlyUmEyMi1aOHU5Z3hpYzZPU2RudHozRS12SGhqQkVEUlZaNTBON21wMWtUd2tzLXdWVXMzSUVLdkFB?oc=5",
+          "rss_description_text": "雙11優惠CoCo買一送一！迷客夏11元 麻古、珍煮丹、大苑子8家曝 NOWnews今日新聞",
+          "brand_detected": "多品牌提及（迷客夏、CoCo都可、麻古茶坊、珍煮丹、大苑子）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-072",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-27 15:00:00",
+          "published_at_raw": "Tue, 27 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "Yahoo新聞",
+          "source_media_home": "https://tw.news.yahoo.com",
+          "rss_title": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場 - Yahoo新聞",
+          "clean_title": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場",
+          "rss_link": "https://news.google.com/rss/articles/CBMi6gJBVV95cUxOamNqSDdpLUVZU256VjJIZV9jbU5uLTlwdVZjd2pJNUhBNXVpb2xpem1CeUt1WnlvbDU3YVMwT2x1enRVbjVmWU5BOTdZNmFXclNsS1BVRjM2STlIMWVSbTBfWVJaano0c2NFU244TEYtMC1YeDIyRVd2MlcyQTZzalRKdklyRDgwa0dWODJ2ZEhzTlhHTkVRODk4WTNvQkFrdFVDNTgwTjNUdmhEZG0xRkVxQjlvd2dSY0J3cjEtWjZ5T3RpamV6TXNQeG85eG9aUXBLVDJZdGlqRDdEZ2NScDl4ZDZmTW9ybHNuMl9qci1NU1NmVjVuU2hfdS1penV2N3NoT251RUY0NWx1dVNCYjY2eVRnaEdhdWF1QkZMa2lPYnY5cHQwM1hmZzJxWmlBWjlCVkYtUWw1OS11VVYxbC1XMURMMDFaMmhTeTViS2xxZ2dRM3ZlclEtcGk0cjRMX0s5WjFIZFFvZw?oc=5",
+          "rss_description_text": "手搖飲秋季新品！迷客夏糖燻奶霜、珍煮丹蕎麥系列登場 Yahoo新聞",
+          "brand_detected": "多品牌提及（迷客夏、珍煮丹）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-080",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-20 15:00:00",
+          "published_at_raw": "Tue, 20 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "玩咖Playing",
+          "source_media_home": "https://playing.ltn.com.tw",
+          "rss_title": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品 - 玩咖Playing",
+          "clean_title": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品",
+          "rss_link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5MU2w1WFJEVmJjWE55RXNpQ2pBTGpESDJiN1Zwa3A2VTJqRmdzTnU0MmVHajhaWm1DdzhZRTBLMHhHSGtGY0VLd2hrbEVISm9pVHc?oc=5",
+          "rss_description_text": "手搖飲買一送一爽喝CoCo！麻古茶坊巨峰葡萄回歸、珍煮丹推蕎麥新品 玩咖Playing",
+          "brand_detected": "多品牌提及（CoCo都可、麻古茶坊、珍煮丹）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-081",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-20 15:00:00",
+          "published_at_raw": "Tue, 20 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "ETtoday旅遊雲",
+          "source_media_home": "https://travel.ettoday.net",
+          "rss_title": "珍煮丹開賣「蕎麥系列」3新品　CoCo葡萄柚果粒茶明買1送1 - ETtoday旅遊雲",
+          "clean_title": "珍煮丹開賣「蕎麥系列」3新品　CoCo葡萄柚果粒茶明買1送1",
+          "rss_link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB3RHR0aXJnY3VkMEFkdjg3R3U2b1dvUE00MTUxTFNHV2tOeGFCaWk2UGRvekVDTzYtOEVMQUFWR0pCME5RbDNKd2w0cVQ5dmtocVAzaUdkRFE2Z9IBT0FVX3lxTE9jdHZhaHBZVUJLRnZyRTRIZm9INWYyV3BrdDh5LTRzM3F0RDEzXzNZWEdXR3UwbzJDamFXejg1eG4xWEhHYzNOQzJmVXZVSHc?oc=5",
+          "rss_description_text": "珍煮丹開賣「蕎麥系列」3新品 CoCo葡萄柚果粒茶明買1送1 ETtoday旅遊雲",
+          "brand_detected": "多品牌提及（CoCo都可、珍煮丹）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": []
+    },
+    {
+      "product_id": "PROD-TPTEA-COCOA",
+      "region": "台灣",
+      "brand": "茶湯會",
+      "product_name": "冬季「茶韻可可系列」3 款可可拿鐵新品",
+      "short_word": "茶湯會・茶韻可可3新品",
+      "item_types": [
+        "新品",
+        "促銷"
+      ],
+      "info_status": "⏳ 3款完整品名與單杯定價待內文確認",
+      "is_pending_confirm": true,
+      "flavor_category": "可可／拿鐵",
+      "price_promo": "3 款可可拿鐵享限時折扣優惠（⏳ 單杯原價與折扣金額待內文確認）",
+      "observation_weeks": [
+        "2026-W44"
+      ],
+      "primary_week": "2026-W44",
+      "latest_published_at": "2026-10-31 15:00:00",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [],
+      "roundup_news_ids": [
+        "GNEWS-060",
+        "GNEWS-064",
+        "GNEWS-065"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [],
+      "media_summary": "3 筆巧克力季跨品牌合集（網路溫度計、食尚玩家、UDN）於 10/29～10/31 同步報導茶湯會推出「茶韻可可系列」3 款可可拿鐵新品並祭出限時優惠。",
+      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板在本次採集範圍內未見茶湯會茶韻可可系列試喝文。",
+      "unknowns": [
+        "3 款茶韻可可拿鐵分別搭配何種茶底（鐵觀音／紅茶／翡翠）及單杯售價待查。"
+      ],
+      "metrics": {
+        "focused_news_count": 0,
+        "roundup_news_count": 3,
+        "total_news_count": 3,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 0,
+        "total_ptt_count": 0,
+        "total_ptt_pushes": 0,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-060",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-31 15:00:00",
+          "published_at_raw": "Sat, 31 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "網路溫度計 DailyView",
+          "source_media_home": "https://dailyview.tw",
+          "rss_title": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題 - 網路溫度計 DailyView",
+          "clean_title": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題",
+          "rss_link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5WRzdSZXlxN1Btb0JFa0RoS2ZFa0FMSVhuQmMwb2F5Qm1RQXdHQlNYRS1JZ2UzUklGX3pXUExsZHRsQ19hYmlGNU56QmZqMFdMZzZZ?oc=5",
+          "rss_description_text": "CoCo、茶湯會推巧克力新品優惠！可可甜心2杯85元、茶韻可可系列享限時折扣｜熱門話題 網路溫度計 DailyView",
+          "brand_detected": "多品牌提及（CoCo都可、茶湯會）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-064",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-29 15:00:00",
+          "published_at_raw": "Thu, 29 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "食尚玩家",
+          "source_media_home": "https://supertaste.tvbs.com.tw",
+          "rss_title": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠 - 食尚玩家",
+          "clean_title": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠",
+          "rss_link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9rUUtsaXd3bkVhSVlaZTU3cjB1Zk5na2ZHNUpjNmtpNW1vZVNXbWZWbzNiWGx2Y3c1Znh3OWlIeDhYNUhDOHRCeWFhMElfVmQ5YUMtZQ?oc=5",
+          "rss_description_text": "巧克力控開喝！CoCo可可珍奶２杯85元、茶湯會３款可可拿鐵限時優惠 食尚玩家",
+          "brand_detected": "多品牌提及（CoCo都可、茶湯會）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-065",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-29 15:00:00",
+          "published_at_raw": "Thu, 29 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "UDN",
+          "source_media_home": "https://travel.udn.com",
+          "rss_title": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一 - UDN",
+          "clean_title": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一",
+          "rss_link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE0wYUtrMXhfTXlPTFBWN3NVMXEwb3hYOGVUSUdQc2lYVGVXMFYzaGpYVzdNYU10U2ltbVNLZVBMLTBCOFc1ZkdaaUYtbEhGd2kyMjFBWjU0U1B3aFZN?oc=5",
+          "rss_description_text": "巧克力控暴動！ CoCo、茶湯會、必勝客「可可新品系列」手搖與邪惡甜點一次看，這款還有買一送一 UDN",
+          "brand_detected": "多品牌提及（CoCo都可、茶湯會）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": []
+    },
+    {
+      "product_id": "PROD-KEBUKE-WOOTEA-AUTUMN",
+      "region": "台灣",
+      "brand": "可不可熟成紅茶 ／ 五桐號",
+      "product_name": "可不可「紅烏龍茶王／檸檬冷露紅烏龍」＆ 五桐號「泰奶雪沙」秋季新品",
+      "short_word": "可不可・紅烏龍與檸檬冷露",
+      "item_types": [
+        "新品",
+        "促銷"
+      ],
+      "info_status": "✅ 可不可檸檬冷露紅烏龍實測價$65（⏳ 五桐號泰奶雪沙定價待查）",
+      "is_pending_confirm": true,
+      "flavor_category": "紅烏龍／檸檬／泰奶",
+      "price_promo": "可不可檸檬冷露紅烏龍 PTT 實測價 NT$65；五桐號雙11買一送一（⏳ 泰奶雪沙定價待確認）",
+      "observation_weeks": [
+        "2026-W46",
+        "2026-W44"
+      ],
+      "primary_week": "2026-W44",
+      "latest_published_at": "2026-11-10 05:03:00",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [],
+      "roundup_news_ids": [
+        "GNEWS-020",
+        "GNEWS-075"
+      ],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [
+        "PTT-DRINK-003"
+      ],
+      "media_summary": "妞新聞秋季手搖新品懶人包（`GNEWS-075`）推薦五桐號「泰奶雪沙」與可不可「紅烏龍茶王」為秋季必喝新品；NOWnews（`GNEWS-020`）報導五桐號雙11買一送一。",
+      "consumer_summary": "【已採集 PTT 強烈負評實測 1 篇】針對可不可紅烏龍延伸品項「檸檬冷露紅烏龍」，PTT Drink 板最新列表 `PTT-DRINK-003`（作者 `wild2012`，3則推文）給予強烈負評：「一杯還65，微冰微糖紅烏龍沒有味道，檸檬味更是一點也沒有，只剩下甜味」；推文板友 `PHXD` 亦吐槽「裡面有檸檬凍（完全沒檸檬味），還配細吸管的操作不能理解」。完美示範將「媒體推薦曝光」與「消費者真實負評」分開呈現。",
+      "unknowns": [
+        "純茶款「紅烏龍茶王」無糖表現是否優於檸檬冷露特調，以及五桐號「泰奶雪沙」的實際消費者評價待查。"
+      ],
+      "metrics": {
+        "focused_news_count": 0,
+        "roundup_news_count": 2,
+        "total_news_count": 2,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 1,
+        "total_ptt_count": 1,
+        "total_ptt_pushes": 3,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [],
+      "resolved_roundup_news": [
+        {
+          "evidence_id": "GNEWS-020",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-11-10 05:03:00",
+          "published_at_raw": "Mon, 09 Nov 2026 21:03:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "雙11飲料優惠！CoCo、日出茶太、五桐號買一送一　翰林珍奶40元 - NOWnews今日新聞",
+          "clean_title": "雙11飲料優惠！CoCo、日出茶太、五桐號買一送一　翰林珍奶40元",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFA1Z1hiMlo1d0R0NDFfY1M3eVh3M3dUaHJQcjg2V29jbnJ5UEQyZ0pJTnFIY3dGMi1YUm1aWDIwZVpkdFpocWpQZUJwZUPSAVJBVV95cUxPSF9PREZPRTd5NUxTSGVHVmlQaDNiZE5iNUpnbjZQTVhhWTJKQ0duSjNwVVBmeG93ZlVDOXc0Z0g2eDFLdFJRUlhHNXhMblY4NUdB?oc=5",
+          "rss_description_text": "雙11飲料優惠！CoCo、日出茶太、五桐號買一送一 翰林珍奶40元 NOWnews今日新聞",
+          "brand_detected": "多品牌提及（五桐號、CoCo都可）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        },
+        {
+          "evidence_id": "GNEWS-075",
+          "query_id": "Q2_TW_BRANDS",
+          "query_string": "(迷客夏 OR 得正 OR 一沐日 OR 五桐號 OR 龜記 OR 八曜和茶 OR 大茗 OR CoCo OR 麻古茶坊) (新品 OR 推出 OR 開賣 OR 聯名) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-23 15:00:00",
+          "published_at_raw": "Fri, 23 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "Niusnews妞新聞",
+          "source_media_home": "https://www.niusnews.com",
+          "rss_title": "2026秋季手搖新品懶人包！五桐號泰奶雪沙、可不可紅烏龍茶王，11家必喝推薦一次看 - Niusnews妞新聞",
+          "clean_title": "2026秋季手搖新品懶人包！五桐號泰奶雪沙、可不可紅烏龍茶王，11家必喝推薦一次看",
+          "rss_link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5BeGtKb19BWjd0RF9OVmJQNF8zSnhNU2dBdVZGeDUwZ1o2SzFZSU5URVhGUmdFN2JMODZRbWE0enVuaDJZYUJGa1MzSQ?oc=5",
+          "rss_description_text": "2026秋季手搖新品懶人包！五桐號泰奶雪沙、可不可紅烏龍茶王，11家必喝推薦一次看 Niusnews妞新聞",
+          "brand_detected": "多品牌提及（五桐號、可不可）",
+          "candidate_product_name": "待確認（標題提及多品牌或多品項／促銷活動）",
+          "parse_status": "多商品或合集報導",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1789902845.A.F1A.html",
+          "discovered_via": "PTT Drink 板最新列表頁 (index.html)",
+          "raw_original": {
+            "title": "[心得] 熟成紅茶 檸檬冷露紅烏龍",
+            "author": "wild2012 (噹噹噹噹噹)",
+            "board": "Drink",
+            "published_at": "Sun Sep 20 19:14:03 2026",
+            "captured_at": "2026-11-12T11:54:39+08:00",
+            "body_text": "難喝死了\n一杯還65\n氣到我來PO文\n微冰微糖\n紅烏龍沒有味道\n檸檬味更是一點也沒有\n只剩下甜味\n到底在搞什麼東西?\n這麼難喝的東西到底是怎麼弄出來的\n試喝的人\n你的味覺是被肺炎還是流感破壞了嗎?\n我的天!\n難喝死了",
+            "push_counts": {
+              "推": 1,
+              "噓": 0,
+              "→": 2
+            },
+            "total_push_entries": 3,
+            "pushes": [
+              {
+                "tag": "推",
+                "userid": "PHXD",
+                "content": "那個裡面有檸檬凍（完全沒檸檬味），還配細吸管的操作 不能",
+                "ipdatetime": "09/23 15:52"
+              },
+              {
+                "tag": "→",
+                "userid": "PHXD",
+                "content": "理解。",
+                "ipdatetime": "09/23 15:52"
+              },
+              {
+                "tag": "→",
+                "userid": "ks32437",
+                "content": "這間奶茶比較穩定",
+                "ipdatetime": "09/29 15:27"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-003",
+          "list_nrec_badge": "1",
+          "list_date_short": "9/20"
+        }
+      ]
+    },
+    {
+      "product_id": "PROD-JINCHAWU-APPLE",
+      "region": "台灣",
+      "brand": "金茶伍",
+      "product_name": "「兩顆紅蘋」現榨富士蘋果茶（PTT 飲料板當期新增推文熱議）",
+      "short_word": "金茶伍・兩顆紅蘋蘋果茶",
+      "item_types": [
+        "新品"
+      ],
+      "info_status": "⏳ 單杯確切售價待確認（板友推文詢問價錢）",
+      "is_pending_confirm": true,
+      "flavor_category": "果茶（蘋果）",
+      "price_promo": "店員現場直接拿兩顆富士蘋果榨汁搭配茶王基底（⏳ 單杯確切售價待查，作者稱有點貴）",
+      "observation_weeks": [
+        "2026-W46",
+        "2026-W45"
+      ],
+      "primary_week": "2026-W46",
+      "latest_published_at": "2026-11-12 09:48:00",
+      "captured_at": "2026-11-12 11:54:38",
+      "focused_news_ids": [],
+      "roundup_news_ids": [],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [
+        "PTT-DRINK-002"
+      ],
+      "historical_ref_ptt_ids": [],
+      "media_summary": "【新聞曝光 0 筆】本次 Google News RSS 採集範圍內無媒體公關報導，完全由 PTT 飲料板真實消費者自發開箱發掘。",
+      "consumer_summary": "【PTT 實測心得 1 篇＋10 則推文（含 11/08、11/12 當期新增 2 則推文）】`PTT-DRINK-002` 作者 `goodapple807` 盛讚店員直接榨兩顆蘋果，無糖仍帶富士蘋果香甜加茶王茶香「近期喝過最頂」；11/08 板友 `harebell2011` 新推文回饋「兩家（金茶伍與樂法）在今天都解鎖了，覺得還是樂法比較好喝」，11/12 板友 `kittymay79` 推文「愛蘋果系列茶飲 想試試」。",
+      "unknowns": [
+        "單杯確切售價（推文板友 `LisaPrincess` 詢問價錢尚未獲回）以及全台各分店供應狀況待查。"
+      ],
+      "metrics": {
+        "focused_news_count": 0,
+        "roundup_news_count": 0,
+        "total_news_count": 0,
+        "unique_publisher_count": 0,
+        "unique_publishers": [],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 1,
+        "historical_ref_ptt_count": 0,
+        "total_ptt_count": 1,
+        "total_ptt_pushes": 10,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [],
+      "resolved_roundup_news": [],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1787482161.A.9A9.html",
+          "discovered_via": "PTT Drink 板最新列表頁 (index.html)",
+          "raw_original": {
+            "title": "[心得] 金茶伍 兩顆紅蘋 近期最好喝的蘋果茶",
+            "author": "goodapple807 (阿齊)",
+            "board": "Drink",
+            "published_at": "Sun Aug 23 18:49:19 2026",
+            "captured_at": "2026-11-12T11:54:38+08:00",
+            "body_text": "各位好，因為喝起來實在太好喝心情大好，就上來分享一下\n\n本來路過的時候沒有打算買，但是後來發現店員直接拿兩顆蘋果\n\n去榨汁，引起我想嘗試的慾望，這次點的是無糖(還是有蘋果汁甜)\n\n一口下去，富士蘋果香甜的味道加上茶王香味真的是我近期喝過最頂的，\n\n喜歡蘋果茶類飲品的買就對了，絕對不唬爛。\n\n我以我ID好蘋果的名義掛保證，絕對好喝。(就是有點貴)",
+            "push_counts": {
+              "推": 6,
+              "噓": 0,
+              "→": 4
+            },
+            "total_push_entries": 10,
+            "pushes": [
+              {
+                "tag": "→",
+                "userid": "MBAR",
+                "content": "有比樂法好喝嗎",
+                "ipdatetime": "08/25 22:18"
+              },
+              {
+                "tag": "推",
+                "userid": "rabbit2015",
+                "content": "台北有門市嗎",
+                "ipdatetime": "08/27 11:08"
+              },
+              {
+                "tag": "→",
+                "userid": "goodapple807",
+                "content": "只有新北永和有QQ",
+                "ipdatetime": "08/27 14:47"
+              },
+              {
+                "tag": "推",
+                "userid": "h120968",
+                "content": "三重跟板橋都有門市 你資訊確定不更新一下？",
+                "ipdatetime": "08/27 15:23"
+              },
+              {
+                "tag": "→",
+                "userid": "goodapple807",
+                "content": "抱歉，上面的大大才是對的",
+                "ipdatetime": "08/27 21:03"
+              },
+              {
+                "tag": "→",
+                "userid": "pippen2002",
+                "content": "夏天 喝起來!!",
+                "ipdatetime": "09/03 13:04"
+              },
+              {
+                "tag": "推",
+                "userid": "yao2miao2",
+                "content": "同問，想知道有沒有人喝過與樂法比較？",
+                "ipdatetime": "09/10 16:15"
+              },
+              {
+                "tag": "推",
+                "userid": "LisaPrincess",
+                "content": "想知道價錢，謝謝",
+                "ipdatetime": "10/02 22:06"
+              },
+              {
+                "tag": "推",
+                "userid": "harebell2011",
+                "content": "兩家在今天都解鎖了，覺得還是樂法比較好喝",
+                "ipdatetime": "11/08 14:57"
+              },
+              {
+                "tag": "推",
+                "userid": "kittymay79",
+                "content": "愛蘋果系列茶飲 想試試",
+                "ipdatetime": "11/12 09:48"
+              }
+            ]
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-002",
+          "list_nrec_badge": "6",
+          "list_date_short": "8/23"
+        }
+      ],
+      "resolved_historical_ptt": []
+    },
+    {
+      "product_id": "PROD-LEEJI-BLACKTEA",
+      "region": "台灣",
+      "brand": "李記紅茶冰",
+      "product_name": "新北三重集美店「特大杯 XL 古早味決明子紅茶冰」",
+      "short_word": "李記紅茶冰・特大杯決明子紅茶",
+      "item_types": [
+        "其他／常態招牌"
+      ],
+      "info_status": "✅ 門市實測品名與售價 NT$35 已確認",
+      "is_pending_confirm": false,
+      "flavor_category": "純茶／古早味紅茶",
+      "price_promo": "L 大杯約 NT$30、XL 特大杯招牌李記紅茶冰 NT$35（特調系列 NT$35~65）",
+      "observation_weeks": [
+        "2026-W45"
+      ],
+      "primary_week": "2026-W45",
+      "latest_published_at": "2026-11-03 23:56:37",
+      "captured_at": "2026-11-12 11:54:40",
+      "focused_news_ids": [],
+      "roundup_news_ids": [],
+      "current_period_ptt_ids": [
+        "PTT-DRINK-006"
+      ],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [],
+      "media_summary": "【新聞曝光 0 筆】無主流商業新聞公關稿，屬在地傳統茶飲店實測。",
+      "consumer_summary": "【當期 11/03 PTT 新發實測文 1 篇】`PTT-DRINK-006` 作者 `LoveFood` 實測新北三重集美店（原中正南店遷址）：特大杯 XL 僅 35 元，遵循古法熬煮紅茶加入焙炒決明子與小碎冰，正常冰甜依然溫和不膩口、回甘生津。",
+      "unknowns": [
+        "該篇食記目前推噓文數為 0，尚待更多板友回報其他特調品項（如甘蔗青、紅心芭樂檸檬）評價。"
+      ],
+      "metrics": {
+        "focused_news_count": 0,
+        "roundup_news_count": 0,
+        "total_news_count": 0,
+        "unique_publisher_count": 0,
+        "unique_publishers": [],
+        "current_period_ptt_count": 1,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 0,
+        "total_ptt_count": 1,
+        "total_ptt_pushes": 0,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [],
+      "resolved_roundup_news": [],
+      "resolved_current_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1793721400.A.028.html",
+          "discovered_via": "PTT Drink 板最新列表頁 (index.html)",
+          "raw_original": {
+            "title": "[心得] 新北三重 李記紅茶冰(集美店)",
+            "author": "LoveFood (吟詩旅人)",
+            "board": "Drink",
+            "published_at": "Tue Nov  3 23:56:37 2026",
+            "captured_at": "2026-11-12T11:54:40+08:00",
+            "body_text": "圖文：https://www.lovefood.cc/2026/10/leeji-traditional-tea.html\n\n李記紅茶冰三重集美店以經典的溫潤橙色招牌迎接著過路食客。這間原先設立於中正南路\n的老牌據點，遷址至集美街126巷內後依然維持著高人氣。店面整潔溫馨，櫃檯擺設著討\n喜的金元寶彌勒佛與傳統招財飾品，瀰漫著濃厚的台灣在地市井人情味。點餐窗口前不時\n有熟門熟路的街坊鄰居前來購買，老闆娘親切誠懇的問候聲此起彼落，為這處社區轉角注\n入了滿滿的在地溫度。\n\n檢視店門口陳列的詳細飲品菜單，全品項分為原茶、奶茶、果茶、無咖啡因與特色佐茶等\n多種系列，價格帶極度平實，L大杯普遍落在新台幣30元左右，升級為XL特大杯亦僅需新\n台幣35元至65元之間。除了招牌李記紅茶冰外，台灣青茶、蘭香綠茶、麥茶與冬瓜茶皆為\n熱門基底，更貼心推出甘蔗青、紅心芭樂檸檬與招牌鮮奶茶等多元特調。\n\n單手接過這杯沉甸甸的特大杯李記紅茶冰，外層紙杯印製著充滿活力的人物插畫，杯身透\n出微涼水氣。撕開吸管封口啜飲，濃厚的古早味茶韻瞬間漫過舌尖。店家嚴選紅茶葉遵循\n古法熬煮，加入焙炒決明子增添麥香與沉穩焙度，並以砂糖調出圓潤甜感。即使選擇正常\n冰正常甜，在細碎小碎冰的激盪下甜度依然溫和不膩口，碎冰伴隨著茶湯一同滑入喉間，\n冰鎮透心、生津解膩。伴隨著茶香在口腔中緩緩回甘，童年廟口雜貨店那一匙沁涼紅茶的\n純粹感動，在此刻表露無遺。\n\n１．店名：李記紅茶冰（三重集美店，原中正南店）\n２．地址：新北市三重區光明里集美街126巷5號\n３．外送預約專線：0939-711269\n４．營業時間：週一至週日 10:00 至 21:30（特別公休日依現場及店家公告為主）\n５．招牌飲品：特大杯XL李記紅茶冰（新台幣35元）",
+            "push_counts": {
+              "推": 0,
+              "噓": 0,
+              "→": 0
+            },
+            "total_push_entries": 0,
+            "pushes": []
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-006",
+          "list_nrec_badge": "0",
+          "list_date_short": "11/03"
+        }
+      ],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": []
+    },
+    {
+      "product_id": "PROD-CHICHA-KING-BUBBLE",
+      "region": "港澳／台灣品牌出海",
+      "brand": "吃茶三千 CHICHA San Chen",
+      "product_name": "澳門新八佰伴店「國王珍珠奶茶」與現萃茶系列",
+      "short_word": "吃茶三千・國王珍珠奶茶",
+      "item_types": [
+        "其他／常態招牌"
+      ],
+      "info_status": "✅ 門市實測品名與售價 MOP 48 已確認",
+      "is_pending_confirm": false,
+      "flavor_category": "鮮奶茶／珍珠",
+      "price_promo": "單杯售價 48 澳門幣（約折合 NT$190），全店區間 MOP 48~53",
+      "observation_weeks": [
+        "2026-W44"
+      ],
+      "primary_week": "2026-W44",
+      "latest_published_at": "2026-10-26 02:50:21",
+      "captured_at": "2026-11-12 11:54:40",
+      "focused_news_ids": [],
+      "roundup_news_ids": [],
+      "current_period_ptt_ids": [
+        "PTT-DRINK-005"
+      ],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [],
+      "media_summary": "【新聞曝光 0 筆】台灣台中精品茶飲品牌出海門市實測。",
+      "consumer_summary": "【當期 10/26 PTT 新發實測文 1 篇】`PTT-DRINK-005` 實測澳門新八佰伴百貨 1 樓專櫃：主打專利高溫高壓現萃茶機（松針綠茶、水仙桂花蜜、玉露青茶、凍頂烏龍），冠軍飲品「國王珍珠奶茶」以焙火鳳眉紅茶搭皇家厚牛奶與慢火國王珍珠，店內並設苔蘚綠植內用區。",
+      "unknowns": [
+        "單杯折合台幣約 190 元屬高價位精品茶飲，一般日常回購率與台灣門市價差討論待更多推文回饋。"
+      ],
+      "metrics": {
+        "focused_news_count": 0,
+        "roundup_news_count": 0,
+        "total_news_count": 0,
+        "unique_publisher_count": 0,
+        "unique_publishers": [],
+        "current_period_ptt_count": 1,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 0,
+        "total_ptt_count": 1,
+        "total_ptt_pushes": 0,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [],
+      "resolved_roundup_news": [],
+      "resolved_current_ptt": [
+        {
+          "url": "https://www.ptt.cc/bbs/Drink/M.1792954224.A.ADF.html",
+          "discovered_via": "PTT Drink 板最新列表頁 (index.html)",
+          "raw_original": {
+            "title": "[心得] 澳門 吃茶三千 國王珍珠奶茶",
+            "author": "LoveFood (吟詩旅人)",
+            "board": "Drink",
+            "published_at": "Mon Oct 26 02:50:21 2026",
+            "captured_at": "2026-11-12T11:54:40+08:00",
+            "body_text": "圖文：https://www.lovefood.cc/2026/10/chicha-san-chen.html\n\n從澳門南灣大馬路步入歷史悠久的新八佰伴百貨，搭乘手扶梯徐徐登上商場一樓，右轉便\n能看見這座以波光粼粼水波紋銀飾牆面包覆的吃茶三千。這間來自台灣台中、享譽國際的\n精品茶飲品牌，將傳統茶道美學與現代科技萃茶技術融為一體。不同於一般手搖飲料店預\n先煮好大桶茶湯的方式，店內吧檯上一字排開閃耀著香檳金色澤的專屬專利萃茶機，現場\n瀰漫著沉穩優雅的高山茶香與焦糖甜韻，讓每位行經專櫃的旅客都不自覺駐足探看。\n\n來到店內指名度最高的第一名冠軍飲品，毫無懸念是這杯國王珍珠奶茶，單杯售價為48澳\n門幣（約折合新台幣190元）。基底選用帶有焙火香氣的鳳眉紅茶，搭配質地豐厚濃郁的\n皇家厚牛奶，再加入耗時慢火燉煮的大顆國王珍珠。\n\n店內的點餐體驗極具儀式感，櫃檯提供完整的風味圖譜導引，從基底茶品如松針綠茶、水\n仙桂花蜜、玉露青茶到凍頂烏龍，皆能依據個人偏好進行客製化調配。吧檯後方的專利萃\n茶機能針對不同茶種設定精準的高溫與高壓參數，利用瞬間萃取技術將茶葉的精華多酚釋\n出，同時阻絕苦澀感。\n\n許多旅客以為新八佰伴專櫃僅能外帶，其實沿著點餐吧檯往內深入，別有洞天地藏有一處\n極具設計感的內用休憩座位區。映入眼簾的是整面生機盎然的立體苔蘚綠植景觀牆，搭配\n純白霓虹山形燈飾與簡約的木質長桌矮凳，營造出宛如美術館般的寧靜氛圍。\n\n１．店名全稱：吃茶三千 新八佰伴店（CHICHA San Chen New Yaohan）\n２．詳細地址：澳門南灣大馬路新八佰伴百貨商場 1 樓（搭乘手扶梯上樓後右轉）\n３．營業時間：週一至週日 10:30 至 22:00（依新八佰伴百貨公告營業時間為準）\n４．消費預算：單杯飲品約 48 至 53 澳門幣",
+            "push_counts": {
+              "推": 0,
+              "噓": 0,
+              "→": 0
+            },
+            "total_push_entries": 0,
+            "pushes": []
+          },
+          "programmatic_analysis": {
+            "post_category_tag": "心得",
+            "article_nature_note": "消費者實際試喝心得（含作者個人購買經驗與口味評價，以及推噓文板友回饋）",
+            "detected_brands_in_post": [],
+            "detected_brands_in_pushes": [],
+            "analysis_disclaimer": "此欄位為程式依關鍵字與標題分類自動判讀之輔助標籤，僅供檢索對照；實際語意請以左側「原文內容 (raw_original)」與原始 PTT 網址為準。"
+          },
+          "ptt_evidence_id": "PTT-DRINK-005",
+          "list_nrec_badge": "0",
+          "list_date_short": "10/26"
+        }
+      ],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": []
+    },
+    {
+      "product_id": "PROD-JIYUAN-GRAPE",
+      "region": "台灣",
+      "brand": "季緣",
+      "product_name": "秋季新品「葡萄青韻」暨連 4 天買一送一",
+      "short_word": "季緣・葡萄青韻買一送一",
+      "item_types": [
+        "新品",
+        "促銷"
+      ],
+      "info_status": "⏳ 單杯原價待內文確認（連4天買一送一已確認）",
+      "is_pending_confirm": true,
+      "flavor_category": "果茶（葡萄）",
+      "price_promo": "10/27 起連喝 4 天買一送一（⏳ 單杯原價待內文確認）",
+      "observation_weeks": [
+        "2026-W44",
+        "2026-W43"
+      ],
+      "primary_week": "2026-W44",
+      "latest_published_at": "2026-10-22 15:00:00",
+      "captured_at": "2026-11-12 11:32:12",
+      "focused_news_ids": [
+        "GNEWS-076"
+      ],
+      "roundup_news_ids": [],
+      "current_period_ptt_ids": [],
+      "recent_push_old_post_ids": [],
+      "historical_ref_ptt_ids": [],
+      "media_summary": "1 筆單篇新聞（NOWnews `GNEWS-076`）報導手搖品牌「季緣」推出秋季果茶新品「葡萄青韻」，並於 10/27 起祭出連 4 天買一送一優惠。",
+      "consumer_summary": "【當期新品 PTT 討論：本次採集範圍內未找到】PTT Drink 板未見季緣「葡萄青韻」之試喝心得。",
+      "unknowns": [
+        "葡萄青韻之單杯定價、果肉含量與消費者實際評價目前未知。"
+      ],
+      "metrics": {
+        "focused_news_count": 1,
+        "roundup_news_count": 0,
+        "total_news_count": 1,
+        "unique_publisher_count": 1,
+        "unique_publishers": [
+          "未知媒體"
+        ],
+        "current_period_ptt_count": 0,
+        "recent_push_old_post_count": 0,
+        "historical_ref_ptt_count": 0,
+        "total_ptt_count": 0,
+        "total_ptt_pushes": 0,
+        "composite_score_status": "修訂中（暫不顯示模擬分）"
+      },
+      "resolved_focused_news": [
+        {
+          "evidence_id": "GNEWS-076",
+          "query_id": "Q1_TW_BEVERAGE_NEW",
+          "query_string": "(手搖飲 OR 手搖杯) (新品 OR 新上市 OR 聯名 OR 買一送一) when:30d",
+          "captured_at": "2026-11-12 11:32:12",
+          "published_at": "2026-10-22 15:00:00",
+          "published_at_raw": "Thu, 22 Oct 2026 07:00:00 GMT",
+          "source_platform": "Google News RSS",
+          "source_role": "media",
+          "source_media": "NOWnews今日新聞",
+          "source_media_home": "https://www.nownews.com",
+          "rss_title": "季緣買一送一！10/27起連喝4天手搖飲料優惠　葡萄青韻新品開喝 - NOWnews今日新聞",
+          "clean_title": "季緣買一送一！10/27起連喝4天手搖飲料優惠　葡萄青韻新品開喝",
+          "rss_link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9pZ3ZSUDVpQWV1em9oUVVNbVIzVDZWb3FTZkxGUDRqUC14UU50YWVCQjBSV3c0YlphUV9JZ01hbmY5N1paWTRMN2ZuWVjSAVJBVV95cUxQV21YazVYWkptVjBCandRdGtocEJnQjJHakNuWC1RZFZvaW5zWURubnBmeXVnbWFWdjBGdERnQzE4YkU0SGhUeW5uMkt2OG9ubDRB?oc=5",
+          "rss_description_text": "季緣買一送一！10/27起連喝4天手搖飲料優惠 葡萄青韻新品開喝 NOWnews今日新聞",
+          "brand_detected": "待確認品牌",
+          "candidate_product_name": "待確認（標題未含明確單一品名，需開啟原文核對）",
+          "parse_status": "品名未明",
+          "data_scope": "僅 RSS XML 欄位（未進入目標新聞網站爬取內文）",
+          "article_body_fetched": false,
+          "price_from_article": "未取得（RSS 不含內文價格）",
+          "social_engagement": "未取得（新聞來源無社群互動數）",
+          "sentiment_and_intent": "未取得（未爬取消費者留言）",
+          "commercial_signals": "未取得（無排隊/售罄/銷量實證）"
+        }
+      ],
+      "resolved_roundup_news": [],
+      "resolved_current_ptt": [],
+      "resolved_recent_push_ptt": [],
+      "resolved_historical_ptt": []
+    }
+  ]
+};
 const verifiedNewsData = {
   "captured_at": "2026-11-12 11:32:12",
   "total_unique_records": 95,
@@ -2408,7 +6676,6 @@ const verifiedNewsData = {
     }
   ]
 };
-
 const newsEventsData = {
   "metadata": {
     "generated_at": "2026-11-12T11:59:51+08:00",
@@ -4249,7 +8516,6 @@ const newsEventsData = {
     }
   ]
 };
-
 const verifiedPttData = {
   "collection_metadata": {
     "source_type": "PTT 批踢踢實業坊 — 飲料板 (Drink) 網頁端到端實測採集",
@@ -5292,7 +9558,6 @@ const verifiedPttData = {
     }
   ]
 };
-
 const platformCapabilities = [
   {
     "platform": "Google News 原始新聞內文讀取",
@@ -5351,7 +9616,6 @@ const platformCapabilities = [
     "test_result": "尚未實作爬蟲；需指定門市經緯度座標與動態渲染。"
   }
 ];
-
 const isolatedDemoSample = [
   {
     "brand": "五桐號",
@@ -5485,9 +9749,20 @@ const isolatedDemoSample = [
   }
 ];
 
+let currentPeriodId = "ALL";
+let currentProductTypeFilter = "ALL";
+let currentProductBrandFilter = "ALL";
+let currentProductFlavorFilter = "ALL";
+let currentProductSort = "NEWS_DESC";
+
 let currentEventCategoryFilter = "ALL";
 let currentFilterBrand = "ALL";
 let currentFilterQuery = "ALL";
+
+let matrixChartInstance = null;
+let wordCloudChartInstance = null;
+let brandBarChartInstance = null;
+let categoryPieChartInstance = null;
 
 function switchTab(index) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -5496,28 +9771,664 @@ function switchTab(index) {
     btn.classList.add('text-slate-700', 'border-transparent');
   });
 
-  document.getElementById(`tab-${index}`).classList.add('active');
+  const target = document.getElementById(`tab-${index}`);
+  if (target) target.classList.add('active');
   const activeBtn = document.getElementById(`tab-btn-${index}`);
-  activeBtn.classList.remove('text-slate-700', 'border-transparent');
-  activeBtn.classList.add('text-emerald-800', 'bg-emerald-50', 'border-emerald-300', 'shadow-sm');
+  if (activeBtn) {
+    activeBtn.classList.remove('text-slate-700', 'border-transparent');
+    activeBtn.classList.add('text-emerald-800', 'bg-emerald-50', 'border-emerald-300', 'shadow-sm');
+  }
+
+  if (index === 0) {
+    setTimeout(() => { renderMatrixChart(); }, 60);
+  } else if (index === 1) {
+    setTimeout(() => {
+      renderWordCloudChart();
+      renderBrandComparisonCharts();
+    }, 60);
+  }
 }
 
-function openConceptModal() {
-  document.getElementById('concept-modal').classList.add('active');
+function openConceptModal() { document.getElementById('concept-modal').classList.add('active'); }
+function closeConceptModal() { document.getElementById('concept-modal').classList.remove('active'); }
+function openHistoryModal() { document.getElementById('history-modal').classList.add('active'); }
+function closeHistoryModal() { document.getElementById('history-modal').classList.remove('active'); }
+function closeProductDetailModal() { document.getElementById('product-detail-modal').classList.remove('active'); }
+
+function getCategoryBadgeHtml(cat) {
+  if (cat === "新品") {
+    return `<span class="px-2.5 py-0.5 text-xs sm:text-sm font-extrabold rounded-full bg-emerald-100 text-emerald-900 border border-emerald-400">🆕 新品</span>`;
+  } else if (cat === "舊品回歸") {
+    return `<span class="px-2.5 py-0.5 text-xs sm:text-sm font-extrabold rounded-full bg-purple-100 text-purple-900 border border-purple-400">🔄 舊品回歸</span>`;
+  } else if (cat === "促銷") {
+    return `<span class="px-2.5 py-0.5 text-xs sm:text-sm font-extrabold rounded-full bg-amber-100 text-amber-900 border border-amber-400">🏷️ 促銷／聯名</span>`;
+  } else if (cat === "合集") {
+    return `<span class="px-2.5 py-0.5 text-xs sm:text-sm font-extrabold rounded-full bg-sky-100 text-sky-900 border border-sky-400">📦 多品牌合集</span>`;
+  }
+  return `<span class="px-2.5 py-0.5 text-xs sm:text-sm font-bold rounded-full bg-slate-200 text-slate-800">${cat}</span>`;
 }
-function closeConceptModal() {
-  document.getElementById('concept-modal').classList.remove('active');
+
+// ============================================================================
+// 分頁 0：商品趨勢總覽（篩選、排序、商品卡片、證據彈窗、散佈圖）
+// ============================================================================
+function initPeriodAndProductFilters() {
+  const periodSelect = document.getElementById('week-timeline-select');
+  const periods = verifiedProductsPayload.observation_periods || [];
+  if (periodSelect) {
+    periodSelect.innerHTML = periods.map(p => `<option value="${p.period_id}">${p.label}</option>`).join('');
+  }
+
+  const products = verifiedProductsPayload.products || [];
+  const brands = Array.from(new Set(products.map(p => p.brand))).sort();
+  const flavors = Array.from(new Set(products.map(p => p.flavor_category))).sort();
+
+  const brandSelect = document.getElementById('product-brand-select');
+  if (brandSelect) {
+    brandSelect.innerHTML = `<option value="ALL">全部品牌 (${brands.length} 家)</option>` +
+      brands.map(b => `<option value="${b}">${b}</option>`).join('');
+  }
+
+  const flavorSelect = document.getElementById('product-flavor-select');
+  if (flavorSelect) {
+    flavorSelect.innerHTML = `<option value="ALL">全部品類與風味 (${flavors.length} 類)</option>` +
+      flavors.map(f => `<option value="${f}">${f}</option>`).join('');
+  }
+}
+
+function selectObservationPeriod(periodId) {
+  currentPeriodId = periodId;
+  applyProductFilters();
+}
+
+function setProductTypeFilter(typeVal) {
+  currentProductTypeFilter = typeVal;
+  document.querySelectorAll('.type-filter-btn').forEach(btn => {
+    btn.classList.remove('bg-emerald-700', 'text-white', 'shadow-sm');
+    btn.classList.add('bg-slate-100', 'text-slate-700');
+  });
+  const activeBtn = document.getElementById(`type-btn-${typeVal}`);
+  if (activeBtn) {
+    activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+    activeBtn.classList.add('bg-emerald-700', 'text-white', 'shadow-sm');
+  }
+  applyProductFilters();
+}
+
+function getFilteredAndSortedProducts() {
+  const allProducts = verifiedProductsPayload.products || [];
+  let filtered = allProducts.filter(p => {
+    if (currentPeriodId !== "ALL" && !(p.observation_weeks || []).includes(currentPeriodId)) {
+      return false;
+    }
+    if (currentProductTypeFilter === "PENDING") {
+      if (!p.is_pending_confirm) return false;
+    } else if (currentProductTypeFilter !== "ALL") {
+      if (!(p.item_types || []).includes(currentProductTypeFilter)) return false;
+    }
+    if (currentProductBrandFilter !== "ALL" && p.brand !== currentProductBrandFilter) {
+      return false;
+    }
+    if (currentProductFlavorFilter !== "ALL" && p.flavor_category !== currentProductFlavorFilter) {
+      return false;
+    }
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    if (currentProductSort === "NEWS_DESC") {
+      if (b.metrics.total_news_count !== a.metrics.total_news_count) {
+        return b.metrics.total_news_count - a.metrics.total_news_count;
+      }
+      return b.metrics.focused_news_count - a.metrics.focused_news_count;
+    } else if (currentProductSort === "DATE_DESC") {
+      return (b.latest_published_at || "").localeCompare(a.latest_published_at || "");
+    } else if (currentProductSort === "PTT_DESC") {
+      const aCur = a.metrics.current_period_ptt_count * 100 + a.metrics.recent_push_old_post_count * 20 + a.metrics.historical_ref_ptt_count * 5 + a.metrics.total_ptt_pushes;
+      const bCur = b.metrics.current_period_ptt_count * 100 + b.metrics.recent_push_old_post_count * 20 + b.metrics.historical_ref_ptt_count * 5 + b.metrics.total_ptt_pushes;
+      if (bCur !== aCur) return bCur - aCur;
+      return b.metrics.total_news_count - a.metrics.total_news_count;
+    }
+    return 0;
+  });
+
+  return filtered;
+}
+
+function applyProductFilters() {
+  const brandSel = document.getElementById('product-brand-select');
+  const flavorSel = document.getElementById('product-flavor-select');
+  const sortSel = document.getElementById('product-sort-select');
+  if (brandSel) currentProductBrandFilter = brandSel.value;
+  if (flavorSel) currentProductFlavorFilter = flavorSel.value;
+  if (sortSel) currentProductSort = sortSel.value;
+
+  const filtered = getFilteredAndSortedProducts();
+  renderHomepageKpis(filtered);
+  renderProductCardList(filtered);
+  renderMatrixChart(filtered);
+}
+
+function renderHomepageKpis(filteredProducts) {
+  const totalCount = filteredProducts.length;
+  const newCount = filteredProducts.filter(p => (p.item_types || []).includes("新品")).length;
+  const returnCount = filteredProducts.filter(p => (p.item_types || []).includes("舊品回歸")).length;
+  const promoCount = filteredProducts.filter(p => (p.item_types || []).includes("促銷")).length;
+  const pendingCount = filteredProducts.filter(p => p.is_pending_confirm).length;
+
+  document.getElementById('kpi-product-count').innerText = `${totalCount} 款`;
+  document.getElementById('kpi-product-breakdown').innerText =
+    `新品 ${newCount} • 回歸 ${returnCount} • 促銷 ${promoCount} • 待確認 ${pendingCount}`;
+
+  const uniqueNewsIds = new Set();
+  let focusedSum = 0;
+  let roundupSum = 0;
+  filteredProducts.forEach(p => {
+    (p.focused_news_ids || []).forEach(id => uniqueNewsIds.add(id));
+    (p.roundup_news_ids || []).forEach(id => uniqueNewsIds.add(id));
+    focusedSum += p.metrics.focused_news_count;
+    roundupSum += p.metrics.roundup_news_count;
+  });
+  document.getElementById('kpi-news-count').innerText = `${uniqueNewsIds.size} 筆不重複新聞`;
+  document.getElementById('kpi-news-breakdown').innerText =
+    `單品專文關聯 ${focusedSum} 次 • 合集提及關聯 ${roundupSum} 次`;
+
+  const uniquePttIds = new Set();
+  let curPtt = 0, recentPushPtt = 0, histPtt = 0;
+  filteredProducts.forEach(p => {
+    (p.current_period_ptt_ids || []).forEach(id => uniquePttIds.add(id));
+    (p.recent_push_old_post_ids || []).forEach(id => uniquePttIds.add(id));
+    (p.historical_ref_ptt_ids || []).forEach(id => uniquePttIds.add(id));
+    curPtt += p.metrics.current_period_ptt_count;
+    recentPushPtt += p.metrics.recent_push_old_post_count;
+    histPtt += p.metrics.historical_ref_ptt_count;
+  });
+  document.getElementById('kpi-ptt-count').innerText = `${uniquePttIds.size} 篇關聯 PTT 文`;
+  document.getElementById('kpi-ptt-breakdown').innerText =
+    `當期新文 ${curPtt} • 舊文當期新推 ${recentPushPtt} • 歷史參考 ${histPtt}`;
+
+  const sortLabels = {
+    "NEWS_DESC": "📰 依新聞曝光筆數",
+    "DATE_DESC": "🕒 依最新發布時間",
+    "PTT_DESC": "💬 依當期社群討論數"
+  };
+  document.getElementById('kpi-sort-label').innerText = sortLabels[currentProductSort] || "📰 依新聞曝光筆數";
+
+  const badge = document.getElementById('product-filter-count-badge');
+  if (badge) {
+    badge.innerText = `目前顯示：${totalCount} / ${(verifiedProductsPayload.products || []).length} 款商品與活動`;
+  }
+}
+
+function renderProductCardList(filteredProducts) {
+  const container = document.getElementById('product-card-list');
+  if (!container) return;
+
+  if (filteredProducts.length === 0) {
+    container.innerHTML = `
+      <div class="bg-white/95 p-8 rounded-2xl border-2 border-slate-200 text-center text-lg font-bold text-slate-600">
+        目前篩選條件下無符合之商品，請調整上方觀察期間、品牌或性質篩選。
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = filteredProducts.map((p, idx) => {
+    const typeBadges = (p.item_types || []).map(getCategoryBadgeHtml).join(' ');
+    const confirmBadge = p.is_pending_confirm
+      ? `<span class="px-2.5 py-0.5 text-xs font-extrabold rounded-full bg-amber-50 text-amber-900 border border-amber-400">${p.info_status}</span>`
+      : `<span class="px-2.5 py-0.5 text-xs font-extrabold rounded-full bg-emerald-50 text-emerald-900 border border-emerald-400">${p.info_status}</span>`;
+
+    const pttBadgeText = p.metrics.current_period_ptt_count > 0
+      ? `當期新發文 ${p.metrics.current_period_ptt_count} 篇`
+      : (p.metrics.recent_push_old_post_count > 0
+          ? `當期新發文 0 篇｜舊文當期新增推文 ${p.metrics.recent_push_old_post_count} 篇（共 ${p.metrics.total_ptt_pushes} 則推文）`
+          : (p.metrics.historical_ref_ptt_count > 0
+              ? `當期新發文 0 篇｜歷史同品項/同牌參考 ${p.metrics.historical_ref_ptt_count} 篇（共 ${p.metrics.total_ptt_pushes} 則推文）`
+              : `本次 PTT 採集範圍內未找到`));
+
+    return `
+      <div class="bg-white/95 backdrop-blur-sm rounded-2xl border-2 border-slate-200 hover:border-emerald-400 shadow-sm transition p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <!-- 左欄 (6 cols)：商品規格與客觀曝光/討論數據 -->
+          <div class="lg:col-span-6 flex flex-col justify-between space-y-4 border-b lg:border-b-0 lg:border-r border-slate-200 pb-4 lg:pb-0 lg:pr-6">
+            <div class="space-y-2.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-0.5 bg-slate-900 text-white font-mono font-extrabold text-xs rounded">#${idx + 1}</span>
+                <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-900 border border-emerald-300 font-extrabold text-xs rounded">${p.region}</span>
+                <span class="text-lg font-black text-emerald-800">${p.brand}</span>
+                ${typeBadges}
+              </div>
+
+              <h3 class="text-xl font-black text-slate-900 leading-snug">${p.product_name}</h3>
+              <div>${confirmBadge}</div>
+
+              <div class="space-y-1.5 pt-2 text-base text-slate-700">
+                <div>💰 <strong class="text-slate-900">定價與優惠：</strong>${p.price_promo}</div>
+                <div>🍵 <strong class="text-slate-900">風味與品類：</strong>${p.flavor_category} ｜ <strong class="text-slate-900">歸屬期間：</strong><span class="font-mono font-bold text-emerald-800">${(p.observation_weeks || []).join(', ')}</span></div>
+                <div>📰 <strong class="text-slate-900">新聞曝光證據：</strong>共 <strong class="text-emerald-700 text-lg">${p.metrics.total_news_count}</strong> 筆紀錄（單品專文 <strong>${p.metrics.focused_news_count}</strong> 筆 ＋ 跨品牌合集提及 <strong>${p.metrics.roundup_news_count}</strong> 筆，涵蓋 ${p.metrics.unique_publisher_count} 家媒體）</div>
+                <div>💬 <strong class="text-slate-900">PTT 飲料板討論：</strong><span class="font-bold text-indigo-800">${pttBadgeText}</span></div>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-slate-600">
+              <span>📅 最新證據發布日：<strong class="font-mono text-slate-900">${p.latest_published_at}</strong></span>
+              <span>🕒 採集時間：<strong class="font-mono text-slate-900">${p.captured_at}</strong></span>
+              <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded border border-slate-300">綜合熱度評分：${p.metrics.composite_score_status}</span>
+            </div>
+          </div>
+
+          <!-- 右欄 (6 cols)：媒體報導重點 vs 消費者實際反應 + 查看證據按鈕 -->
+          <div class="lg:col-span-6 flex flex-col justify-between bg-emerald-50/50 rounded-xl border border-emerald-200 p-4 space-y-4">
+            <div class="space-y-3">
+              <div class="bg-white/90 p-3.5 rounded-lg border border-emerald-200">
+                <div class="text-sm font-black text-emerald-900 mb-1">📢 媒體報導了什麼（宣傳與曝光摘要）</div>
+                <p class="text-sm sm:text-base text-slate-800 leading-relaxed">${p.media_summary}</p>
+              </div>
+
+              <div class="bg-white/90 p-3.5 rounded-lg border border-indigo-200">
+                <div class="text-sm font-black text-indigo-900 mb-1">💬 消費者實際說了什麼（PTT 飲料板核對）</div>
+                <p class="text-sm sm:text-base text-slate-800 leading-relaxed">${p.consumer_summary}</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <span class="text-xs font-bold text-amber-900 bg-amber-100/80 px-2.5 py-1 rounded border border-amber-300">
+                ❓ 待查證／未知項目：${(p.unknowns || []).length} 項
+              </span>
+              <button onclick="openProductDetailModal('${p.product_id}')"
+                class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm sm:text-base rounded-lg shadow-sm transition flex items-center gap-1.5">
+                <span>🔍 查看關聯證據明細（${p.metrics.total_news_count} 則新聞 ＋ ${p.metrics.total_ptt_count} 篇 PTT）</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openProductDetailModal(productId) {
+  const products = verifiedProductsPayload.products || [];
+  const p = products.find(item => item.product_id === productId);
+  if (!p) return;
+
+  const badgesEl = document.getElementById('modal-product-badges');
+  const titleEl = document.getElementById('modal-product-title');
+  const bodyEl = document.getElementById('modal-product-body');
+
+  badgesEl.innerHTML = `
+    <span class="px-2.5 py-0.5 bg-emerald-700 text-white font-extrabold text-xs rounded">${p.brand}</span>
+    ${(p.item_types || []).map(getCategoryBadgeHtml).join(' ')}
+    <span class="px-2.5 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs rounded">${p.info_status}</span>
+  `;
+  titleEl.innerText = `${p.brand} — ${p.product_name}`;
+
+  const renderNewsItems = (list, tagLabel, badgeClass) => {
+    if (!list || list.length === 0) {
+      return `<div class="text-sm text-slate-500 italic p-3 bg-slate-50 rounded-lg border border-slate-200">無此類別新聞紀錄</div>`;
+    }
+    return `<div class="space-y-2.5">` + list.map(r => `
+      <div class="p-3 bg-white rounded-lg border border-slate-200 hover:border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div class="space-y-1">
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span class="font-mono font-bold px-2 py-0.5 bg-slate-800 text-white rounded">${r.evidence_id}</span>
+            <span class="font-extrabold px-2 py-0.5 rounded ${badgeClass}">${tagLabel}</span>
+            <span class="font-bold text-emerald-800">📰 ${r.publisher_name}</span>
+            <span class="font-mono text-slate-500">發布：${r.published_at} ｜ 擷取：${r.captured_at}</span>
+          </div>
+          <a href="${r.rss_link}" target="_blank" rel="noopener noreferrer" class="text-base font-extrabold text-slate-900 hover:text-emerald-700 underline decoration-emerald-400 underline-offset-2 block">
+            ${r.title_clean} ↗
+          </a>
+        </div>
+      </div>
+    `).join('') + `</div>`;
+  };
+
+  const renderPttItems = (list, natureBadge, badgeColor) => {
+    if (!list || list.length === 0) return '';
+    return list.map(a => {
+      const raw = a.raw_original || {};
+      const pushes = raw.pushes || [];
+      const pushHtml = pushes.map(pu => `
+        <div class="text-xs sm:text-sm py-1 border-b border-slate-100 flex items-start gap-2 font-mono">
+          <span class="px-1.5 py-0.5 rounded font-bold bg-slate-200 text-slate-800 shrink-0">${pu.tag}</span>
+          <span class="font-bold text-indigo-900 shrink-0">${pu.userid}:</span>
+          <span class="text-slate-800 flex-1 break-all">${pu.content}</span>
+          <span class="text-slate-400 text-xs shrink-0">${pu.ipdatetime}</span>
+        </div>
+      `).join('');
+
+      return `
+        <div class="p-4 bg-white rounded-xl border-2 border-indigo-200 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-mono font-bold text-xs px-2 py-0.5 bg-indigo-900 text-white rounded">${a.ptt_evidence_id}</span>
+              <span class="text-xs font-extrabold px-2.5 py-0.5 rounded ${badgeColor}">${natureBadge}</span>
+              <span class="text-xs font-mono text-slate-600">作者：${raw.author} ｜ 發布：${raw.published_at}</span>
+            </div>
+            <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm font-extrabold text-indigo-700 hover:underline">
+              🔗 開啟 PTT 原始文章核對 ↗
+            </a>
+          </div>
+          <h5 class="text-lg font-black text-slate-900">${raw.title}</h5>
+          <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 text-sm sm:text-base text-slate-800 whitespace-pre-line leading-relaxed">${raw.body_text}</div>
+          ${pushes.length > 0 ? `
+            <div class="space-y-1 pt-2">
+              <div class="text-xs font-extrabold text-slate-700">💬 原始推噓文紀錄（共 ${pushes.length} 則）：</div>
+              <div class="max-h-52 overflow-y-auto bg-slate-50/80 p-2.5 rounded border border-slate-200">${pushHtml}</div>
+            </div>
+          ` : `<div class="text-xs text-slate-500">（本文目前無推噓文）</div>`}
+        </div>
+      `;
+    }).join('');
+  };
+
+  const allPttHtml =
+    renderPttItems(p.resolved_current_ptt, "🟢 當期新發布討論", "bg-emerald-100 text-emerald-900 border border-emerald-400") +
+    renderPttItems(p.resolved_recent_push_ptt, "🔵 舊文於當期新增推文（不混算為當期新文）", "bg-sky-100 text-sky-900 border border-sky-400") +
+    renderPttItems(p.resolved_historical_ptt, "🟣 歷史同品項／同品牌參考舊文", "bg-purple-100 text-purple-900 border border-purple-400");
+
+  bodyEl.innerHTML = `
+    <!-- 三欄對照摘要 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="bg-emerald-50/80 border-2 border-emerald-200 rounded-xl p-4 space-y-2">
+        <h4 class="font-black text-emerald-950 text-base">📢 1. 媒體報導了什麼</h4>
+        <p class="text-sm sm:text-base text-slate-800 leading-relaxed">${p.media_summary}</p>
+      </div>
+      <div class="bg-indigo-50/80 border-2 border-indigo-200 rounded-xl p-4 space-y-2">
+        <h4 class="font-black text-indigo-950 text-base">💬 2. 使用者實際說了什麼</h4>
+        <p class="text-sm sm:text-base text-slate-800 leading-relaxed">${p.consumer_summary}</p>
+      </div>
+      <div class="bg-amber-50/80 border-2 border-amber-200 rounded-xl p-4 space-y-2">
+        <h4 class="font-black text-amber-950 text-base">❓ 3. 目前還不知道什麼</h4>
+        <ul class="list-disc pl-5 space-y-1 text-sm sm:text-base text-slate-800">
+          ${(p.unknowns || []).map(u => `<li>${u}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+
+    <!-- 關聯新聞紀錄明細（區分單品專文 vs 跨品牌合集提及） -->
+    <div class="space-y-4 pt-2">
+      <h4 class="text-lg font-black text-slate-900 border-b-2 border-emerald-200 pb-2">
+        📰 關聯新聞證據明細（共 ${p.metrics.total_news_count} 筆：單品專文 ${p.metrics.focused_news_count} 筆 ＋ 跨品牌合集提及 ${p.metrics.roundup_news_count} 筆）
+      </h4>
+      <div class="space-y-3">
+        <div class="text-sm font-extrabold text-emerald-900">🎯 單品／單一活動專文報導 (${p.metrics.focused_news_count} 筆)：</div>
+        ${renderNewsItems(p.resolved_focused_news, "🎯 單品專文", "bg-emerald-100 text-emerald-900")}
+        <div class="text-sm font-extrabold text-sky-900 pt-2">📦 跨品牌合集／懶人包提及 (${p.metrics.roundup_news_count} 筆，多商品共用證據)：</div>
+        ${renderNewsItems(p.resolved_roundup_news, "📦 合集提及", "bg-sky-100 text-sky-900")}
+      </div>
+    </div>
+
+    <!-- 關聯 PTT 飲料板討論明細 -->
+    <div class="space-y-4 pt-2">
+      <h4 class="text-lg font-black text-slate-900 border-b-2 border-indigo-200 pb-2">
+        💬 關聯 PTT 飲料板 (`bbs/Drink`) 原文與推噓文核對（共 ${p.metrics.total_ptt_count} 篇）
+      </h4>
+      ${allPttHtml || `<div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-slate-600 font-bold">本次 PTT 飲料板採集範圍內未找到此商品之討論文章。</div>`}
+    </div>
+  `;
+
+  document.getElementById('product-detail-modal').classList.add('active');
+}
+
+function renderMatrixChart(filteredProducts) {
+  const chartDom = document.getElementById('chart-matrix');
+  if (!chartDom || typeof echarts === 'undefined') return;
+  if (!matrixChartInstance) {
+    matrixChartInstance = echarts.init(chartDom);
+    matrixChartInstance.on('click', function(params) {
+      if (params.data && params.data.productId) {
+        openProductDetailModal(params.data.productId);
+      }
+    });
+  }
+
+  const list = filteredProducts || getFilteredAndSortedProducts();
+  const seriesData = list.map(p => ({
+    name: p.short_word,
+    productId: p.product_id,
+    brand: p.brand,
+    value: [
+      p.metrics.total_news_count,
+      p.metrics.unique_publisher_count + p.metrics.total_ptt_count,
+      Math.max(18, (p.metrics.total_news_count + p.metrics.total_ptt_pushes) * 1.4)
+    ],
+    focusedNews: p.metrics.focused_news_count,
+    roundupNews: p.metrics.roundup_news_count,
+    pttCount: p.metrics.total_ptt_count,
+    pttPushes: p.metrics.total_ptt_pushes
+  }));
+
+  matrixChartInstance.setOption({
+    tooltip: {
+      trigger: 'item',
+      formatter: function(params) {
+        const d = params.data;
+        return `<div style="font-weight:bold;margin-bottom:4px;">${d.name}</div>
+                新聞總筆數：<b>${d.value[0]}</b> 筆（專文 ${d.focusedNews} + 合集 ${d.roundupNews}）<br/>
+                獨立媒體＋PTT篇數：<b>${d.value[1]}</b>（含 PTT ${d.pttCount} 篇 / ${d.pttPushes} 推文）<br/>
+                <span style="color:#059669;font-size:12px;">點擊圓點開啟證據明細視窗</span>`;
+      }
+    },
+    grid: { left: '8%', right: '8%', top: '12%', bottom: '15%' },
+    xAxis: {
+      name: '關聯新聞紀錄總數 (筆)',
+      nameLocation: 'middle',
+      nameGap: 30,
+      type: 'value',
+      minInterval: 1
+    },
+    yAxis: {
+      name: '獨立媒體家數 + PTT 文章數',
+      nameLocation: 'middle',
+      nameGap: 40,
+      type: 'value',
+      minInterval: 1
+    },
+    series: [{
+      type: 'scatter',
+      data: seriesData,
+      symbolSize: function(val) { return Math.min(52, Math.max(18, val[2])); },
+      label: {
+        show: true,
+        formatter: function(param) { return param.data.name; },
+        position: 'top',
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: '#1e293b'
+      },
+      itemStyle: {
+        color: '#059669',
+        opacity: 0.85,
+        borderColor: '#064e3b',
+        borderWidth: 1.5
+      }
+    }]
+  });
+}
+
+// ============================================================================
+// 分頁 1：詞雲與品牌比較
+// ============================================================================
+function renderWordCloudChart() {
+  const chartDom = document.getElementById('chart-wordcloud');
+  if (!chartDom || typeof echarts === 'undefined') return;
+  if (!wordCloudChartInstance) {
+    wordCloudChartInstance = echarts.init(chartDom);
+    wordCloudChartInstance.on('click', function(params) {
+      if (params.data && params.data.productId) {
+        renderWordCloudDetailPanel(params.data.productId);
+      }
+    });
+  }
+
+  const products = verifiedProductsPayload.products || [];
+  const palette = ['#047857', '#0f766e', '#1d4ed8', '#4338ca', '#7e22ce', '#b45309', '#be123c'];
+  const wcData = products.map((p, idx) => ({
+    name: p.short_word,
+    value: Math.max(10, p.metrics.total_news_count * 3 + p.metrics.total_ptt_count * 8 + p.metrics.total_ptt_pushes),
+    productId: p.product_id,
+    textStyle: { color: palette[idx % palette.length] }
+  }));
+
+  wordCloudChartInstance.setOption({
+    tooltip: {
+      show: true,
+      formatter: function(item) {
+        return `<b>${item.name}</b><br/>點擊於右側查看商品證據摘要`;
+      }
+    },
+    series: [{
+      type: 'wordCloud',
+      shape: 'circle',
+      sizeRange: [16, 42],
+      rotationRange: [0, 0],
+      gridSize: 12,
+      drawOutOfBound: false,
+      textStyle: { fontFamily: 'sans-serif', fontWeight: 'bold' },
+      data: wcData
+    }]
+  });
+
+  if (products.length > 0) {
+    renderWordCloudDetailPanel(products[0].product_id);
+  }
+}
+
+function renderWordCloudDetailPanel(productId) {
+  const panel = document.getElementById('wordcloud-detail-panel');
+  if (!panel) return;
+  const products = verifiedProductsPayload.products || [];
+  const p = products.find(item => item.product_id === productId) || products[0];
+  if (!p) return;
+
+  panel.innerHTML = `
+    <div class="space-y-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="px-2.5 py-0.5 bg-emerald-700 text-white font-extrabold text-xs rounded">${p.brand}</span>
+        ${(p.item_types || []).map(getCategoryBadgeHtml).join(' ')}
+      </div>
+      <h3 class="text-xl font-black text-slate-900">${p.product_name}</h3>
+      <div class="text-sm font-bold text-amber-900 bg-amber-50 px-3 py-1.5 rounded border border-amber-300">${p.info_status}</div>
+      <div class="text-sm sm:text-base text-slate-700 space-y-1 pt-1">
+        <div>💰 <strong>定價／促銷：</strong>${p.price_promo}</div>
+        <div>📰 <strong>新聞曝光：</strong>共 ${p.metrics.total_news_count} 筆（單品專文 ${p.metrics.focused_news_count} ＋ 合集提及 ${p.metrics.roundup_news_count}）</div>
+        <div>💬 <strong>PTT 討論：</strong>共 ${p.metrics.total_ptt_count} 篇（推噓文合計 ${p.metrics.total_ptt_pushes} 則）</div>
+      </div>
+      <div class="bg-white p-3 rounded-lg border border-emerald-200 text-sm text-slate-800">
+        <strong class="text-emerald-900">📢 媒體重點：</strong>${p.media_summary}
+      </div>
+      <div class="bg-white p-3 rounded-lg border border-indigo-200 text-sm text-slate-800">
+        <strong class="text-indigo-900">💬 消費者反應：</strong>${p.consumer_summary}
+      </div>
+    </div>
+    <div class="pt-4 mt-4 border-t border-emerald-200">
+      <button onclick="openProductDetailModal('${p.product_id}')" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-lg shadow transition">
+        🔍 開啟完整證據視窗（核對新聞與 PTT 原文）
+      </button>
+    </div>
+  `;
+}
+
+function renderBrandComparisonCharts() {
+  const products = verifiedProductsPayload.products || [];
+  const brandStats = {};
+  products.forEach(p => {
+    const b = p.brand;
+    if (!brandStats[b]) {
+      brandStats[b] = { focused: 0, roundup: 0, ptt: 0 };
+    }
+    brandStats[b].focused += p.metrics.focused_news_count;
+    brandStats[b].roundup += p.metrics.roundup_news_count;
+    brandStats[b].ptt += p.metrics.total_ptt_count;
+  });
+
+  const brands = Object.keys(brandStats);
+  const barDom = document.getElementById('chart-brand-multipliers');
+  if (barDom && typeof echarts !== 'undefined') {
+    if (!brandBarChartInstance) brandBarChartInstance = echarts.init(barDom);
+    brandBarChartInstance.setOption({
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+      legend: { data: ['單品專文新聞', '跨品牌合集提及', 'PTT 討論篇數'], bottom: 0 },
+      grid: { left: '4%', right: '4%', top: '8%', bottom: '15%', containLabel: true },
+      xAxis: { type: 'category', data: brands, axisLabel: { interval: 0, rotate: 22, fontSize: 11, fontWeight: 'bold' } },
+      yAxis: { type: 'value', minInterval: 1 },
+      series: [
+        { name: '單品專文新聞', type: 'bar', stack: 'news', data: brands.map(b => brandStats[b].focused), itemStyle: { color: '#059669' } },
+        { name: '跨品牌合集提及', type: 'bar', stack: 'news', data: brands.map(b => brandStats[b].roundup), itemStyle: { color: '#38bdf8' } },
+        { name: 'PTT 討論篇數', type: 'bar', data: brands.map(b => brandStats[b].ptt), itemStyle: { color: '#4f46e5' } }
+      ]
+    });
+  }
+
+  const pieDom = document.getElementById('chart-category-radar');
+  if (pieDom && typeof echarts !== 'undefined') {
+    if (!categoryPieChartInstance) categoryPieChartInstance = echarts.init(pieDom);
+    const newCnt = products.filter(p => (p.item_types || []).includes("新品")).length;
+    const retCnt = products.filter(p => (p.item_types || []).includes("舊品回歸")).length;
+    const proCnt = products.filter(p => (p.item_types || []).includes("促銷")).length;
+    const othCnt = products.filter(p => (p.item_types || []).includes("其他／常態招牌")).length;
+
+    categoryPieChartInstance.setOption({
+      tooltip: { trigger: 'item' },
+      legend: { bottom: 0 },
+      series: [{
+        name: '商品項目性質',
+        type: 'pie',
+        radius: ['38%', '68%'],
+        label: { formatter: '{b}: {c} 款' },
+        data: [
+          { value: newCnt, name: '🆕 包含新品', itemStyle: { color: '#10b981' } },
+          { value: retCnt, name: '🔄 包含舊品回歸', itemStyle: { color: '#a855f7' } },
+          { value: proCnt, name: '🏷️ 包含促銷／聯名', itemStyle: { color: '#f59e0b' } },
+          { value: othCnt, name: '🍵 常態招牌實測', itemStyle: { color: '#64748b' } }
+        ]
+      }]
+    });
+  }
+}
+
+// ============================================================================
+// 分頁 2 ＆ 分頁 3：保留階段二完整新聞事件、3大對照案例、14篇PTT、能力表與爬蟲歷程
+// ============================================================================
+function renderCrawlHistoryTable() {
+  const tbody = document.getElementById('crawl-history-tbody');
+  if (!tbody) return;
+  const batches = verifiedProductsPayload.crawl_batches || [];
+  tbody.innerHTML = batches.map(b => `
+    <tr class="hover:bg-slate-50">
+      <td class="p-3.5 border-r border-slate-200 font-mono font-bold text-slate-900">${b.batch_id}</td>
+      <td class="p-3.5 border-r border-slate-200 font-mono text-sm text-slate-700">${b.executed_at}</td>
+      <td class="p-3.5 border-r border-slate-200 font-bold text-emerald-900">${b.source_pipeline}<div class="text-xs text-slate-500 font-normal mt-0.5">${b.query_scope}</div></td>
+      <td class="p-3.5 border-r border-slate-200 text-sm text-slate-800">${b.records_collected}</td>
+      <td class="p-3.5 font-extrabold text-emerald-700">${b.status}</td>
+    </tr>
+  `).join('');
 }
 
 function toggleRawRecordsSection() {
   const wrapper = document.getElementById('raw-records-wrapper');
   const btn = document.getElementById('toggle-raw-records-btn');
+  if (!wrapper) return;
   if (wrapper.classList.contains('hidden')) {
     wrapper.classList.remove('hidden');
     btn.innerText = '🔼 收合 95 筆依連結去重的新聞紀錄平鋪表';
   } else {
     wrapper.classList.add('hidden');
     btn.innerText = '📂 展開檢視全部 95 筆依連結去重的新聞紀錄平鋪表';
+  }
+}
+
+function toggleIsolatedDemoSection() {
+  const el = document.getElementById('isolated-demo-list');
+  const btn = document.getElementById('toggle-demo-btn');
+  if (!el) return;
+  if (el.classList.contains('hidden')) {
+    el.classList.remove('hidden');
+    btn.innerText = '🔼 收合已隔離之早期模擬卡片';
+  } else {
+    el.classList.add('hidden');
+    btn.innerText = '📂 展開檢視已隔離之早期模擬卡片';
   }
 }
 
@@ -5543,19 +10454,6 @@ function applyNewsFilter() {
   currentFilterBrand = document.getElementById('filter-brand-select').value;
   currentFilterQuery = document.getElementById('filter-query-select').value;
   renderVerifiedNewsList();
-}
-
-function getCategoryBadgeHtml(cat) {
-  if (cat === "新品") {
-    return `<span class="px-3 py-0.5 text-sm font-extrabold rounded-full bg-emerald-100 text-emerald-900 border border-emerald-400">🆕 新品</span>`;
-  } else if (cat === "舊品回歸") {
-    return `<span class="px-3 py-0.5 text-sm font-extrabold rounded-full bg-purple-100 text-purple-900 border border-purple-400">🔄 舊品回歸</span>`;
-  } else if (cat === "促銷") {
-    return `<span class="px-3 py-0.5 text-sm font-extrabold rounded-full bg-amber-100 text-amber-900 border border-amber-400">🏷️ 促銷／聯名</span>`;
-  } else if (cat === "合集") {
-    return `<span class="px-3 py-0.5 text-sm font-extrabold rounded-full bg-sky-100 text-sky-900 border border-sky-400">📦 多品牌合集</span>`;
-  }
-  return `<span class="px-3 py-0.5 text-sm font-bold rounded-full bg-slate-200 text-slate-800">${cat}</span>`;
 }
 
 function renderCrosscheckCases() {
@@ -5601,7 +10499,6 @@ function renderCrosscheckCases() {
 
     return `
       <div class="bg-slate-50/95 border-2 border-slate-300 rounded-2xl p-6 shadow-sm space-y-5">
-        <!-- 案例標題列 -->
         <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-200 pb-4">
           <div class="space-y-1">
             <div class="flex flex-wrap items-center gap-2">
@@ -5618,53 +10515,46 @@ function renderCrosscheckCases() {
           </div>
         </div>
 
-        <!-- 三欄並列：媒體報導了什麼 / 使用者實際說了什麼 / 目前還不知道什麼 -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
-          <!-- 第 1 欄：媒體報導了什麼 -->
           <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-xl p-5 flex flex-col justify-between">
             <div class="space-y-3">
               <div class="flex items-center justify-between border-b border-emerald-200 pb-2">
-                <h4 class="text-lg font-black text-emerald-950">📢 1. 媒體報導了什麼（宣傳與曝光）</h4>
-                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-emerald-200 text-emerald-950 rounded-full">共 ${c.media_source_count} 筆新聞紀錄</span>
+                <h4 class="text-lg font-black text-emerald-950">📢 1. 媒體報導了什麼</h4>
+                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-emerald-200 text-emerald-950 rounded-full">共 ${c.media_source_count} 筆新聞</span>
               </div>
               <p class="text-base text-slate-800 leading-relaxed whitespace-pre-line">${c.what_media_reported.summary}</p>
             </div>
             <div class="mt-4 pt-3 border-t border-emerald-200">
-              <div class="text-xs font-extrabold text-emerald-900 mb-2">🔗 代表性新聞來源核對（點擊開啟原文）：</div>
+              <div class="text-xs font-extrabold text-emerald-900 mb-2">🔗 代表性新聞來源核對：</div>
               <ul class="space-y-2">${mediaSourcesHtml}</ul>
             </div>
           </div>
 
-          <!-- 第 2 欄：使用者實際說了什麼 -->
           <div class="bg-indigo-50/70 border-2 border-indigo-200 rounded-xl p-5 flex flex-col justify-between">
             <div class="space-y-3">
               <div class="flex items-center justify-between border-b border-indigo-200 pb-2">
-                <h4 class="text-lg font-black text-indigo-950">💬 2. 使用者實際說了什麼（PTT 飲料板）</h4>
+                <h4 class="text-lg font-black text-indigo-950">💬 2. 使用者實際說了什麼</h4>
                 <span class="text-xs font-extrabold px-2.5 py-0.5 bg-indigo-200 text-indigo-950 rounded-full">${c.what_users_actually_said.status_badge}</span>
               </div>
               <p class="text-base text-slate-800 leading-relaxed whitespace-pre-line">${c.what_users_actually_said.summary}</p>
             </div>
             <div class="mt-4 pt-3 border-t border-indigo-200 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold text-indigo-900">🔗 PTT 看板檢索與對照文章連結：</span>
+                <span class="text-xs font-extrabold text-indigo-900">🔗 PTT 看板檢索與對照文章：</span>
                 <a href="${c.what_users_actually_said.ptt_search_url}" target="_blank" rel="noopener noreferrer"
-                   class="text-xs font-bold text-indigo-700 hover:underline">開啟 PTT 搜尋結果頁 ↗</a>
+                   class="text-xs font-bold text-indigo-700 hover:underline">開啟 PTT 搜尋頁 ↗</a>
               </div>
               <ul class="space-y-2">${pttRefsHtml}</ul>
             </div>
           </div>
 
-          <!-- 第 3 欄：目前還不知道什麼 -->
           <div class="bg-amber-50/70 border-2 border-amber-200 rounded-xl p-5 flex flex-col justify-between">
             <div class="space-y-3">
               <div class="flex items-center justify-between border-b border-amber-200 pb-2">
-                <h4 class="text-lg font-black text-amber-950">❓ 3. 目前還不知道什麼（證據邊界）</h4>
-                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-amber-200 text-amber-950 rounded-full">未知／未取得</span>
+                <h4 class="text-lg font-black text-amber-950">❓ 3. 目前還不知道什麼</h4>
+                <span class="text-xs font-extrabold px-2.5 py-0.5 bg-amber-200 text-amber-950 rounded-full">保留不確定性</span>
               </div>
               <ul class="space-y-3 pt-1">${unknownsHtml}</ul>
-            </div>
-            <div class="mt-4 pt-3 border-t border-amber-200 text-xs font-bold text-amber-900">
-              ⚠️ 嚴格遵守規範：未取得之價格、他站討論與真實銷量一律保留為「未知」，不推估、亦不當成零分。
             </div>
           </div>
         </div>
@@ -5675,386 +10565,329 @@ function renderCrosscheckCases() {
 
 function renderNewsEventsList() {
   const allEvents = newsEventsData.events || [];
-  const filteredEvents = allEvents.filter(ev => {
-    if (currentEventCategoryFilter === "ALL") return true;
-    if (currentEventCategoryFilter === "FOCUSED") {
-      return !ev.event_id.startsWith("EVT-ROUNDUP-") && !ev.event_id.startsWith("EVT-INDEPENDENT-");
-    }
-    if (currentEventCategoryFilter === "UNMERGED") {
-      return ev.event_id.startsWith("EVT-INDEPENDENT-");
-    }
-    return (ev.event_categories || []).includes(currentEventCategoryFilter);
-  });
+  let filtered = allEvents;
 
-  const totalRecordsInFiltered = filteredEvents.reduce((acc, e) => acc + (e.source_count || 0), 0);
-  const badgeEl = document.getElementById('event-filter-badge');
-  if (badgeEl) {
-    badgeEl.innerText = `目前顯示：${filteredEvents.length} / ${allEvents.length} 個事件（涵蓋 ${totalRecordsInFiltered} / 95 筆新聞紀錄）`;
+  if (currentEventCategoryFilter === "FOCUSED") {
+    filtered = allEvents.filter(e => !e.event_id.startsWith("EVT-ROUNDUP-") && !e.event_id.startsWith("EVT-INDEPENDENT-"));
+  } else if (currentEventCategoryFilter === "UNMERGED") {
+    filtered = allEvents.filter(e => e.event_id.startsWith("EVT-INDEPENDENT-"));
+  } else if (currentEventCategoryFilter !== "ALL") {
+    filtered = allEvents.filter(e => (e.event_categories || []).includes(currentEventCategoryFilter));
+  }
+
+  const totalRecordsInFiltered = filtered.reduce((acc, e) => acc + (e.source_count || 0), 0);
+  const badge = document.getElementById('event-filter-badge');
+  if (badge) {
+    badge.innerText = `顯示：${filtered.length} / ${allEvents.length} 個事件（涵蓋 ${totalRecordsInFiltered} 筆紀錄）`;
   }
 
   const container = document.getElementById('news-events-list');
   if (!container) return;
 
-  container.innerHTML = filteredEvents.map((ev, index) => {
+  container.innerHTML = filtered.map((ev, idx) => {
     const catBadges = (ev.event_categories || []).map(getCategoryBadgeHtml).join(' ');
-    const isUnmerged = ev.event_id.startsWith("EVT-INDEPENDENT-");
-    const isRoundup = ev.event_id.startsWith("EVT-ROUNDUP-");
-    const cardBorder = isUnmerged
-      ? "border-slate-300 bg-white/90"
-      : (isRoundup ? "border-sky-300 bg-white/95" : "border-emerald-300 bg-white/95");
+    const previewSources = (ev.source_records || []).slice(0, 3);
+    const hiddenSources = (ev.source_records || []).slice(3);
 
-    // 預設顯示前 3 筆來源，若超過 3 筆可一鍵展開全部保留之來源
-    const sourcesHtml = (ev.source_records || []).map(r => `
-      <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 hover:bg-emerald-50/40 transition">
+    const renderSourceRow = (s) => `
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-emerald-300">
         <div class="space-y-0.5">
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="font-mono text-xs font-extrabold px-2 py-0.5 bg-slate-800 text-white rounded">${r.evidence_id}</span>
-            <span class="text-sm font-extrabold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded">${r.publisher_name}</span>
-            <span class="text-xs font-mono text-slate-500">發布：${r.published_at} | 擷取：${r.captured_at} | 查詢：${r.query_id}</span>
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span class="font-mono font-bold px-2 py-0.5 bg-slate-800 text-white rounded">${s.evidence_id}</span>
+            <span class="font-bold text-emerald-800">📰 ${s.publisher_name}</span>
+            <span class="font-mono text-slate-500">發布: ${s.published_at}</span>
           </div>
-          <a href="${r.rss_link}" target="_blank" rel="noopener noreferrer"
-             class="inline-block text-base font-bold text-slate-900 hover:text-emerald-700 underline decoration-emerald-400 underline-offset-2 mt-1">
-            ${r.title_clean} ↗
+          <a href="${s.rss_link}" target="_blank" rel="noopener noreferrer"
+             class="text-base font-extrabold text-slate-900 hover:text-emerald-700 underline decoration-emerald-400 underline-offset-2 inline-block">
+            ${s.title_clean} ↗
           </a>
         </div>
-        <a href="${r.rss_link}" target="_blank" rel="noopener noreferrer"
-           class="shrink-0 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm">
-          🔗 開啟來源
-        </a>
       </div>
-    `).join('');
-
-    const showDefaultOpen = index < 4 || ev.source_count <= 2;
+    `;
 
     return `
-      <div class="${cardBorder} backdrop-blur-sm border-2 rounded-2xl p-6 shadow-sm transition">
-        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-          <div class="space-y-2 flex-1">
+      <div class="bg-white/95 backdrop-blur-sm p-6 rounded-xl border-2 border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-3">
+          <div class="space-y-1.5">
             <div class="flex flex-wrap items-center gap-2">
-              <span class="px-2.5 py-0.5 font-mono text-xs font-extrabold bg-slate-800 text-white rounded">${ev.event_id}</span>
-              <span class="px-3 py-0.5 text-base font-extrabold rounded-md bg-emerald-800 text-white">${ev.brand_label}</span>
+              <span class="px-2.5 py-0.5 bg-slate-900 text-white font-mono font-bold text-xs rounded">Event #${idx + 1} (${ev.event_id})</span>
+              <span class="px-3 py-0.5 bg-emerald-50 text-emerald-900 border border-emerald-300 font-extrabold text-sm rounded-md">${ev.brand_label}</span>
               ${catBadges}
-              ${isUnmerged ? '<span class="px-2.5 py-0.5 text-xs font-bold bg-slate-200 text-slate-800 rounded">🔒 未強制合併（單篇獨立保留）</span>' : ''}
             </div>
-            <h3 class="text-xl font-black text-slate-900 leading-snug">${ev.event_title}</h3>
-            <p class="text-sm text-slate-600 font-medium">📌 <strong>歸納依據：</strong>${ev.merge_basis}</p>
+            <h3 class="text-xl font-black text-slate-900">${ev.event_title}</h3>
+            <p class="text-sm text-slate-600">📌 <strong>歸納依據：</strong>${ev.merge_basis}</p>
           </div>
-
-          <div class="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-2 shrink-0 bg-slate-100 px-4 py-3 rounded-xl border border-slate-200">
-            <div class="text-right">
-              <div class="text-xs font-bold text-slate-500">涵蓋依連結去重紀錄數</div>
-              <div class="text-2xl font-black text-emerald-800">${ev.source_count} 筆紀錄 <span class="text-sm font-bold text-slate-600">(${ev.unique_publisher_count} 家媒體)</span></div>
+          <div class="text-right shrink-0">
+            <div class="px-3.5 py-1.5 bg-emerald-100 text-emerald-950 font-black text-base rounded-lg border border-emerald-300">
+              保留 ${ev.source_count} 筆新聞紀錄（${ev.unique_publisher_count} 家媒體）
             </div>
-            <button onclick="toggleEventSources('${ev.event_id}')" id="event-toggle-btn-${ev.event_id}"
-              class="px-3 py-1 bg-white hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg text-xs font-extrabold transition">
-              ${showDefaultOpen ? '🔼 收合原始新聞來源清單' : '🔽 展開檢視全部原始新聞來源連結'}
-            </button>
           </div>
         </div>
 
-        <div id="event-sources-${ev.event_id}" class="${showDefaultOpen ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200 space-y-2">
-          <div class="text-xs font-extrabold text-slate-600 mb-2">
-            以下完整保留歸屬本事件之全部 ${ev.source_count} 筆新聞紀錄（點擊標題或按鈕可開啟原始新聞）：
-          </div>
-          ${sourcesHtml}
+        <div class="space-y-2">
+          ${previewSources.map(renderSourceRow).join('')}
         </div>
+
+        ${hiddenSources.length > 0 ? `
+          <div id="event-sources-${ev.event_id}" class="hidden space-y-2 pt-1">
+            ${hiddenSources.map(renderSourceRow).join('')}
+          </div>
+          <button id="event-toggle-btn-${ev.event_id}" onclick="toggleEventSources('${ev.event_id}')"
+            class="text-sm font-extrabold text-emerald-800 hover:text-emerald-950 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-1.5 rounded-lg border border-emerald-300 transition">
+            🔽 展開檢視其餘 ${hiddenSources.length} 筆同事件原始新聞連結
+          </button>
+        ` : ''}
       </div>
     `;
   }).join('');
 }
 
 function renderPttSection() {
-  const searchLogs = (verifiedPttData.collection_metadata && verifiedPttData.collection_metadata.search_logs) || [];
+  const meta = verifiedPttData.collection_metadata || {};
+  const searchLogs = meta.search_logs || [];
   const articles = verifiedPttData.articles || [];
 
-  const searchBox = document.getElementById('ptt-search-log-list');
-  if (searchBox) {
-    searchBox.innerHTML = searchLogs.map(log => {
-      const topListHtml = (log.top_3_Latest_titles_found || []).map(item => `
-        <li class="text-sm border-t border-slate-200 pt-1.5 mt-1.5">
-          <span class="font-mono text-xs px-1.5 py-0.5 bg-slate-200 text-slate-800 rounded mr-1">${item.date}</span>
-          <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="font-bold text-indigo-800 hover:underline">
-            ${item.title} ↗
-          </a>
+  const searchContainer = document.getElementById('ptt-search-log-list');
+  if (searchContainer) {
+    searchContainer.innerHTML = searchLogs.map(log => {
+      const topTitles = (log.top_3_Latest_titles_found || []).map(t => `
+        <li class="text-xs text-slate-700 truncate">
+          <span class="font-mono font-bold text-indigo-800">[${t.date}]</span>
+          <a href="${t.url}" target="_blank" rel="noopener noreferrer" class="hover:underline font-medium">${t.title}</a>
         </li>
       `).join('');
-
       return `
-        <div class="p-4 rounded-xl bg-slate-50 border-2 border-slate-200 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <span class="px-3 py-1 bg-indigo-900 text-white font-extrabold text-base rounded-lg">關鍵字：${log.keyword}</span>
-              <a href="${log.search_url}" target="_blank" rel="noopener noreferrer"
-                 class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded hover:bg-indigo-200">
-                🔗 開啟 PTT 搜尋頁
-              </a>
-            </div>
-            <div class="text-xs text-slate-600 mb-1">搜尋結果首頁筆數：${log.total_entries_on_first_page} 篇（以下為最新 3 篇）：</div>
-            <ul class="space-y-1">${topListHtml}</ul>
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 bg-indigo-900 text-white font-extrabold text-sm rounded">關鍵字：${log.keyword}</span>
+            <a href="${log.search_url}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-indigo-700 hover:underline">開啟 PTT 搜尋頁 ↗</a>
           </div>
+          <div class="text-xs font-bold text-slate-600">首頁結果數：${log.total_entries_on_first_page} 篇（依時間最新排序前 3 篇）：</div>
+          <ul class="space-y-1">${topTitles}</ul>
         </div>
       `;
     }).join('');
   }
 
-  const pttList = document.getElementById('verified-ptt-list');
-  if (pttList) {
-    pttList.innerHTML = articles.map(art => {
-      const ro = art.raw_original;
-      const pa = art.programmatic_analysis;
-      const pushesHtml = (ro.pushes || []).map(p => {
-        const tagColor = p.tag === "推" ? "text-emerald-700 bg-emerald-50 border-emerald-200" : (p.tag === "噓" ? "text-rose-700 bg-rose-50 border-rose-200" : "text-slate-600 bg-slate-100 border-slate-200");
-        return `
-          <div class="text-sm py-1.5 px-2.5 rounded bg-white border border-slate-200 flex flex-wrap justify-between items-start gap-2">
-            <div class="flex items-start gap-2">
-              <span class="px-1.5 py-0.5 text-xs font-extrabold rounded border ${tagColor}">${p.tag}</span>
-              <span class="font-mono font-bold text-indigo-900">${p.userid}:</span>
-              <span class="text-slate-800">${p.content}</span>
-            </div>
-            <span class="font-mono text-xs text-slate-400 shrink-0">${p.ipdatetime}</span>
-          </div>
-        `;
-      }).join('');
+  const listContainer = document.getElementById('verified-ptt-list');
+  if (!listContainer) return;
 
-      const brandsPost = (pa.detected_brands_in_post || []).length > 0 ? pa.detected_brands_in_post.join('、') : '未偵測到特定連鎖品牌關鍵字（或為獨立茶飲店）';
-      const brandsPush = (pa.detected_brands_in_pushes || []).length > 0 ? pa.detected_brands_in_pushes.join('、') : '無';
+  listContainer.innerHTML = articles.map(art => {
+    const raw = art.raw_original || {};
+    const prog = art.programmatic_analysis || {};
+    const pushes = raw.pushes || [];
 
+    const pushesHtml = pushes.slice(0, 8).map(p => {
+      const tagColor = p.tag === '推' ? 'bg-emerald-100 text-emerald-900' : (p.tag === '噓' ? 'bg-rose-100 text-rose-900' : 'bg-slate-200 text-slate-800');
       return `
-        <div class="bg-white/95 backdrop-blur-sm border-2 border-indigo-200 rounded-2xl p-6 shadow-sm">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            <!-- 左欄：📄 原文內容 (raw_original) -->
-            <div class="lg:col-span-8 space-y-4">
-              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="px-2.5 py-0.5 font-mono text-sm font-black bg-indigo-900 text-white rounded">${art.ptt_evidence_id}</span>
-                  <span class="px-3 py-0.5 text-sm font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300 rounded">📄 原文內容 (raw_original)</span>
-                  <span class="text-xs font-mono text-slate-500">取得途徑：${art.discovered_via}</span>
-                </div>
-                <a href="${art.url}" target="_blank" rel="noopener noreferrer"
-                   class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg shadow-sm transition">
-                  🔗 開啟 PTT 原始文章核對
-                </a>
-              </div>
+        <div class="text-xs sm:text-sm py-1 border-b border-slate-100 flex items-start gap-2 font-mono">
+          <span class="px-1.5 py-0.5 rounded font-bold ${tagColor} shrink-0">${p.tag}</span>
+          <span class="font-bold text-indigo-900 shrink-0">${p.userid}:</span>
+          <span class="text-slate-800 flex-1 break-all">${p.content}</span>
+          <span class="text-slate-400 text-xs shrink-0">${p.ipdatetime}</span>
+        </div>
+      `;
+    }).join('');
 
-              <div>
-                <h4 class="text-xl font-black text-slate-900">
-                  <a href="${art.url}" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-700 underline decoration-indigo-400 underline-offset-4">
-                    ${ro.title} ↗
-                  </a>
-                </h4>
-                <div class="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-600 font-mono">
-                  <span>👤 作者：<strong>${ro.author}</strong></span>
-                  <span>🕒 發布時間：<strong>${ro.published_at}</strong></span>
-                  <span>📥 擷取時間：<strong>${ro.captured_at}</strong></span>
-                </div>
-              </div>
+    return `
+      <div class="bg-white/95 backdrop-blur-sm rounded-2xl border-2 border-slate-200 shadow-sm overflow-hidden">
+        <div class="bg-slate-900 text-white px-6 py-3 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5">
+            <span class="px-2.5 py-0.5 bg-indigo-500 text-white font-mono font-bold text-xs rounded">${art.ptt_evidence_id}</span>
+            <span class="text-sm font-bold text-slate-300">採集來源：${art.discovered_via}</span>
+          </div>
+          <a href="${art.url}" target="_blank" rel="noopener noreferrer"
+             class="text-sm font-extrabold text-amber-300 hover:text-amber-200 underline">
+            🔗 開啟 PTT 原始文章網址核對 (${art.url}) ↗
+          </a>
+        </div>
 
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                <div class="text-xs font-extrabold text-slate-500 mb-1.5">【原文內文完整保存】：</div>
-                <div class="text-base text-slate-800 whitespace-pre-line leading-relaxed font-normal">${ro.body_text}</div>
-              </div>
-
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-extrabold text-slate-700">
-                    【推噓文完整紀錄】共 ${ro.total_push_entries} 則（推：${ro.push_counts['推']} / 噓：${ro.push_counts['噓']} / →：${ro.push_counts['→']}）
-                  </span>
-                </div>
-                ${ro.total_push_entries > 0 ? `<div class="space-y-1.5 max-h-72 overflow-y-auto pr-1">${pushesHtml}</div>` : `<div class="text-sm text-slate-500 italic">（本篇目前無推噓文）</div>`}
+        <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+          <div class="lg:col-span-8 p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+              <span class="px-3 py-1 bg-slate-100 text-slate-900 font-black text-sm rounded border border-slate-300">📄 原文內容 (raw_original)</span>
+              <span class="text-xs font-mono text-slate-500">擷取時間：${raw.captured_at}</span>
+            </div>
+            <div>
+              <h4 class="text-xl font-black text-slate-900">${raw.title}</h4>
+              <div class="text-sm font-mono text-slate-600 mt-1">
+                作者：<strong>${raw.author}</strong> ｜ 看板：${raw.board} ｜ 發布時間：<strong>${raw.published_at}</strong>
               </div>
             </div>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-base text-slate-800 leading-relaxed whitespace-pre-line font-sans">${raw.body_text}</div>
+            <div class="space-y-2 pt-2">
+              <div class="text-sm font-extrabold text-slate-800">
+                💬 原始推噓文紀錄（共 ${raw.total_push_entries} 則：推 ${raw.push_counts['推']} / 噓 ${raw.push_counts['噓']} / → ${raw.push_counts['→']}）：
+              </div>
+              <div class="bg-slate-50/70 p-3 rounded-lg border border-slate-200 space-y-0.5">
+                ${pushesHtml || '<div class="text-xs text-slate-500">（本文目前無推噓文）</div>'}
+                ${pushes.length > 8 ? `<div class="text-xs text-indigo-700 font-bold pt-2">…其餘 ${pushes.length - 8} 則推文已完整保存於 data/verified_ptt_data.json</div>` : ''}
+              </div>
+            </div>
+          </div>
 
-            <!-- 右欄：🤖 程式分析結果 (programmatic_analysis，與原文嚴格分開) -->
-            <div class="lg:col-span-4 bg-indigo-50/60 border-2 border-indigo-200 rounded-xl p-5 flex flex-col justify-between">
-              <div class="space-y-4">
-                <div class="border-b border-indigo-200 pb-2">
-                  <span class="px-3 py-1 bg-indigo-800 text-white text-sm font-extrabold rounded-md">🤖 程式分析結果 (programmatic_analysis)</span>
-                  <p class="text-xs text-indigo-900 mt-1.5 font-medium">
-                    與左側「原文內容」嚴格分離，僅作檢索分類輔助，不改寫原文。
-                  </p>
-                </div>
-
-                <div class="space-y-3 text-base">
-                  <div>
-                    <div class="text-xs font-bold text-slate-500">標題分類標籤：</div>
-                    <div class="font-extrabold text-slate-900">[${pa.post_category_tag}]</div>
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold text-slate-500">文章性質判讀：</div>
-                    <div class="font-bold text-indigo-950 text-sm leading-snug">${pa.article_nature_note}</div>
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold text-slate-500">主文偵測品牌關鍵字：</div>
-                    <div class="font-extrabold text-emerald-800">${brandsPost}</div>
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold text-slate-500">推噓文提及品牌關鍵字：</div>
-                    <div class="font-bold text-slate-800">${brandsPush}</div>
-                  </div>
+          <div class="lg:col-span-4 p-6 bg-indigo-50/40 space-y-4">
+            <div class="border-b border-indigo-200 pb-2">
+              <span class="px-3 py-1 bg-indigo-100 text-indigo-950 font-black text-sm rounded border border-indigo-300">🤖 程式分析結果 (programmatic_analysis)</span>
+            </div>
+            <div class="space-y-3 text-sm text-slate-800">
+              <div class="bg-white p-3.5 rounded-lg border border-indigo-200">
+                <div class="text-xs font-bold text-slate-500">標題分類標籤</div>
+                <div class="text-base font-black text-indigo-950 mt-0.5">[${prog.post_category_tag}]</div>
+              </div>
+              <div class="bg-white p-3.5 rounded-lg border border-indigo-200">
+                <div class="text-xs font-bold text-slate-500">文章性質判讀</div>
+                <div class="text-sm font-bold text-slate-900 mt-0.5 leading-snug">${prog.article_nature_note}</div>
+              </div>
+              <div class="bg-white p-3.5 rounded-lg border border-indigo-200">
+                <div class="text-xs font-bold text-slate-500">內文命中手搖品牌關鍵字</div>
+                <div class="text-sm font-extrabold text-emerald-800 mt-1">
+                  ${(prog.detected_brands_in_post || []).length > 0 ? prog.detected_brands_in_post.join('、') : '無特定連鎖品牌（或為在地單店／綜合討論）'}
                 </div>
               </div>
-
-              <div class="mt-4 pt-3 border-t border-indigo-200 text-xs text-slate-600 leading-relaxed">
-                ℹ️ ${pa.analysis_disclaimer}
+              <div class="bg-amber-50 p-3.5 rounded-lg border border-amber-300 text-xs text-amber-950 leading-relaxed">
+                ⚠️ <strong>分離原則聲明：</strong>${prog.analysis_disclaimer}
               </div>
             </div>
           </div>
         </div>
-      `;
-    }).join('');
-  }
+      </div>
+    `;
+  }).join('');
 }
 
-function renderVerifiedDashboard() {
+function initRawNewsSection() {
+  const meta = verifiedNewsData.collection_metadata || {};
   const records = verifiedNewsData.records || [];
-  const queries = verifiedNewsData.queries || [];
-  const evMeta = newsEventsData.metadata || {};
 
-  const totalRecords = records.length;
-  const uniqueMedias = new Set(records.map(r => r.source_media)).size;
-
-  document.getElementById('stat-total-news').innerText = `${totalRecords} 筆紀錄`;
-  document.getElementById('stat-capture-time').innerText = `涵蓋 ${uniqueMedias} 家媒體 • 擷取：${verifiedNewsData.captured_at}`;
-  document.getElementById('stat-total-events').innerText = `${evMeta.total_events_count || 20} 個事件`;
-  document.getElementById('stat-events-breakdown').innerText = `單一品牌事件 ${evMeta.focused_brand_events_count || 9} (${evMeta.focused_brand_records_count || 46}筆) • 合集 ${evMeta.multi_brand_roundup_events_count || 3} (${evMeta.multi_brand_roundup_records_count || 41}筆) • 單篇獨立 ${evMeta.unmerged_independent_records_count || 8}`;
-
-  const pttMeta = verifiedPttData.collection_metadata || {};
-  document.getElementById('stat-ptt-count').innerText = `${pttMeta.total_articles_collected || 14} 篇 / ${pttMeta.total_pushes_collected || 79} 則推噓文`;
-
-  const queryBox = document.getElementById('query-log-list');
-  queryBox.innerHTML = queries.map(q => `
-    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3">
-      <div>
-        <div class="flex items-center gap-2">
-          <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-900 font-extrabold text-sm rounded">${q.query_id}</span>
-          <span class="text-sm font-bold text-emerald-700">● ${q.status} (HTTP ${q.http_status})</span>
-          <span class="text-sm text-slate-500">擷取時間：${q.captured_at}</span>
+  const queryListEl = document.getElementById('query-log-list');
+  if (queryListEl && meta.queries_executed) {
+    queryListEl.innerHTML = meta.queries_executed.map(q => `
+      <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-2">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 bg-emerald-700 text-white text-xs font-bold rounded mr-2">${q.query_id}</span>
+          <span class="font-mono text-sm font-bold text-slate-800">${q.query_string}</span>
         </div>
-        <div class="mt-1.5 font-mono text-base text-slate-800 bg-white px-3 py-1.5 rounded border border-slate-200 break-all">
-          查詢字串：${q.query_string}
+        <div class="flex items-center gap-3 text-sm shrink-0">
+          <span class="font-bold text-emerald-800">實抓 ${q.raw_items_returned} 筆</span>
+          <a href="${q.rss_url}" target="_blank" rel="noopener noreferrer"
+             class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded text-xs transition">
+            🔗 開啟 RSS XML ↗
+          </a>
         </div>
       </div>
-      <div class="flex items-center gap-3 shrink-0">
-        <div class="text-right">
-          <div class="text-sm text-slate-500">RSS 回傳 / 依連結去重入庫</div>
-          <div class="text-lg font-black text-slate-900">${q.raw_items_returned} 筆 ➔ ${q.unique_items_saved} 筆</div>
-        </div>
-        <a href="${q.rss_url}" target="_blank" rel="noopener noreferrer"
-           class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-lg shadow-sm transition">
-          🔗 開啟原始 RSS XML
-        </a>
-      </div>
-    </div>
-  `).join('');
-
-  const brandSet = new Set();
-  records.forEach(r => {
-    if (r.brand_detected && r.brand_detected !== "待確認品牌" && !r.brand_detected.startsWith("多品牌")) {
-      brandSet.add(r.brand_detected);
-    }
-  });
-  const brandSelect = document.getElementById('filter-brand-select');
-  if (brandSelect) {
-    const existingBrandOptions = Array.from(brandSet).map(b => {
-      const cnt = records.filter(r => r.brand_detected.includes(b)).length;
-      return `<option value="${b}">${b} (提及 ${cnt} 筆)</option>`;
-    }).join('');
-    brandSelect.innerHTML = `
-      <option value="ALL">全部依連結去重紀錄 (共 ${totalRecords} 筆)</option>
-      <option value="MULTI">多品牌合集報導 (共 ${records.filter(r => r.brand_detected.startsWith("多品牌")).length} 筆)</option>
-      <option value="UNKNOWN">待確認品牌 (共 ${records.filter(r => r.brand_detected === "待確認品牌").length} 筆)</option>
-      ${existingBrandOptions}
-    `;
+    `).join('');
   }
 
-  renderCrosscheckCases();
-  renderNewsEventsList();
+  const brandSelect = document.getElementById('filter-brand-select');
+  if (brandSelect) {
+    const counts = {};
+    records.forEach(r => {
+      const b = r.brand_detected || "待確認品牌";
+      counts[b] = (counts[b] || 0) + 1;
+    });
+    const sortedBrands = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+    brandSelect.innerHTML = `<option value="ALL">全部品牌 (${records.length} 筆紀錄)</option>` +
+      sortedBrands.map(b => `<option value="${b}">${b} (${counts[b]} 筆)</option>`).join('');
+  }
+
   renderVerifiedNewsList();
-  renderPttSection();
-  renderCapabilityTable();
-  renderIsolatedDemoList();
 }
 
 function renderVerifiedNewsList() {
   const records = verifiedNewsData.records || [];
   const filtered = records.filter(r => {
+    const matchBrand = currentFilterBrand === "ALL" || r.brand_detected === currentFilterBrand;
     const matchQuery = currentFilterQuery === "ALL" || r.query_id === currentFilterQuery;
-    let matchBrand = true;
-    if (currentFilterBrand === "MULTI") matchBrand = r.brand_detected.startsWith("多品牌");
-    else if (currentFilterBrand === "UNKNOWN") matchBrand = r.brand_detected === "待確認品牌";
-    else if (currentFilterBrand !== "ALL") matchBrand = r.brand_detected.includes(currentFilterBrand);
-    return matchQuery && matchBrand;
+    return matchBrand && matchQuery;
   });
 
   const badge = document.getElementById('filtered-count-badge');
   if (badge) {
-    badge.innerText = `顯示：${filtered.length} / ${records.length} 筆依連結去重的新聞紀錄`;
+    badge.innerText = `顯示：${filtered.length} / ${records.length} 筆`;
   }
 
-  const list = document.getElementById('verified-news-list');
-  if (!list) return;
-  list.innerHTML = filtered.map(r => {
-    return `
-      <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-        <div>
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="px-2 py-0.5 text-xs font-mono font-extrabold rounded bg-slate-800 text-white">${r.evidence_id}</span>
-            <span class="px-2.5 py-0.5 text-sm font-extrabold rounded bg-emerald-100 text-emerald-900">${r.source_media}</span>
-            <span class="text-xs font-mono text-slate-500">發布：${r.published_at} | 擷取：${r.captured_at}</span>
-          </div>
-          <a href="${r.rss_link}" target="_blank" rel="noopener noreferrer" class="inline-block text-base font-bold text-slate-900 hover:text-emerald-700 underline mt-1">
-            ${r.clean_title} ↗
-          </a>
+  const listEl = document.getElementById('verified-news-list');
+  if (!listEl) return;
+
+  listEl.innerHTML = filtered.map(r => `
+    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row justify-between gap-3">
+      <div class="space-y-1">
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <span class="px-2 py-0.5 bg-slate-800 text-white font-mono font-bold rounded">${r.evidence_id}</span>
+          <span class="px-2 py-0.5 bg-emerald-100 text-emerald-900 font-bold rounded">${r.brand_detected}</span>
+          <span class="font-bold text-slate-700">📰 ${r.publisher_name}</span>
+          <span class="font-mono text-slate-500">發布：${r.published_at}</span>
         </div>
         <a href="${r.rss_link}" target="_blank" rel="noopener noreferrer"
-           class="shrink-0 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg">
-          🔗 開啟新聞
+           class="text-base font-extrabold text-slate-900 hover:text-emerald-700 underline decoration-emerald-500 underline-offset-2 block">
+          ${r.title_clean} ↗
         </a>
       </div>
-    `;
-  }).join('');
+    </div>
+  `).join('');
 }
 
-function renderCapabilityTable() {
+function renderCapabilityReport() {
   const tbody = document.getElementById('capability-tbody');
   if (!tbody) return;
+
   tbody.innerHTML = platformCapabilities.map(c => {
-    let badgeClass = "bg-slate-200 text-slate-800";
-    if (c.status.startsWith("已測試可取得")) badgeClass = "bg-emerald-100 text-emerald-900 border border-emerald-300";
-    else if (c.status === "只能取得部分") badgeClass = "bg-amber-100 text-amber-900 border border-amber-300";
-    else if (c.status === "本次測試失敗") badgeClass = "bg-rose-100 text-rose-900 border border-rose-300";
+    let badgeClass = "bg-slate-100 text-slate-800 border-slate-300";
+    if (c.status.includes("已測試可取得")) {
+      badgeClass = "bg-emerald-100 text-emerald-900 border-emerald-400";
+    } else if (c.status.includes("只能取得部分")) {
+      badgeClass = "bg-amber-100 text-amber-900 border-amber-400";
+    } else if (c.status.includes("本次測試失敗")) {
+      badgeClass = "bg-rose-100 text-rose-900 border-rose-400";
+    }
 
     return `
       <tr class="hover:bg-slate-50">
         <td class="p-4 border-r border-slate-200 font-extrabold text-slate-900">${c.platform}</td>
-        <td class="p-4 border-r border-slate-200 whitespace-nowrap">
-          <span class="px-3 py-1 rounded-full text-sm font-extrabold ${badgeClass}">${c.status}</span>
+        <td class="p-4 border-r border-slate-200">
+          <span class="inline-block px-3 py-1 text-sm font-extrabold rounded-full border ${badgeClass}">
+            ${c.status}
+          </span>
         </td>
-        <td class="p-4 border-r border-slate-200 font-mono text-sm text-slate-700">${c.test_method}</td>
-        <td class="p-4 border-r border-slate-200 text-base text-slate-700">${c.test_result}</td>
-        <td class="p-4 font-mono text-sm text-slate-500 whitespace-nowrap">${c.tested_at}</td>
+        <td class="p-4 border-r border-slate-200 text-sm text-slate-700 font-mono">${c.test_method}</td>
+        <td class="p-4 border-r border-slate-200 text-sm text-slate-800 leading-relaxed">${c.test_result}</td>
+        <td class="p-4 text-sm font-mono text-slate-600 whitespace-nowrap">${c.tested_at}</td>
       </tr>
     `;
   }).join('');
 }
 
-function renderIsolatedDemoList() {
-  const container = document.getElementById('isolated-demo-list');
-  if (!container) return;
-  container.innerHTML = isolatedDemoSample.map(p => `
-    <div class="bg-amber-50/60 border-2 border-amber-300 rounded-xl p-5 opacity-90">
-      <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
-        <div class="flex items-center gap-2">
-          <span class="px-2.5 py-0.5 text-sm font-extrabold rounded bg-amber-500 text-slate-950">⚠️ 模擬示範樣本 (無真實來源連結)</span>
-          <span class="text-lg font-extrabold text-slate-800">${p.brand} — ${p.name}</span>
-        </div>
-        <span class="text-base font-bold text-amber-900">模擬展示分：${p.totalScore} (已停用不列入正式統計)</span>
+function renderIsolatedDemo() {
+  const el = document.getElementById('isolated-demo-list');
+  if (!el) return;
+  el.innerHTML = isolatedDemoSample.map(d => `
+    <div class="bg-white/80 p-5 rounded-xl border-2 border-dashed border-amber-400 opacity-85">
+      <div class="flex justify-between items-center mb-2">
+        <span class="px-3 py-1 bg-amber-200 text-amber-950 font-black text-xs rounded">⚠️ 示範資料（非真實採集，無來源網址）</span>
+        <span class="text-sm font-bold text-slate-500">原模擬週期：2026-W46</span>
       </div>
-      <p class="text-base text-slate-600">原模擬描述：${p.observation}（註：此段文字、價格 ${p.price}、倍數 ${p.multiplier}x 與 UGC ${p.ugcCount} 則皆為早期介面設計之模擬值，待有實際來源網址後方可轉入正式區）</p>
+      <h4 class="text-lg font-extrabold text-slate-800">${d.brand} — ${d.name}</h4>
+      <p class="text-sm text-slate-600 mt-1">原模擬敘述：${d.ai_insight}</p>
     </div>
   `).join('');
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  renderVerifiedDashboard();
+window.addEventListener('resize', () => {
+  if (matrixChartInstance) matrixChartInstance.resize();
+  if (wordCloudChartInstance) wordCloudChartInstance.resize();
+  if (brandBarChartInstance) brandBarChartInstance.resize();
+  if (categoryPieChartInstance) categoryPieChartInstance.resize();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  initPeriodAndProductFilters();
+  applyProductFilters();
+  renderCrawlHistoryTable();
+  renderCrosscheckCases();
+  renderNewsEventsList();
+  renderPttSection();
+  initRawNewsSection();
+  renderCapabilityReport();
+  renderIsolatedDemo();
 });
